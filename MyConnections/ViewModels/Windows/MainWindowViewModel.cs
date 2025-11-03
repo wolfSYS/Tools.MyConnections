@@ -6,7 +6,7 @@ namespace MyConnections.ViewModels.Windows
     public partial class MainWindowViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _applicationTitle = "WPF UI - MyConnections";
+        private string _applicationTitle = "wolfSYS.Tools.MyConnections";
 
         [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()

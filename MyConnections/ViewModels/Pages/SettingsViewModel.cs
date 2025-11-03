@@ -1,4 +1,5 @@
-﻿using Wpf.Ui.Abstractions.Controls;
+﻿using MyConnections.Properties;
+using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
 
 namespace MyConnections.ViewModels.Pages
@@ -29,7 +30,10 @@ namespace MyConnections.ViewModels.Pages
             AppVersion = $"UiDesktopApp1 - {GetAssemblyVersion()}";
 
             _isInitialized = true;
-        }
+
+			//Settings.Default.LogLevelDebug
+
+		}
 
         private string GetAssemblyVersion()
         {
