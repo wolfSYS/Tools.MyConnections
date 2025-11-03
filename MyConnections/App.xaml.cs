@@ -91,5 +91,5 @@ namespace MyConnections
         {
             // For more info see https://docs.microsoft.com/en-us/dotnet/api/system.windows.application.dispatcherunhandledexception?view=windowsdesktop-6.0
         }
-    }
+	}
 }

@@ -21,6 +21,7 @@ namespace MyConnections.ViewModels.Pages
 		public DashboardViewModel(Interfaces.ILoggerService logger)
 		{
 			_logger = logger;
+			_logger.Debug("Hello");
 			string x = "";
 		}
 
