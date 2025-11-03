@@ -16,12 +16,6 @@ namespace MyConnections.ViewModels.Windows
                 Content = "Connections",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.ServerSurfaceMultiple16 },
                 TargetPageType = typeof(Views.Pages.ConnectionsPage)
-            },
-            new NavigationViewItem()
-            {
-                Content = "Data",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.DataHistogram24 },
-                TargetPageType = typeof(Views.Pages.DataPage)
             }
         };
 

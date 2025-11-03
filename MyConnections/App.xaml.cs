@@ -54,8 +54,6 @@ namespace MyConnections
 
                 services.AddSingleton<ConnectionsPage>();
                 services.AddSingleton<ConnectionsViewModel>();
-                services.AddSingleton<DataPage>();
-                services.AddSingleton<DataViewModel>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
             }).Build();
