@@ -14,7 +14,10 @@ namespace MyConnections.ViewModels.Pages
         [ObservableProperty]
         private ApplicationTheme _currentTheme = ApplicationTheme.Unknown;
 
-        public Task OnNavigatedToAsync()
+        [ObservableProperty]
+        private bool _logLevelDebug = Settings.Default.LogLevelDebug;
+
+		public Task OnNavigatedToAsync()
         {
             if (!_isInitialized)
                 InitializeViewModel();
@@ -41,7 +44,15 @@ namespace MyConnections.ViewModels.Pages
                 ?? String.Empty;
         }
 
-        [RelayCommand]
+		[RelayCommand]
+		private void SetLogLevel()
+		{
+			LogLevelDebug = !LogLevelDebug;
+            Settings.Default.LogLevelDebug = LogLevelDebug;
+            Settings.Default.Save();
+		}
+
+		[RelayCommand]
         private void OnChangeTheme(string parameter)
         {
             switch (parameter)
@@ -53,7 +64,10 @@ namespace MyConnections.ViewModels.Pages
                     ApplicationThemeManager.Apply(ApplicationTheme.Light);
                     CurrentTheme = ApplicationTheme.Light;
 
-                    break;
+                    Settings.Default.Theme = "theme_light";
+                    Settings.Default.Save();
+
+					break;
 
                 default:
                     if (CurrentTheme == ApplicationTheme.Dark)
@@ -62,7 +76,10 @@ namespace MyConnections.ViewModels.Pages
                     ApplicationThemeManager.Apply(ApplicationTheme.Dark);
                     CurrentTheme = ApplicationTheme.Dark;
 
-                    break;
+					Settings.Default.Theme = "theme_dark";
+					Settings.Default.Save();
+
+					break;
             }
         }
     }

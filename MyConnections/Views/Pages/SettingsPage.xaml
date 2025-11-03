@@ -19,33 +19,45 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
+	
+	<ScrollViewer>
+		<StackPanel>
+			<!--- Logfiles -->
+			<TextBlock
+                FontSize="20"
+                FontWeight="Medium"
+                Text="Logfiles" />
+			<CheckBox Content="Log also debug infos to logfiles" 
+					  Command="{Binding ViewModel.SetLogLevelCommand}"
+					  IsChecked="{Binding ViewModel.LogLevelDebug, Mode=OneWay}"  />
 
-    <StackPanel>
-        <TextBlock
-            FontSize="20"
-            FontWeight="Medium"
-            Text="Personalization" />
-        <TextBlock Margin="0,12,0,0" Text="Theme" />
-        <RadioButton
-            Margin="0,12,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_light"
-            Content="Light"
-            GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
-        <RadioButton
-            Margin="0,8,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_dark"
-            Content="Dark"
-            GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+			<TextBlock
+                FontSize="20"
+                FontWeight="Medium"
+                Text="Personalization" />
+            <TextBlock Margin="0,12,0,0" Text="Theme" />
+            <RadioButton
+                Margin="0,12,0,0"
+                Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+                CommandParameter="theme_light"
+                Content="Light"
+                GroupName="themeSelect"
+                IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
+            <RadioButton
+                Margin="0,8,0,0"
+                Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+                CommandParameter="theme_dark"
+                Content="Dark"
+                GroupName="themeSelect"
+                IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
 
-        <TextBlock
-            Margin="0,24,0,0"
-            FontSize="20"
-            FontWeight="Medium"
-            Text="About MyConnections" />
-        <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
-    </StackPanel>
+            <TextBlock
+                Margin="0,24,0,0"
+                FontSize="20"
+                FontWeight="Medium"
+                Text="About MyConnections" />
+            <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+		</StackPanel>
+	</ScrollViewer>
+
 </Page>

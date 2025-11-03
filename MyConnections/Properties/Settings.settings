@@ -5,5 +5,8 @@
     <Setting Name="LogLevelDebug" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Theme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">theme_dark</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
