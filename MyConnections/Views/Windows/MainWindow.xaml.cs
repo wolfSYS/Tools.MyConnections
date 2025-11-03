@@ -1,4 +1,6 @@
-﻿using MyConnections.ViewModels.Windows;
+﻿using System.Diagnostics.Eventing.Reader;
+using MyConnections.Properties;
+using MyConnections.ViewModels.Windows;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Appearance;
@@ -21,7 +23,12 @@ namespace MyConnections.Views.Windows
 
             SystemThemeWatcher.Watch(this);
 
-            InitializeComponent();
+			if (Settings.Default.Theme.Contains("_light"))
+				ApplicationThemeManager.Apply(ApplicationTheme.Light);
+			else
+				ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+
+			InitializeComponent();
             SetPageService(navigationViewPageProvider);
 
             navigationService.SetNavigationControl(RootNavigation);

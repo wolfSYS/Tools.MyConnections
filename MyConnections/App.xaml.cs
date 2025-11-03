@@ -5,12 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MyConnections.Properties;
 using MyConnections.Services;
 using MyConnections.ViewModels.Pages;
 using MyConnections.ViewModels.Windows;
 using MyConnections.Views.Pages;
 using MyConnections.Views.Windows;
 using Wpf.Ui;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.DependencyInjection;
 
 namespace MyConnections
@@ -71,8 +73,8 @@ namespace MyConnections
         /// </summary>
         private async void OnStartup(object sender, StartupEventArgs e)
         {
-            await _host.StartAsync();
-        }
+			await _host.StartAsync();
+		}
 
         /// <summary>
         /// Occurs when the application is closing.

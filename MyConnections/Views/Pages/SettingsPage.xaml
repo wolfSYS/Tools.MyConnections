@@ -22,7 +22,7 @@
 	
 	<ScrollViewer>
 		<StackPanel>
-			<!--- Logfiles -->
+			<!-- Logfiles -->
 			<TextBlock
                 FontSize="20"
                 FontWeight="Medium"
@@ -30,7 +30,12 @@
 			<CheckBox Content="Log also debug infos to logfiles" 
 					  Command="{Binding ViewModel.SetLogLevelCommand}"
 					  IsChecked="{Binding ViewModel.LogLevelDebug, Mode=OneWay}"  />
+			<ui:Button
+                    Content="show log files"
+				    Command="{Binding ViewModel.OpenLogFileCommand}"
+                    Icon="{ui:SymbolIcon DocumentBulletList24}" />
 
+			<!-- Theme -->
 			<TextBlock
                 FontSize="20"
                 FontWeight="Medium"

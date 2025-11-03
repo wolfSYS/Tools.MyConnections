@@ -1,4 +1,7 @@
-﻿using MyConnections.Properties;
+﻿using System.Diagnostics;
+using System.IO;
+using MyConnections.Properties;
+using Windows.Storage;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
 
@@ -50,6 +53,18 @@ namespace MyConnections.ViewModels.Pages
 			LogLevelDebug = !LogLevelDebug;
             Settings.Default.LogLevelDebug = LogLevelDebug;
             Settings.Default.Save();
+		}
+
+		[RelayCommand]
+		public void OpenLogFile()
+		{
+		    var logFilePath = $@"{AppContext.BaseDirectory}\logfiles\log.txt";
+
+			Process process = new Process();
+			process.StartInfo.FileName = "explorer.exe";
+			process.StartInfo.Arguments = Path.GetDirectoryName(logFilePath);
+			process.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+			process.Start();
 		}
 
 		[RelayCommand]
