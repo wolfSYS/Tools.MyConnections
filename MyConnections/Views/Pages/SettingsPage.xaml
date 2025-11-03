@@ -37,6 +37,7 @@
 
 			<!-- Theme -->
 			<TextBlock
+				Margin="0,24,0,0"
                 FontSize="20"
                 FontWeight="Medium"
                 Text="Personalization" />
@@ -56,6 +57,7 @@
                 GroupName="themeSelect"
                 IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
 
+			<!-- About -->
             <TextBlock
                 Margin="0,24,0,0"
                 FontSize="20"

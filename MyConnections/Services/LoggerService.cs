@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Serilog;
 using MyConnections.Interfaces;
 using ILoggerService = MyConnections.Interfaces.ILoggerService;
+using MyConnections.Properties;
 
 namespace MyConnections.Services
 {
@@ -21,7 +22,10 @@ namespace MyConnections.Services
 		/// </summary>
 		public LoggerService()
 		{
-			this.InitLoggerDebug();
+			if (Settings.Default.LogLevelDebug)
+				this.InitLoggerDebug();
+			else
+				this.InitLoggerWarning();
 		}
 
 		public void Debug(string message)
