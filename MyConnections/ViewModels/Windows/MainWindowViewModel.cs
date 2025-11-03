@@ -13,8 +13,8 @@ namespace MyConnections.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Home",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
+                Content = "Connections",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.ServerSurfaceMultiple16 },
                 TargetPageType = typeof(Views.Pages.ConnectionsPage)
             },
             new NavigationViewItem()
@@ -39,7 +39,7 @@ namespace MyConnections.ViewModels.Windows
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new()
         {
-            new MenuItem { Header = "Home", Tag = "tray_home" }
+            new MenuItem { Header = "Connections", Tag = "tray_home" }
         };
     }
 }

@@ -32,11 +32,12 @@
             Padding="42,0,42,0"
             BreadcrumbBar="{Binding ElementName=BreadcrumbBar}"
             FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}"
-            FrameMargin="0"
-            IsBackButtonVisible="Visible"
-            IsPaneToggleVisible="True"
+            FrameMargin="0" 
+			OpenPaneLength="126"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleVisible="False"
             MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
-            PaneDisplayMode="LeftFluent">
+            PaneDisplayMode="Left">
             <ui:NavigationView.Header>
                 <ui:BreadcrumbBar x:Name="BreadcrumbBar" Margin="42,32,42,20" />
             </ui:NavigationView.Header>
@@ -52,14 +53,14 @@
             Grid.Row="0"
             Grid.RowSpan="2" />
 
-        <ui:TitleBar
+		<ui:TitleBar
             x:Name="TitleBar"
             Title="{Binding ViewModel.ApplicationTitle}"
             Grid.Row="0"
             CloseWindowByDoubleClickOnIcon="True">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon Source="pack://application:,,,/Assets/wpfui-icon-256.png" />
-            </ui:TitleBar.Icon>
-        </ui:TitleBar>
-    </Grid>
+			<ui:TitleBar.Icon>
+				<ui:ImageIcon Source="pack://application:,,,/Assets/wpfui-icon-256.png" />
+			</ui:TitleBar.Icon>
+		</ui:TitleBar>
+	</Grid>
 </ui:FluentWindow>
