@@ -33,7 +33,7 @@ namespace MyConnections.ViewModels.Pages
         private void InitializeViewModel()
         {
             CurrentTheme = ApplicationThemeManager.GetAppTheme();
-            AppVersion = $"wolfSYS.Tools.MyConnections - {GetAssemblyVersion()}";
+            AppVersion = $"wolfSYS.Tools.MyConnections - ver. {GetAssemblyVersion()}";
 
             _isInitialized = true;
 

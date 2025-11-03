@@ -90,6 +90,9 @@ namespace MyConnections
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             // For more info see https://docs.microsoft.com/en-us/dotnet/api/system.windows.application.dispatcherunhandledexception?view=windowsdesktop-6.0
+            LoggerService log = new LoggerService();
+            log.Fatal(e.Exception, "APP::UnhandledException");
+            log.Dispose();
         }
 	}
 }
