@@ -4,12 +4,12 @@ using Wpf.Ui.Abstractions.Controls;
 
 namespace MyConnections.Views.Pages
 {
-    public partial class DashboardPage : INavigableView<DashboardViewModel>
+    public partial class ConnectionsPage : INavigableView<ConnectionsViewModel>
     {
         
-        public DashboardViewModel ViewModel { get; }
+        public ConnectionsViewModel ViewModel { get; }
 
-        public DashboardPage(DashboardViewModel viewModel)
+        public ConnectionsPage(ConnectionsViewModel viewModel)
         {
             ViewModel = viewModel;
             DataContext = this;

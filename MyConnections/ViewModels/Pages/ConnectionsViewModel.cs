@@ -8,7 +8,7 @@ using Serilog.Configuration;
 
 namespace MyConnections.ViewModels.Pages
 {
-    public partial class DashboardViewModel : ObservableObject
+    public partial class ConnectionsViewModel : ObservableObject
     {
 		private readonly Interfaces.ILoggerService _logger;
 
@@ -18,7 +18,7 @@ namespace MyConnections.ViewModels.Pages
 		private ObservableCollection<NetworkConnectionInfo> Connections { get; }
 			= new ObservableCollection<NetworkConnectionInfo>();
 
-		public DashboardViewModel(Interfaces.ILoggerService logger)
+		public ConnectionsViewModel(Interfaces.ILoggerService logger)
 		{
 			_logger = logger;
 			_logger.Debug("Hello");
