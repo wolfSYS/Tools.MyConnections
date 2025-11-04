@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:conv="clr-namespace:MyConnections.Converters"
-	xmlns:usrctrl="clr-namespace:MyConnections.UserControls"
 	xmlns:models="clr-namespace:MyConnections.Models"
     Title="DashboardPage"
     d:DataContext="{d:DesignInstance local:ConnectionsPage,
@@ -21,6 +20,7 @@
     mc:Ignorable="d">
 	<Page.Resources>
 		<conv:ProcessPathToIconConverter x:Key="ExeIconConverter" />
+		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
 		<DrawingImage x:Key="GrayCirclePlaceholder">
 			<DrawingImage.Drawing>
@@ -83,6 +83,10 @@
 					   CommandParameter="{Binding ViewModel.CurrentSelection}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon RecordStop24}" />
+			<ui:ProgressRing IsIndeterminate="True"
+							 Height="28" Width="28"
+							 Margin="36,0,0,0"
+							 Visibility="{Binding ViewModel.ShowProgress, Converter={StaticResource BoolToVis}}" />
 		</StackPanel>
 
 		<ui:ListView Grid.Row="1"

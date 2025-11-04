@@ -22,7 +22,7 @@ namespace MyConnections.ViewModels.Pages
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
-        private int _counter = 0;
+        private bool _showProgress = true;
 
 		[ObservableProperty]
 		private List<NetworkConnectionInfo> _connections = new List<NetworkConnectionInfo>();
@@ -62,7 +62,7 @@ namespace MyConnections.ViewModels.Pages
 
 		private async Task RefreshConnectionsAsync()
 		{
-			//SetProgress(true);
+			SetProgress(true);
 			try
 			{
 				CurrentSelection = null;
@@ -82,9 +82,15 @@ namespace MyConnections.ViewModels.Pages
 			}
 			finally
 			{
-				//SetProgress(false);
 				OnPropertyChanged(nameof(Connections));
+				SetProgress(false);
 			}
+		}
+
+		private void SetProgress(bool doShowProgress)
+		{
+			ShowProgress = doShowProgress;
+			OnPropertyChanged(nameof(ShowProgress));
 		}
 
 		[RelayCommand]
@@ -106,6 +112,8 @@ namespace MyConnections.ViewModels.Pages
 				{
 					if (string.IsNullOrWhiteSpace(exe))
 						return;
+
+					SetProgress(true);
 
 					var procs = Process.GetProcesses()
 						.Where(p => IsSameExecutable(p, exe))
