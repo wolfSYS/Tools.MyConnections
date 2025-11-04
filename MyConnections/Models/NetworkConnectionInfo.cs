@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Net;
 
 namespace MyConnections.Models
 {
@@ -20,6 +21,17 @@ namespace MyConnections.Models
 		public string? ProcessPath
 		{
 			get; set;
+		}
+
+		public string? NormalizedProcessPath
+		{
+			get
+			{
+				if(!string.IsNullOrEmpty(ProcessPath) && string.Equals(ProcessPath, "PID:4", StringComparison.OrdinalIgnoreCase))
+					return "SYSTEM";
+				else
+					return ProcessPath;
+			}
 		}
 
 		/// <summary>

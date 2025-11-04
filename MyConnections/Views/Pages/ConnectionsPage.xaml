@@ -50,12 +50,13 @@
 					Grid.Column="0" Grid.ColumnSpan="1"
 					Orientation="Horizontal">
 			<ui:Button Content="Refresh"
+					   ToolTip="Refresh the List of Connections"
 					   Command="{Binding ViewModel.RefreshConnectionCommand}"
 					   Icon="{ui:SymbolIcon ArrowClockwise24}" />
-			<ui:Button Content="Kill Connection"
-					   Margin="4,0,0,0"
-					   Icon="{ui:SymbolIcon Delete24}" />
 			<ui:Button Content="End Process"
+					   ToolTip="Kill all Processes for the selected executeable"
+					   Command="{Binding ViewModel.KillProcessCommand}"
+					   CommandParameter="{Binding ViewModel.CurrentSelection}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon RecordStop24}" />
 		</StackPanel>
@@ -67,7 +68,7 @@
 					 Width="Auto"
 					 Margin="0,12,0,0"
 					 ItemsSource="{Binding ViewModel.Connections, Mode=TwoWay}"
-					 SelectedIndex="1"
+					 SelectedItem="{Binding ViewModel.CurrentSelection, Mode=TwoWay}"
 					 SelectionMode="Single">
 			<ui:ListView.ItemTemplate>
 				<DataTemplate DataType="{x:Type models:NetworkConnectionInfo}">
@@ -93,7 +94,7 @@
 								   Grid.Column="1" Grid.ColumnSpan="2"
 								   Margin="12,12,0,0"
 								   FontWeight="Bold"
-								   Text="{Binding ProcessPath, Mode=OneWay}" />
+								   Text="{Binding NormalizedProcessPath, Mode=OneWay}" />
 						<!-- remote IP & port -->
 						<TextBlock Grid.Row="1"
 								   Grid.Column="1"

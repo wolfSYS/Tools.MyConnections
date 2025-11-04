@@ -1,10 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
 using MyConnections.Interfaces;
 using MyConnections.Models;
 using MyConnections.Services;
 using Serilog.Configuration;
+using Windows.System;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
 
@@ -20,6 +25,10 @@ namespace MyConnections.ViewModels.Pages
 
 		[ObservableProperty]
 		private List<NetworkConnectionInfo> _connections = new List<NetworkConnectionInfo>();
+
+		[ObservableProperty]
+		[NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
+		private NetworkConnectionInfo _currentSelection;
 
 		public ConnectionsViewModel(Interfaces.ILoggerService logger)
 		{
@@ -55,29 +64,103 @@ namespace MyConnections.ViewModels.Pages
 			//SetProgress(true);
 			try
 			{
+				CurrentSelection = null;
+				OnPropertyChanged(nameof(CurrentSelection));
 				Connections.Clear();
+				Connections = new List<NetworkConnectionInfo>();
+				OnPropertyChanged(nameof(Connections));
 
 				// Run the enumeration on a thread pool thread – the API is blocking
 				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
 
-				foreach (var conn in conns)
-					Connections.Add(conn);
+				Connections.AddRange(conns);
+				OnPropertyChanged(nameof(Connections));
 			}
 			catch (Exception ex)
 			{
-				_logger.Error(ex, "MainVM::RefreshConnectionsAsync");
+				_logger.Error(ex, "ConnectionsVM::RefreshConnectionsAsync");
 			}
 			finally
 			{
 				//SetProgress(false);
+				string x = "";
 			}
 		}
 
 		[RelayCommand]
         private async Task RefreshConnection()
         {
-            await RefreshConnectionsAsync();
-        }
+			await RefreshConnectionsAsync();
+		}
+
+		[RelayCommand(CanExecute = nameof(CanKillProcess))]
+		private async Task KillProcess(NetworkConnectionInfo info)
+		{
+			if (info != null)
+			{
+				var exe = info.ProcessPath;
+				try
+				{
+					if (string.IsNullOrWhiteSpace(exe))
+						return;
+
+					var procs = Process.GetProcesses()
+						.Where(p => IsSameExecutable(p, exe))
+						.ToArray();
+
+					CurrentSelection = null;
+					OnPropertyChanged(nameof(CurrentSelection));
+
+					foreach (var proc in procs)
+					{
+						try
+						{
+							proc.CloseMainWindow();
+							proc.Kill();
+							proc.WaitForExit();
+						}
+						catch (Exception ex)
+						{
+							_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe}) => could not kill PID {proc.Id}");
+						}
+					}
+					await RefreshConnection();
+				}
+				catch (Exception ex)
+				{
+					_logger.Error(ex, $"ConnectionsVM:KillProcess({exe})");
+				}
+			}
+		}
+
+		private bool CanKillProcess(NetworkConnectionInfo info)
+		{
+			if (info != null)
+			{
+				if (info.NormalizedProcessPath == "SYSTEM")
+					return false;
+				else
+					return true;
+			}
+			else
+				return false;
+		}
+
+		private bool IsSameExecutable(Process proc, string exePath)
+		{
+			try
+			{
+				// Null‑conditional (`?.`) keeps us from a null‑ref if MainModule is null
+				return string.Equals(proc.MainModule?.FileName,
+									 exePath,
+									 StringComparison.OrdinalIgnoreCase);
+			}
+			catch (Exception ex) // catch *any* exception from accessing the process
+			{
+				_logger.Debug($"ConnectionsVM:IsSameExecutable => {ex.Message}");
+				return false; // treat it as “not a match”
+			}
+		}
 
 	}
 }
