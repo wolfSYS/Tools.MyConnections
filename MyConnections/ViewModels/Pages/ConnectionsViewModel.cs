@@ -15,14 +15,12 @@ namespace MyConnections.ViewModels.Pages
 		[ObservableProperty]
         private int _counter = 0;
 
-		private ObservableCollection<NetworkConnectionInfo> Connections { get; }
-			= new ObservableCollection<NetworkConnectionInfo>();
+		[ObservableProperty]
+		private List<NetworkConnectionInfo> _connections = new List<NetworkConnectionInfo>();
 
 		public ConnectionsViewModel(Interfaces.ILoggerService logger)
 		{
-			_logger = logger;
-			_logger.Debug("Hello");
-			string x = "";
+			RefreshConnectionsAsync();
 		}
 
 		private async Task RefreshConnectionsAsync()
@@ -49,9 +47,9 @@ namespace MyConnections.ViewModels.Pages
 		}
 
 		[RelayCommand]
-        private void OnCounterIncrement()
+        private async Task RefreshConnection()
         {
-            Counter++;
+            await RefreshConnectionsAsync();
         }
     }
 }

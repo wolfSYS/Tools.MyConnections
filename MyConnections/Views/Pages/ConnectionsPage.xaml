@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:usrctrl="clr-namespace:MyConnections.UserControls"
+	xmlns:models="clr-namespace:MyConnections.Models"
     Title="DashboardPage"
     d:DataContext="{d:DesignInstance local:ConnectionsPage,
                                      IsDesignTimeCreatable=False}"
@@ -29,11 +30,12 @@
         </Grid.ColumnDefinitions>
 
 		<!--- Pseudo-Menu -->
-		<StackPanel Grid.Row="1" 
+		<StackPanel Grid.Row="0" 
 					Grid.Column="0" Grid.ColumnSpan="1"
 					Orientation="Horizontal">
 			<ui:Button
-                    Content="Refresh" 				    
+                    Content="Refresh" 
+				Command="{Binding ViewModel.RefreshConnectionCommand}"
                     Icon="{ui:SymbolIcon ArrowClockwise24}" />
 			<ui:Button
                     Content="Kill Connection"
@@ -44,9 +46,57 @@
 				    Margin="4,0,0,0"
                     Icon="{ui:SymbolIcon RecordStop24}" />
 		</StackPanel>
-		
+
+		<!-- 
+		<ui:DataGrid Grid.Row="1"
+					 ItemsSource="{Binding ViewModel.Connections, Mode=OneWay}"/>
+		-->
+
+		<ui:ListView
+                    Grid.Row="1"
+                    d:ItemsSource="{d:SampleData ItemCount=2}"
+                    ItemsSource="{Binding ViewModel.Connections, Mode=TwoWay}"
+                    SelectedIndex="1"
+                    SelectionMode="Single">
+			<ui:ListView.ItemTemplate>
+				<DataTemplate DataType="{x:Type models:NetworkConnectionInfo}">
+					<Grid Margin="8,0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<Ellipse
+                                    x:Name="Ellipse"
+                                    Grid.RowSpan="2"
+                                    Width="32"
+                                    Height="32"
+                                    Margin="6"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Fill="{ui:ThemeResource ControlStrongStrokeColorDefaultBrush}" />
+						<TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="12,6,0,0"
+                                    FontWeight="Bold"
+                                    Text="{Binding ProcessPath, Mode=OneWay}" />
+						<TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="12,0,0,6"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding RemoteAddress, Mode=OneWay}" />
+					</Grid>
+				</DataTemplate>
+			</ui:ListView.ItemTemplate>
+		</ui:ListView>
+
 		<usrctrl:ProgressRing
-			Grid.Row="1"
+			Grid.Row="2"
 			Grid.Column="0"
             Width="32"
             Background="Transparent"
