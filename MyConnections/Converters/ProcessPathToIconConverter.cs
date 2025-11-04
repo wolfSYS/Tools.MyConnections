@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using System.Windows;
-using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using MyConnections.Interfaces;
 
 namespace MyConnections.Converters
 {
@@ -16,6 +18,9 @@ namespace MyConnections.Converters
 	{
 		// simple caching for avoiding duplicate ICO allocations
 		private static readonly Dictionary<string, BitmapSource> _iconCache = new();
+
+		// get access to logger class
+		private static ILoggerService _logger => App.Services.GetRequiredService<ILoggerService>();
 
 		// Win32 API: SHGetFileInfo
 		[DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -75,9 +80,9 @@ namespace MyConnections.Converters
 
 				return image;
 			}
-			catch
+			catch (Exception ex)
 			{
-				// In production code you might log this
+				_logger.Warning(ex, "ProcessPathToIconConverter::Convert");
 				return null;
 			}
 		}
