@@ -137,13 +137,6 @@ namespace MyConnections.ViewModels.Pages
 				catch (Exception ex)
 				{
 					_logger.Error(ex, $"ConnectionsVM:KillProcess({exe2})");
-
-					var uiMessageBox = new Wpf.Ui.Controls.MessageBox
-					{
-						Title = "Unable to kill process",
-						Content = ex.Message
-					};
-					_ = await uiMessageBox.ShowDialogAsync();
 				}
 				finally
 				{
