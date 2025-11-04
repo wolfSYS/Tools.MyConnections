@@ -116,7 +116,10 @@ namespace MyConnections.ViewModels.Pages
 					{
 						CurrentSelection = null;
 						OnPropertyChanged(nameof(CurrentSelection));
+
 						Connections.Clear();
+						Connections = new List<NetworkConnectionInfo>();
+						OnPropertyChanged(nameof(Connections));
 
 						foreach (var proc in procs)
 						{
@@ -131,6 +134,7 @@ namespace MyConnections.ViewModels.Pages
 								_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe2}) => could not kill PID {proc.Id}");
 							}
 						}
+						procs = null;
 						ok = true;
 					}
 				}
@@ -140,7 +144,7 @@ namespace MyConnections.ViewModels.Pages
 				}
 				finally
 				{
-					await RefreshConnection();
+					await RefreshConnectionsAsync();
 				}
 			}
 		}
