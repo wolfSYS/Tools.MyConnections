@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
@@ -99,6 +100,9 @@ namespace MyConnections.ViewModels.Pages
 			if (info != null)
 			{
 				var exe = info.ProcessPath;
+				var exe2 = Path.GetFileName(exe);
+				var ok = false;
+
 				try
 				{
 					if (string.IsNullOrWhiteSpace(exe))
@@ -110,6 +114,7 @@ namespace MyConnections.ViewModels.Pages
 
 					CurrentSelection = null;
 					OnPropertyChanged(nameof(CurrentSelection));
+					Connections.Clear();
 
 					foreach (var proc in procs)
 					{
@@ -121,14 +126,35 @@ namespace MyConnections.ViewModels.Pages
 						}
 						catch (Exception ex)
 						{
-							_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe}) => could not kill PID {proc.Id}");
+							_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe2}) => could not kill PID {proc.Id}");
 						}
 					}
-					await RefreshConnection();
+					//await RefreshConnection();
+					ok = true;
 				}
 				catch (Exception ex)
 				{
-					_logger.Error(ex, $"ConnectionsVM:KillProcess({exe})");
+					_logger.Error(ex, $"ConnectionsVM:KillProcess({exe2})");
+
+					var uiMessageBox = new Wpf.Ui.Controls.MessageBox
+					{
+						Title = "Unable to kill process",
+						Content = ex.Message
+					};
+					_ = await uiMessageBox.ShowDialogAsync();
+				}
+				finally
+				{
+					await RefreshConnection();
+					//if (ok)
+					//{
+					//	var uiMessageBox = new Wpf.Ui.Controls.MessageBox
+					//	{
+					//		Title = "Send the Kill signal",
+					//		Content = $"Kill signal send to {exe2} but there is no 100% guarantee that this will suceed."
+					//	};
+					//	_ = await uiMessageBox.ShowDialogAsync();
+					//}
 				}
 			}
 		}

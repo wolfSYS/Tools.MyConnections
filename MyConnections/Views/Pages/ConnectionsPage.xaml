@@ -91,7 +91,7 @@
 					 VerticalAlignment="Stretch"
 					 Width="Auto"
 					 Margin="0,12,0,0"
-					 ItemsSource="{Binding ViewModel.Connections, Mode=TwoWay}"
+					 ItemsSource="{Binding ViewModel.Connections, Mode=OneWay}"
 					 SelectedItem="{Binding ViewModel.CurrentSelection, Mode=TwoWay}"
 					 SelectionMode="Single">
 			<ui:ListView.ItemTemplate>
