@@ -112,25 +112,27 @@ namespace MyConnections.ViewModels.Pages
 						.Where(p => IsSameExecutable(p, exe))
 						.ToArray();
 
-					CurrentSelection = null;
-					OnPropertyChanged(nameof(CurrentSelection));
-					Connections.Clear();
-
-					foreach (var proc in procs)
+					if(procs.Length > 0)
 					{
-						try
+						CurrentSelection = null;
+						OnPropertyChanged(nameof(CurrentSelection));
+						Connections.Clear();
+
+						foreach (var proc in procs)
 						{
-							proc.CloseMainWindow();
-							proc.Kill();
-							proc.WaitForExit();
+							try
+							{
+								proc.CloseMainWindow();
+								proc.Kill();
+								proc.WaitForExit();
+							}
+							catch (Exception ex)
+							{
+								_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe2}) => could not kill PID {proc.Id}");
+							}
 						}
-						catch (Exception ex)
-						{
-							_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe2}) => could not kill PID {proc.Id}");
-						}
+						ok = true;
 					}
-					//await RefreshConnection();
-					ok = true;
 				}
 				catch (Exception ex)
 				{
@@ -146,15 +148,6 @@ namespace MyConnections.ViewModels.Pages
 				finally
 				{
 					await RefreshConnection();
-					//if (ok)
-					//{
-					//	var uiMessageBox = new Wpf.Ui.Controls.MessageBox
-					//	{
-					//		Title = "Send the Kill signal",
-					//		Content = $"Kill signal send to {exe2} but there is no 100% guarantee that this will suceed."
-					//	};
-					//	_ = await uiMessageBox.ShowDialogAsync();
-					//}
 				}
 			}
 		}
