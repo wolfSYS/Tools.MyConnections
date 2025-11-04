@@ -85,8 +85,8 @@
 						<!-- Image that shows the real exe icon -->
 						<Image Width="32" Height="32" Margin="0,6,0,0"
 							   Source="{Binding ProcessPath, Converter={StaticResource ExeIconConverter},
-									TargetNullValue={StaticResource GrayCirclePlaceholder},
-									FallbackValue={StaticResource GrayCirclePlaceholder}}"
+											TargetNullValue={StaticResource GrayCirclePlaceholder},
+											FallbackValue={StaticResource GrayCirclePlaceholder}}"
 							   VerticalAlignment="Center" HorizontalAlignment="Center" />
 						<!-- Full process path -->
 						<TextBlock Grid.Row="0"
