@@ -48,6 +48,14 @@ namespace MyConnections.Models
 			}
 		}
 
+		public string LocalConnection
+		{
+			get
+			{
+				return LocalAddress?.ToString() + " : " + LocalPort.ToString();
+			}
+		}
+
 		/// <summary>
 		/// “Established”, “Close‑wait”, etc.
 		/// </summary>

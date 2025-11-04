@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:MyConnections.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:conv="clr-namespace:MyConnections.Converters"
 	xmlns:usrctrl="clr-namespace:MyConnections.UserControls"
 	xmlns:models="clr-namespace:MyConnections.Models"
     Title="DashboardPage"
@@ -17,15 +18,30 @@
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
+	<Page.Resources>
+		<conv:ProcessPathToIconConverter x:Key="ExeIconConverter"/>
 
-    <Grid VerticalAlignment="Top">
+		<DrawingImage x:Key="GrayCirclePlaceholder">
+			<DrawingImage.Drawing>
+				<DrawingGroup>
+					<GeometryDrawing Brush="Gray">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry Center="16,16" RadiusX="16" RadiusY="16"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+				</DrawingGroup>
+			</DrawingImage.Drawing>
+		</DrawingImage>
+	</Page.Resources>
+
+	<Grid VerticalAlignment="Top">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
@@ -47,12 +63,15 @@
                     Icon="{ui:SymbolIcon RecordStop24}" />
 		</StackPanel>
 
-		<ui:ListView
-                    Grid.Row="1"
-                    d:ItemsSource="{d:SampleData ItemCount=2}"
-                    ItemsSource="{Binding ViewModel.Connections, Mode=TwoWay}"
-                    SelectedIndex="1"
-                    SelectionMode="Single">
+		<ui:ListView Grid.Row="1" 
+					 Grid.Column="0" Grid.ColumnSpan="2"
+					 HorizontalAlignment="Stretch"
+					 VerticalAlignment="Stretch"
+					 Width="Auto"
+					 Margin="0,12,0,0"
+					 ItemsSource="{Binding ViewModel.Connections, Mode=TwoWay}"
+					 SelectedIndex="1"
+					 SelectionMode="Single">
 			<ui:ListView.ItemTemplate>
 				<DataTemplate DataType="{x:Type models:NetworkConnectionInfo}">
 					<Grid Margin="8,0">
@@ -64,27 +83,33 @@
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
-						<Ellipse
-                                    x:Name="Ellipse"
-                                    Grid.RowSpan="3"
-                                    Width="32"
-                                    Height="32"
-                                    Margin="6"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Fill="{ui:ThemeResource ControlStrongStrokeColorDefaultBrush}" />
-						<TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Margin="12,6,0,0"
-                                    FontWeight="Bold"
-                                    Text="{Binding ProcessPath, Mode=OneWay}" />
-						<TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="12,0,0,6"
-                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{Binding RemoteConnection, Mode=OneWay}" />
+						<!-- Image that shows the real exe icon -->
+						<Image Width="32" Height="32" Margin="0,6,0,0"
+							   Source="{Binding ProcessPath, Converter={StaticResource ExeIconConverter}, 
+									TargetNullValue={StaticResource GrayCirclePlaceholder}, 
+									FallbackValue={StaticResource GrayCirclePlaceholder}}"
+							   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						<!-- Full process path -->
+						<TextBlock Grid.Row="0"
+								   Grid.Column="1" Grid.ColumnSpan="2"
+								   Margin="12,12,0,0"
+								   FontWeight="Bold"
+								   Text="{Binding ProcessPath, Mode=OneWay}" />
+						<!-- remote IP & port -->
+						<TextBlock Grid.Row="1"
+								   Grid.Column="1"
+								   Margin="12,0,0,0"
+								   FontWeight="Bold"
+								   HorizontalAlignment="Left"
+								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+								   Text="{Binding RemoteConnection, Mode=OneWay}" />
+						<!-- local IP & port -->
+						<TextBlock Grid.Row="1"
+								   Grid.Column="2"
+								   Margin="12,0,0,0"
+								   HorizontalAlignment="Right"
+								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+								   Text="{Binding LocalConnection, Mode=OneWay}" />
 					</Grid>
 				</DataTemplate>
 			</ui:ListView.ItemTemplate>
