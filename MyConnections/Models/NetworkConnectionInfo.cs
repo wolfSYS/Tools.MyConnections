@@ -56,6 +56,18 @@ namespace MyConnections.Models
 			}
 		}
 
+		public string StateProtInfo
+		{
+			get
+			{
+				string ret = Protocol;
+				if (!string.IsNullOrEmpty(State))
+					ret += " / " + State;
+
+				return ret;
+			}
+		}
+
 		/// <summary>
 		/// “Established”, “Close‑wait”, etc.
 		/// </summary>
