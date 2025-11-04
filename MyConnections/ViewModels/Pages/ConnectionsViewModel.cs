@@ -133,6 +133,28 @@ namespace MyConnections.ViewModels.Pages
 			}
 		}
 
+		[RelayCommand(CanExecute = nameof(CanShowDetails))]
+		private async Task ShowDetails(NetworkConnectionInfo info)
+		{
+			//
+		}
+
+		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
+		private async Task FirewallDummy(NetworkConnectionInfo info)
+		{
+			//
+		}
+
+		private bool CanShowFirewall(NetworkConnectionInfo info)
+		{
+			return info != null ? true : false;
+		}
+
+		private bool CanShowDetails(NetworkConnectionInfo info)
+		{
+			return info != null ? true : false;
+		}
+
 		private bool CanKillProcess(NetworkConnectionInfo info)
 		{
 			if (info != null)
