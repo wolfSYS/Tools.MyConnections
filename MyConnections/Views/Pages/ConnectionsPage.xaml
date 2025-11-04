@@ -96,26 +96,26 @@
 								   Text="{Binding ProcessPath, Mode=OneWay}" />
 						<!-- remote IP & port -->
 						<TextBlock Grid.Row="1"
-									   Grid.Column="1"
-									   Margin="12,0,0,0"
-									   FontWeight="Bold"
-									   HorizontalAlignment="Left"
-									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-									   Text="{Binding RemoteConnection, Mode=OneWay}" />
+								   Grid.Column="1"
+								   Margin="12,0,0,0"
+								   FontWeight="Bold"
+								   HorizontalAlignment="Left"
+								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+								   Text="{Binding RemoteConnection, Mode=OneWay}" />
 						<!-- local IP & port -->
 						<TextBlock Grid.Row="1"
-										   Grid.Column="2"
-										   Margin="12,0,0,0"
-										   HorizontalAlignment="Left"
-										   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-										   Text="{Binding LocalConnection, Mode=OneWay}" />
+								   Grid.Column="2"
+								   Margin="12,0,0,0"
+								   HorizontalAlignment="Left"
+								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+								   Text="{Binding LocalConnection, Mode=OneWay}" />
 						<!-- protocoll & state -->
 						<TextBlock Grid.Row="3"
-										   Grid.Column="3"
-										   Margin="12,0,12,0"
-										   HorizontalAlignment="Right"
-										   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-										   Text="{Binding StateProtInfo, Mode=OneWay}" />
+								   Grid.Column="3"
+								   Margin="12,0,12,0"
+								   HorizontalAlignment="Right"
+								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+								   Text="{Binding StateProtInfo, Mode=OneWay}" />
 					</Grid>
 				</DataTemplate>
 			</ui:ListView.ItemTemplate>
