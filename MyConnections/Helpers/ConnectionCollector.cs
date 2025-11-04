@@ -26,7 +26,7 @@ namespace MyConnections.Helpers
 			// ----------------------- UDP connections -----------------------
 			result.AddRange(GetUdpConnections());
 
-			return result;
+			return result.OrderBy(con => con.ProcessPath).ToList();
 		}
 
 		private static string GetProcessPath(int pid)

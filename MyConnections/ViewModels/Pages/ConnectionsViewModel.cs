@@ -1,16 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
+using MyConnections.Interfaces;
 using MyConnections.Models;
 using MyConnections.Services;
-using MyConnections.Interfaces;
 using Serilog.Configuration;
+using Wpf.Ui.Abstractions.Controls;
+using Wpf.Ui.Appearance;
 
 namespace MyConnections.ViewModels.Pages
 {
-    public partial class ConnectionsViewModel : ObservableObject
-    {
+    public partial class ConnectionsViewModel : ObservableObject, INavigationAware
+	{
 		private readonly Interfaces.ILoggerService _logger;
+		private bool _isInitialized = false;
 
 		[ObservableProperty]
         private int _counter = 0;
@@ -20,7 +23,31 @@ namespace MyConnections.ViewModels.Pages
 
 		public ConnectionsViewModel(Interfaces.ILoggerService logger)
 		{
-			RefreshConnectionsAsync();
+			_logger = logger;
+		}
+
+		public async Task<Task> OnNavigatedToAsync()
+		{
+			if (!_isInitialized)
+				await InitializeViewModel();
+
+			return Task.CompletedTask;
+		}
+
+		Task INavigationAware.OnNavigatedToAsync()
+		{
+			return OnNavigatedToAsync();
+		}
+
+		Task INavigationAware.OnNavigatedFromAsync()
+		{
+			return Task.CompletedTask;
+		}
+
+		private async Task InitializeViewModel()
+		{
+			await RefreshConnectionsAsync();
+			_isInitialized = true;
 		}
 
 		private async Task RefreshConnectionsAsync()
@@ -51,5 +78,6 @@ namespace MyConnections.ViewModels.Pages
         {
             await RefreshConnectionsAsync();
         }
-    }
+
+	}
 }

@@ -40,6 +40,14 @@ namespace MyConnections.Models
 			get; set;
 		}
 
+		public string RemoteConnection
+		{
+			get
+			{
+				return RemoteAddress?.ToString() + " : " + RemotePort.ToString();
+			}
+		}
+
 		/// <summary>
 		/// “Established”, “Close‑wait”, etc.
 		/// </summary>
