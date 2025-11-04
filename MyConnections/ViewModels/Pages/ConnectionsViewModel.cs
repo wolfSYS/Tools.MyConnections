@@ -66,16 +66,15 @@ namespace MyConnections.ViewModels.Pages
 			try
 			{
 				CurrentSelection = null;
-				OnPropertyChanged(nameof(CurrentSelection));
+				//OnPropertyChanged(nameof(CurrentSelection));
 				Connections.Clear();
 				Connections = new List<NetworkConnectionInfo>();
-				OnPropertyChanged(nameof(Connections));
+				//OnPropertyChanged(nameof(Connections));
 
 				// Run the enumeration on a thread pool thread – the API is blocking
 				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
 
 				Connections.AddRange(conns);
-				OnPropertyChanged(nameof(Connections));
 			}
 			catch (Exception ex)
 			{
@@ -84,7 +83,7 @@ namespace MyConnections.ViewModels.Pages
 			finally
 			{
 				//SetProgress(false);
-				string x = "";
+				OnPropertyChanged(nameof(Connections));
 			}
 		}
 
