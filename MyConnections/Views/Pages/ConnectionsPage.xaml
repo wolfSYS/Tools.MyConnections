@@ -17,6 +17,7 @@
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+	ScrollViewer.CanContentScroll="False"
     mc:Ignorable="d">
 	<Page.Resources>
 		<conv:ProcessPathToIconConverter x:Key="ExeIconConverter"/>
@@ -38,7 +39,6 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -64,7 +64,7 @@
 		</StackPanel>
 
 		<ui:ListView Grid.Row="1" 
-					 Grid.Column="0" Grid.ColumnSpan="2"
+					 Grid.Column="0" Grid.ColumnSpan="1"
 					 HorizontalAlignment="Stretch"
 					 VerticalAlignment="Stretch"
 					 Width="Auto"
@@ -72,60 +72,48 @@
 					 ItemsSource="{Binding ViewModel.Connections, Mode=TwoWay}"
 					 SelectedIndex="1"
 					 SelectionMode="Single">
-			<ui:ListView.ItemTemplate>
-				<DataTemplate DataType="{x:Type models:NetworkConnectionInfo}">
-					<Grid Margin="8,0">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="*" />
-							<RowDefinition Height="*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<!-- Image that shows the real exe icon -->
-						<Image Width="32" Height="32" Margin="0,6,0,0"
-							   Source="{Binding ProcessPath, Converter={StaticResource ExeIconConverter}, 
-									TargetNullValue={StaticResource GrayCirclePlaceholder}, 
-									FallbackValue={StaticResource GrayCirclePlaceholder}}"
-							   VerticalAlignment="Center" HorizontalAlignment="Center"/>
-						<!-- Full process path -->
-						<TextBlock Grid.Row="0"
-								   Grid.Column="1" Grid.ColumnSpan="2"
-								   Margin="12,12,0,0"
-								   FontWeight="Bold"
-								   Text="{Binding ProcessPath, Mode=OneWay}" />
-						<!-- remote IP & port -->
-						<TextBlock Grid.Row="1"
-								   Grid.Column="1"
-								   Margin="12,0,0,0"
-								   FontWeight="Bold"
-								   HorizontalAlignment="Left"
-								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-								   Text="{Binding RemoteConnection, Mode=OneWay}" />
-						<!-- local IP & port -->
-						<TextBlock Grid.Row="1"
-								   Grid.Column="2"
-								   Margin="12,0,0,0"
-								   HorizontalAlignment="Right"
-								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-								   Text="{Binding LocalConnection, Mode=OneWay}" />
-					</Grid>
-				</DataTemplate>
-			</ui:ListView.ItemTemplate>
-		</ui:ListView>
+				<ui:ListView.ItemTemplate>
+					<DataTemplate DataType="{x:Type models:NetworkConnectionInfo}">
+						<Grid Margin="8,0">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<!-- Image that shows the real exe icon -->
+							<Image Width="32" Height="32" Margin="0,6,0,0"
+								   Source="{Binding ProcessPath, Converter={StaticResource ExeIconConverter}, 
+										TargetNullValue={StaticResource GrayCirclePlaceholder}, 
+										FallbackValue={StaticResource GrayCirclePlaceholder}}"
+								   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+							<!-- Full process path -->
+							<TextBlock Grid.Row="0"
+									   Grid.Column="1" Grid.ColumnSpan="2"
+									   Margin="12,12,0,0"
+									   FontWeight="Bold"
+									   Text="{Binding ProcessPath, Mode=OneWay}" />
+							<!-- remote IP & port -->
+							<TextBlock Grid.Row="1"
+									   Grid.Column="1"
+									   Margin="12,0,0,0"
+									   FontWeight="Bold"
+									   HorizontalAlignment="Left"
+									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+									   Text="{Binding RemoteConnection, Mode=OneWay}" />
+							<!-- local IP & port -->
+							<TextBlock Grid.Row="1"
+									   Grid.Column="2"
+									   Margin="12,0,0,0"
+									   HorizontalAlignment="Right"
+									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+									   Text="{Binding LocalConnection, Mode=OneWay}" />
+						</Grid>
+					</DataTemplate>
+				</ui:ListView.ItemTemplate>
+			</ui:ListView>
 
-		<usrctrl:ProgressRing
-			Grid.Row="2"
-			Grid.Column="0"
-            Width="32"
-            Background="Transparent"
-            Foreground="Blue" />
-		<TextBlock
-			Grid.Row="1"
-            Grid.Column="1"
-            Margin="12,0,0,0"
-            VerticalAlignment="Center"
-            Text="{Binding ViewModel.Counter, Mode=OneWay}" />
-    </Grid>
+	</Grid>
 </Page>
