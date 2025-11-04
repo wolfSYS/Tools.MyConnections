@@ -83,7 +83,7 @@
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
 						<!-- Image that shows the real exe icon -->
-						<Image Width="32" Height="32" Margin="0,6,0,0"
+						<Image Width="32" Height="32" Margin="0,8,0,0" Grid.RowSpan="2"
 							   Source="{Binding ProcessPath, Converter={StaticResource ExeIconConverter},
 											TargetNullValue={StaticResource GrayCirclePlaceholder},
 											FallbackValue={StaticResource GrayCirclePlaceholder}}"
@@ -97,7 +97,7 @@
 						<!-- remote IP & port -->
 						<TextBlock Grid.Row="1"
 								   Grid.Column="1"
-								   Margin="12,0,0,0"
+								   Margin="12,6,0,0"
 								   FontWeight="Bold"
 								   HorizontalAlignment="Left"
 								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
@@ -105,14 +105,14 @@
 						<!-- local IP & port -->
 						<TextBlock Grid.Row="1"
 								   Grid.Column="2"
-								   Margin="12,0,0,0"
+								   Margin="0,6,0,0"
 								   HorizontalAlignment="Left"
 								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
 								   Text="{Binding LocalConnection, Mode=OneWay}" />
 						<!-- protocoll & state -->
 						<TextBlock Grid.Row="3"
 								   Grid.Column="3"
-								   Margin="12,0,12,0"
+								   Margin="0,6,12,0"
 								   HorizontalAlignment="Right"
 								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
 								   Text="{Binding StateProtInfo, Mode=OneWay}" />
