@@ -16,8 +16,14 @@ namespace MyConnections.ViewModels.Windows
                 Content = "Connections",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.ServerSurfaceMultiple16 },
                 TargetPageType = typeof(Views.Pages.ConnectionsPage)
-            }
-        };
+            },
+			new NavigationViewItem()
+			{
+				Content = "Firewall",
+				Icon = new SymbolIcon { Symbol = SymbolRegular.Fire24 },
+				TargetPageType = typeof(Views.Pages.SettingsPage)
+			}
+		};
 
         [ObservableProperty]
         private ObservableCollection<object> _footerMenuItems = new()
@@ -28,7 +34,7 @@ namespace MyConnections.ViewModels.Windows
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(Views.Pages.SettingsPage)
             }
-        };
+		};
 
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new()

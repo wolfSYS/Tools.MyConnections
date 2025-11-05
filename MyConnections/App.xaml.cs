@@ -45,6 +45,12 @@ namespace MyConnections
                 // TaskBar manipulation
                 services.AddSingleton<ITaskBarService, TaskBarService>();
 
+                // SnackBar
+                services.AddSingleton<ISnackbarService, SnackbarService>();
+
+                // Content Dialogs
+                services.AddSingleton<IContentDialogService, ContentDialogService>();
+
                 // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
 
@@ -54,6 +60,8 @@ namespace MyConnections
 
                 services.AddSingleton<ConnectionsPage>();
                 services.AddSingleton<ConnectionsViewModel>();
+                services.AddSingleton<FirewallPage>();
+                services.AddSingleton<FirewallViewModel>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
             }).Build();

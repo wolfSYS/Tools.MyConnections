@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Eventing.Reader;
+using Microsoft.Extensions.DependencyInjection;
 using MyConnections.Properties;
 using MyConnections.ViewModels.Windows;
 using Wpf.Ui;
@@ -29,8 +30,14 @@ namespace MyConnections.Views.Windows
 				ApplicationThemeManager.Apply(ApplicationTheme.Dark);
 
 			InitializeComponent();
-            SetPageService(navigationViewPageProvider);
 
+			// set content presenters for both Snackbar and ContentDialog (Leo WPF UI)
+			var snackbarService = (ISnackbarService)App.Services.GetRequiredService<ISnackbarService>();
+			var contentDialogService = (IContentDialogService)App.Services.GetRequiredService<IContentDialogService>();
+			snackbarService.SetSnackbarPresenter(SnackbarPresenter);
+            contentDialogService.SetDialogHost(RootContentDialog);
+
+			SetPageService(navigationViewPageProvider);
             navigationService.SetNavigationControl(RootNavigation);
         }
 

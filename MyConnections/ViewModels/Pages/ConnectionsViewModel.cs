@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
@@ -12,14 +14,20 @@ using MyConnections.Models;
 using MyConnections.Services;
 using Serilog.Configuration;
 using Windows.System;
+using Wpf.Ui;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
+using Wpf.Ui.Extensions;
 
 namespace MyConnections.ViewModels.Pages
 {
 	public partial class ConnectionsViewModel : ObservableObject, INavigationAware
 	{
 		private readonly Interfaces.ILoggerService _logger;
+		private readonly IContentDialogService _dialogService;
+		private readonly ISnackbarService _snackbarService;
+
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
@@ -27,15 +35,16 @@ namespace MyConnections.ViewModels.Pages
 			new ObservableCollection<NetworkConnectionInfo>();
 
 		[ObservableProperty]
-		[NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
 		private NetworkConnectionInfo _currentSelection;
 
 		[ObservableProperty]
 		private bool _showProgress = true;
 
-		public ConnectionsViewModel(Interfaces.ILoggerService logger)
+		public ConnectionsViewModel(Interfaces.ILoggerService logger, IContentDialogService dialogService, ISnackbarService snackbarService)
 		{
 			_logger = logger;
+			_dialogService = dialogService;
+			_snackbarService = snackbarService;
 		}
 
 		Task INavigationAware.OnNavigatedFromAsync()
@@ -82,7 +91,26 @@ namespace MyConnections.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
 		private async Task FirewallDummy(NetworkConnectionInfo info)
 		{
+			var contentDialog = new ContentDialog();
 
+			contentDialog.SetCurrentValue(ContentDialog.TitleProperty, "Hello World");
+			contentDialog.SetCurrentValue(ContentControl.ContentProperty, "This is a message");
+			contentDialog.SetCurrentValue(ContentDialog.PrimaryButtonTextProperty, "YES");
+			//contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonTextProperty, "Secondary Btn");
+			contentDialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "NO");
+
+			// Pass CancellationToken.None as required by the interface
+			var res = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
+
+			string x = "";
+			//var simpleDialog = ContentDialog(new SimpleContentDialogCreateOptions
+			//{
+			//	Title = "MY_TITLE",
+			//	Content = "My BLA-BLA-BLUP goes here",
+			//	PrimaryButtonText = "Yes",
+			//	SecondaryButtonText = "No",
+			//	CloseButtonText = "Close"
+			//});
 		}
 
 		private async Task InitializeViewModel()
@@ -153,9 +181,23 @@ namespace MyConnections.ViewModels.Pages
 				catch (Exception ex)
 				{
 					_logger.Error(ex, $"ConnectionsVM:KillProcess({exe2})");
+					_snackbarService.Show(
+						"Error occured.",
+						ex.Message,
+						ControlAppearance.Caution,
+						new SymbolIcon(SymbolRegular.Fluent24),
+						TimeSpan.FromSeconds(6));
 				}
 				finally
 				{
+					if (ok)
+						_snackbarService.Show(
+							"Send the KILL signal.",
+							"However, not all processes can be killed, even as Administrator.",
+							ControlAppearance.Info,
+							new SymbolIcon(SymbolRegular.Fluent24),
+							TimeSpan.FromSeconds(6));
+
 					await RefreshConnectionsAsync();
 				}
 			}
@@ -192,7 +234,6 @@ namespace MyConnections.ViewModels.Pages
 			}
 			finally
 			{
-				OnPropertyChanged(nameof(Connections));
 				await SetProgressAsync(false);
 			}
 		}
