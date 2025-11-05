@@ -17,24 +17,30 @@ using Wpf.Ui.Appearance;
 
 namespace MyConnections.ViewModels.Pages
 {
-    public partial class ConnectionsViewModel : ObservableObject, INavigationAware
+	public partial class ConnectionsViewModel : ObservableObject, INavigationAware
 	{
 		private readonly Interfaces.ILoggerService _logger;
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
-        private bool _showProgress = true;
-
-		[ObservableProperty]
-		private ObservableCollection<NetworkConnectionInfo> _connections = new ObservableCollection<NetworkConnectionInfo>();
+		private ObservableCollection<NetworkConnectionInfo> _connections =
+			new ObservableCollection<NetworkConnectionInfo>();
 
 		[ObservableProperty]
 		[NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
 		private NetworkConnectionInfo _currentSelection;
 
+		[ObservableProperty]
+		private bool _showProgress = true;
+
 		public ConnectionsViewModel(Interfaces.ILoggerService logger)
 		{
 			_logger = logger;
+		}
+
+		Task INavigationAware.OnNavigatedFromAsync()
+		{
+			return Task.CompletedTask;
 		}
 
 		public async Task<Task> OnNavigatedToAsync()
@@ -50,9 +56,33 @@ namespace MyConnections.ViewModels.Pages
 			return OnNavigatedToAsync();
 		}
 
-		Task INavigationAware.OnNavigatedFromAsync()
+		private bool CanKillProcess(NetworkConnectionInfo info)
 		{
-			return Task.CompletedTask;
+			if (info != null)
+			{
+				if (info.NormalizedProcessPath == "SYSTEM")
+					return false;
+				else
+					return true;
+			}
+			else
+				return false;
+		}
+
+		private bool CanShowDetails(NetworkConnectionInfo info)
+		{
+			return info != null ? true : false;
+		}
+
+		private bool CanShowFirewall(NetworkConnectionInfo info)
+		{
+			return info != null ? true : false;
+		}
+
+		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
+		private async Task FirewallDummy(NetworkConnectionInfo info)
+		{
+
 		}
 
 		private async Task InitializeViewModel()
@@ -61,55 +91,19 @@ namespace MyConnections.ViewModels.Pages
 			_isInitialized = true;
 		}
 
-		private async Task RefreshConnectionsAsync()
+		private bool IsSameExecutable(Process proc, string exePath)
 		{
-			await SetProgressAsync(true);
 			try
 			{
-				CurrentSelection = null;
-				OnPropertyChanged(nameof(CurrentSelection));
-
-				Connections.Clear();
-
-				// Run the enumeration on a thread pool thread – the API is blocking
-				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
-
-				foreach (var c in conns)
-					Connections.Add(c);
+				return string.Equals(proc.MainModule?.FileName,
+									 exePath,
+									 StringComparison.OrdinalIgnoreCase);
 			}
 			catch (Exception ex)
 			{
-				_logger.Error(ex, "ConnectionsVM::RefreshConnectionsAsync");
+				_logger.Debug($"ConnectionsVM:IsSameExecutable => {ex.Message}");
+				return false; // treat it as “not a match”
 			}
-			finally
-			{
-				OnPropertyChanged(nameof(Connections));
-				await SetProgressAsync(false);
-			}
-		}
-
-		private async Task SetProgressAsync(bool doShowProgress)
-		{
-			//ShowProgress = doShowProgress;
-			// make sure we’re on the UI thread
-			if (!Application.Current.Dispatcher.CheckAccess())
-			{
-				await Application.Current.Dispatcher.InvokeAsync(
-					() => SetProgressAsync(doShowProgress), DispatcherPriority.Background);
-				return;
-			}
-
-			// change the property and force the UI to repaint
-			ShowProgress = doShowProgress;
-
-			// a minimal amount of work to guarantee the UI sees the change
-			await Dispatcher.Yield(DispatcherPriority.Background);
-		}
-
-		[RelayCommand]
-        private async Task RefreshConnection()
-        {
-			await RefreshConnectionsAsync();
 		}
 
 		[RelayCommand(CanExecute = nameof(CanKillProcess))]
@@ -132,7 +126,7 @@ namespace MyConnections.ViewModels.Pages
 						.Where(p => IsSameExecutable(p, exe))
 						.ToArray();
 
-					if(procs.Length > 0)
+					if (procs.Length > 0)
 					{
 						CurrentSelection = null;
 						OnPropertyChanged(nameof(CurrentSelection));
@@ -166,56 +160,60 @@ namespace MyConnections.ViewModels.Pages
 			}
 		}
 
+		[RelayCommand]
+		private async Task RefreshConnection()
+		{
+			await RefreshConnectionsAsync();
+		}
+
+		private async Task RefreshConnectionsAsync()
+		{
+			await SetProgressAsync(true);
+			try
+			{
+				CurrentSelection = null;
+				OnPropertyChanged(nameof(CurrentSelection));
+
+				Connections.Clear();
+
+				// Run the enumeration on a thread pool thread – the API is blocking
+				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
+
+				foreach (var c in conns)
+					Connections.Add(c);
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionsVM::RefreshConnectionsAsync");
+			}
+			finally
+			{
+				OnPropertyChanged(nameof(Connections));
+				await SetProgressAsync(false);
+			}
+		}
+
+		private async Task SetProgressAsync(bool doShowProgress)
+		{
+			// make sure we’re on the UI thread
+			if (!Application.Current.Dispatcher.CheckAccess())
+			{
+				await Application.Current.Dispatcher.InvokeAsync(
+					() => SetProgressAsync(doShowProgress), DispatcherPriority.Background);
+				return;
+			}
+
+			// change the property and force the UI to repaint
+			ShowProgress = doShowProgress;
+
+			// a minimal amount of work to guarantee the UI sees the change
+			await Dispatcher.Yield(DispatcherPriority.Background);
+		}
+
 		[RelayCommand(CanExecute = nameof(CanShowDetails))]
 		private async Task ShowDetails(NetworkConnectionInfo info)
 		{
-			//
-		}
 
-		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private async Task FirewallDummy(NetworkConnectionInfo info)
-		{
-			//
 		}
-
-		private bool CanShowFirewall(NetworkConnectionInfo info)
-		{
-			return info != null ? true : false;
-		}
-
-		private bool CanShowDetails(NetworkConnectionInfo info)
-		{
-			return info != null ? true : false;
-		}
-
-		private bool CanKillProcess(NetworkConnectionInfo info)
-		{
-			if (info != null)
-			{
-				if (info.NormalizedProcessPath == "SYSTEM")
-					return false;
-				else
-					return true;
-			}
-			else
-				return false;
-		}
-
-		private bool IsSameExecutable(Process proc, string exePath)
-		{
-			try
-			{
-				// Null‑conditional (`?.`) keeps us from a null‑ref if MainModule is null
-				return string.Equals(proc.MainModule?.FileName,
-									 exePath,
-									 StringComparison.OrdinalIgnoreCase);
-			}
-			catch (Exception ex) // catch *any* exception from accessing the process
-			{
-				_logger.Debug($"ConnectionsVM:IsSameExecutable => {ex.Message}");
-				return false; // treat it as “not a match”
-			}
-		}
-
 	}
 }
