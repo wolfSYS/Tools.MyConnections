@@ -138,6 +138,7 @@ namespace MyConnections.ViewModels.Pages
 							{
 								proc.CloseMainWindow();
 								proc.Kill();
+								await SetProgressAsync(true);
 								proc.WaitForExit();
 							}
 							catch (Exception ex)
@@ -179,6 +180,7 @@ namespace MyConnections.ViewModels.Pages
 				// Run the enumeration on a thread pool thread – the API is blocking
 				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
 
+				await SetProgressAsync(true);
 				foreach (var c in conns)
 					Connections.Add(c);
 			}
