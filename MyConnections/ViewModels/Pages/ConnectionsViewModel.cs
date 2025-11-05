@@ -193,12 +193,7 @@ namespace MyConnections.ViewModels.Pages
 				catch (Exception ex)
 				{
 					_logger.Error(ex, $"ConnectionsVM:KillProcess({exe2})");
-					_snackbarService.Show(
-						"Error occured.",
-						ex.Message,
-						ControlAppearance.Caution,
-						new SymbolIcon(SymbolRegular.ErrorCircle24),
-						TimeSpan.FromSeconds(8));
+					ShowError(ex);
 				}
 				finally
 				{
@@ -243,12 +238,7 @@ namespace MyConnections.ViewModels.Pages
 			catch (Exception ex)
 			{
 				_logger.Error(ex, "ConnectionsVM::RefreshConnectionsAsync");
-				_snackbarService.Show(
-					"Error occured.",
-					ex.Message,
-					ControlAppearance.Caution,
-					new SymbolIcon(SymbolRegular.ErrorCircle24),
-					TimeSpan.FromSeconds(8));
+				ShowError(ex);
 			}
 			finally
 			{
@@ -296,6 +286,16 @@ namespace MyConnections.ViewModels.Pages
 			// Pass CancellationToken.None as required by the interface
 			var dlgResult = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
 			return dlgResult == ContentDialogResult.Secondary;
+		}
+
+		private void ShowError(Exception ex)
+		{
+			_snackbarService.Show(
+				"Error occured.",
+				ex.Message,
+				ControlAppearance.Caution,
+				new SymbolIcon(SymbolRegular.ErrorCircle24),
+				TimeSpan.FromSeconds(8));
 		}
 	}
 }
