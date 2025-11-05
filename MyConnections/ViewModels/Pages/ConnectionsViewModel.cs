@@ -91,26 +91,16 @@ namespace MyConnections.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
 		private async Task FirewallDummy(NetworkConnectionInfo info)
 		{
-			var contentDialog = new ContentDialog();
+			bool res = await ShowDialogYesNo("Sind Sie sicher?", "Das könnte alle Daten für immer zerstören!");
 
-			contentDialog.SetCurrentValue(ContentDialog.TitleProperty, "Hello World");
-			contentDialog.SetCurrentValue(ContentControl.ContentProperty, "This is a message");
-			contentDialog.SetCurrentValue(ContentDialog.PrimaryButtonTextProperty, "YES");
-			//contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonTextProperty, "Secondary Btn");
-			contentDialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "NO");
-
-			// Pass CancellationToken.None as required by the interface
-			var res = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
-
-			string x = "";
-			//var simpleDialog = ContentDialog(new SimpleContentDialogCreateOptions
-			//{
-			//	Title = "MY_TITLE",
-			//	Content = "My BLA-BLA-BLUP goes here",
-			//	PrimaryButtonText = "Yes",
-			//	SecondaryButtonText = "No",
-			//	CloseButtonText = "Close"
-			//});
+			if (res)
+			{
+				string x = "YES_CLICKED";
+			}
+			else
+			{
+				string x = "NO_CLOCKED";
+			}
 		}
 
 		private async Task InitializeViewModel()
@@ -260,5 +250,27 @@ namespace MyConnections.ViewModels.Pages
 		{
 
 		}
+
+
+		/// <summary>
+		/// Displays a Yes/No dialog
+		/// </summary>
+		/// <returns>TRUE for "yes" and FALSE for "no"</returns>
+		private async Task<bool> ShowDialogYesNo(string title, string message)
+		{
+			var contentDialog = new ContentDialog();
+
+			contentDialog.SetCurrentValue(ContentDialog.TitleProperty, "Hello World");
+			contentDialog.SetCurrentValue(ContentControl.ContentProperty, "This is a message");
+			contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonTextProperty, "YES");
+			contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonIconProperty, new SymbolIcon(SymbolRegular.Checkmark24));
+			contentDialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "NO");
+			contentDialog.SetCurrentValue(ContentDialog.CloseButtonIconProperty, new SymbolIcon(SymbolRegular.Dismiss24));
+
+			// Pass CancellationToken.None as required by the interface
+			var dlgResult = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
+			return dlgResult == ContentDialogResult.Secondary;
+		}
+
 	}
 }
