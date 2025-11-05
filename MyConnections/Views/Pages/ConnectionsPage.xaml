@@ -69,11 +69,11 @@
 					<ContextMenu>
 						<MenuItem Header="Allow" 
 								  Icon="{ui:SymbolIcon CalendarCheckmark24}"
-								  Command="{Binding ViewModel.ShowDetailsCommand}"
+								  Command="{Binding ViewModel.FirewallAllowCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
 						<MenuItem Header="Block" 
 								  Icon="{ui:SymbolIcon ShareScreenStop24}"
-								  Command="{Binding ViewModel.ShowDetailsCommand}"
+								  Command="{Binding ViewModel.FirewallBlockCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
 					</ContextMenu>
 				</ui:DropDownButton.Flyout>

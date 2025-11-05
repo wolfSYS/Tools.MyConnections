@@ -8,5 +8,8 @@
     <Setting Name="Theme" Type="System.String" Scope="User">
       <Value Profile="(Default)">theme_dark</Value>
     </Setting>
+    <Setting Name="NrOfConfirmGeneralWarningsFW" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

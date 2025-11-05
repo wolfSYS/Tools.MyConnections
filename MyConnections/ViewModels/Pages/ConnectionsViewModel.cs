@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
 using MyConnections.Interfaces;
 using MyConnections.Models;
+using MyConnections.Properties;
 using MyConnections.Services;
 using Serilog.Configuration;
 using Windows.System;
@@ -24,11 +25,9 @@ namespace MyConnections.ViewModels.Pages
 {
 	public partial class ConnectionsViewModel : ObservableObject, INavigationAware
 	{
-		private readonly Interfaces.ILoggerService _logger;
 		private readonly IContentDialogService _dialogService;
+		private readonly Interfaces.ILoggerService _logger;
 		private readonly ISnackbarService _snackbarService;
-
-		private bool _isInitialized = false;
 
 		[ObservableProperty]
 		private ObservableCollection<NetworkConnectionInfo> _connections =
@@ -36,6 +35,8 @@ namespace MyConnections.ViewModels.Pages
 
 		[ObservableProperty]
 		private NetworkConnectionInfo _currentSelection;
+
+		private bool _isInitialized = false;
 
 		[ObservableProperty]
 		private bool _showProgress = true;
@@ -89,18 +90,39 @@ namespace MyConnections.ViewModels.Pages
 		}
 
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private async Task FirewallDummy(NetworkConnectionInfo info)
+		private async Task FirewallAllow(NetworkConnectionInfo info)
 		{
-			bool res = await ShowDialogYesNo("Sind Sie sicher?", "Das könnte alle Daten für immer zerstören!");
+			if (await FirewallConfirmWarning())
+			{
 
-			if (res)
-			{
-				string x = "YES_CLICKED";
 			}
-			else
+		}
+
+		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
+		private async Task FirewallBlock(NetworkConnectionInfo info)
+		{
+			if (await FirewallConfirmWarning())
 			{
-				string x = "NO_CLOCKED";
+
 			}
+		}
+
+		private async Task<bool> FirewallConfirmWarning()
+		{
+			int nrOfWarnings = Settings.Default.NrOfConfirmGeneralWarningsFW;
+			if (nrOfWarnings < 3)
+			{
+				Settings.Default.NrOfConfirmGeneralWarningsFW = nrOfWarnings + 1;
+				Settings.Default.Save();
+			}
+			return await ShowDialogYesNo("Important",
+				"Altering the settings for Windows Firewall could result in unwanted results\nunless you're absolutely shure what you are doing.\n\nDo you really want to contine and add a new firewall rule?");
+		}
+
+		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
+		private void FirewallDummy(NetworkConnectionInfo info)
+		{
+			// nothing to see|do here^^
 		}
 
 		private async Task InitializeViewModel()
@@ -175,8 +197,8 @@ namespace MyConnections.ViewModels.Pages
 						"Error occured.",
 						ex.Message,
 						ControlAppearance.Caution,
-						new SymbolIcon(SymbolRegular.Fluent24),
-						TimeSpan.FromSeconds(6));
+						new SymbolIcon(SymbolRegular.ErrorCircle24),
+						TimeSpan.FromSeconds(8));
 				}
 				finally
 				{
@@ -185,8 +207,8 @@ namespace MyConnections.ViewModels.Pages
 							"Send the KILL signal.",
 							"However, not all processes can be killed, even as Administrator.",
 							ControlAppearance.Info,
-							new SymbolIcon(SymbolRegular.Fluent24),
-							TimeSpan.FromSeconds(6));
+							new SymbolIcon(SymbolRegular.Info24),
+							TimeSpan.FromSeconds(8));
 
 					await RefreshConnectionsAsync();
 				}
@@ -248,9 +270,7 @@ namespace MyConnections.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanShowDetails))]
 		private async Task ShowDetails(NetworkConnectionInfo info)
 		{
-
 		}
-
 
 		/// <summary>
 		/// Displays a Yes/No dialog
@@ -260,8 +280,8 @@ namespace MyConnections.ViewModels.Pages
 		{
 			var contentDialog = new ContentDialog();
 
-			contentDialog.SetCurrentValue(ContentDialog.TitleProperty, "Hello World");
-			contentDialog.SetCurrentValue(ContentControl.ContentProperty, "This is a message");
+			contentDialog.SetCurrentValue(ContentDialog.TitleProperty, title);
+			contentDialog.SetCurrentValue(ContentControl.ContentProperty, message);
 			contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonTextProperty, "YES");
 			contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonIconProperty, new SymbolIcon(SymbolRegular.Checkmark24));
 			contentDialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "NO");
@@ -271,6 +291,5 @@ namespace MyConnections.ViewModels.Pages
 			var dlgResult = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
 			return dlgResult == ContentDialogResult.Secondary;
 		}
-
 	}
 }

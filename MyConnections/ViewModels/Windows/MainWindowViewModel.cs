@@ -21,7 +21,7 @@ namespace MyConnections.ViewModels.Windows
 			{
 				Content = "Firewall",
 				Icon = new SymbolIcon { Symbol = SymbolRegular.Fire24 },
-				TargetPageType = typeof(Views.Pages.SettingsPage)
+				TargetPageType = typeof(Views.Pages.FirewallPage)
 			}
 		};
 

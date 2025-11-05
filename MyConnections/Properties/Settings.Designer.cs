@@ -46,5 +46,17 @@ namespace MyConnections.Properties {
                 this["Theme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int NrOfConfirmGeneralWarningsFW {
+            get {
+                return ((int)(this["NrOfConfirmGeneralWarningsFW"]));
+            }
+            set {
+                this["NrOfConfirmGeneralWarningsFW"] = value;
+            }
+        }
     }
 }
