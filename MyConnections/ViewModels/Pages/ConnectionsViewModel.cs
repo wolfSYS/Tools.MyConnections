@@ -198,12 +198,7 @@ namespace MyConnections.ViewModels.Pages
 				finally
 				{
 					if (ok)
-						_snackbarService.Show(
-							"Send the KILL signal.",
-							"However, not all processes can be killed, even as Administrator.",
-							ControlAppearance.Info,
-							new SymbolIcon(SymbolRegular.Info24),
-							TimeSpan.FromSeconds(8));
+						ShowInfo("Send the KILL signal.", "However, not all processes can be killed, even as Administrator.");
 
 					await RefreshConnectionsAsync();
 				}
@@ -286,6 +281,16 @@ namespace MyConnections.ViewModels.Pages
 			// Pass CancellationToken.None as required by the interface
 			var dlgResult = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
 			return dlgResult == ContentDialogResult.Secondary;
+		}
+
+		private void ShowInfo(string title, string message)
+		{
+			_snackbarService.Show(
+				title,
+				message,
+				ControlAppearance.Info,
+				new SymbolIcon(SymbolRegular.Info24),
+				TimeSpan.FromSeconds(8));
 		}
 
 		private void ShowError(Exception ex)
