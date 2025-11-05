@@ -243,6 +243,12 @@ namespace MyConnections.ViewModels.Pages
 			catch (Exception ex)
 			{
 				_logger.Error(ex, "ConnectionsVM::RefreshConnectionsAsync");
+				_snackbarService.Show(
+					"Error occured.",
+					ex.Message,
+					ControlAppearance.Caution,
+					new SymbolIcon(SymbolRegular.ErrorCircle24),
+					TimeSpan.FromSeconds(8));
 			}
 			finally
 			{
