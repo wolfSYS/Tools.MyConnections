@@ -178,7 +178,9 @@ namespace MyConnections.ViewModels.Pages
 				Connections.Clear();
 
 				// Run the enumeration on a thread pool thread – the API is blocking
-				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
+				//var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
+
+				var conns = ConnectionCollector.GetAllOutgoingConnections();
 
 				await SetProgressAsync(true);
 				foreach (var c in conns)
