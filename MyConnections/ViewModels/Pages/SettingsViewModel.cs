@@ -7,7 +7,7 @@ using Wpf.Ui.Appearance;
 
 namespace MyConnections.ViewModels.Pages
 {
-    public partial class FirewallViewModel : ObservableObject, INavigationAware
+    public partial class SettingsViewModel : ObservableObject, INavigationAware
     {
 		private bool _isInitialized = false;
 
@@ -34,11 +34,7 @@ namespace MyConnections.ViewModels.Pages
 		{
 			CurrentTheme = ApplicationThemeManager.GetAppTheme();
 			AppVersion = $"wolfSYS.Tools.MyConnections - ver. {GetAssemblyVersion()}";
-
 			_isInitialized = true;
-
-			//Settings.Default.LogLevelDebug
-
 		}
 
 		private string GetAssemblyVersion()

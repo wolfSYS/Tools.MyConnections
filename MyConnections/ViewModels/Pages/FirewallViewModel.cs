@@ -7,7 +7,7 @@ using Wpf.Ui.Appearance;
 
 namespace MyConnections.ViewModels.Pages
 {
-    public partial class SettingsViewModel : ObservableObject, INavigationAware
+    public partial class FirewallViewModel : ObservableObject, INavigationAware
     {
         private bool _isInitialized = false;
 
