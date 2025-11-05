@@ -25,7 +25,7 @@ namespace MyConnections.ViewModels.Pages
         private bool _showProgress = true;
 
 		[ObservableProperty]
-		private List<NetworkConnectionInfo> _connections = new List<NetworkConnectionInfo>();
+		private ObservableCollection<NetworkConnectionInfo> _connections = new ObservableCollection<NetworkConnectionInfo>();
 
 		[ObservableProperty]
 		[NotifyCanExecuteChangedFor(nameof(KillProcessCommand))]
@@ -66,15 +66,15 @@ namespace MyConnections.ViewModels.Pages
 			try
 			{
 				CurrentSelection = null;
-				//OnPropertyChanged(nameof(CurrentSelection));
+				OnPropertyChanged(nameof(CurrentSelection));
+
 				Connections.Clear();
-				Connections = new List<NetworkConnectionInfo>();
-				//OnPropertyChanged(nameof(Connections));
 
 				// Run the enumeration on a thread pool thread – the API is blocking
 				var conns = await Task.Run(() => ConnectionCollector.GetAllOutgoingConnections());
 
-				Connections.AddRange(conns);
+				foreach (var c in conns)
+					Connections.Add(c);
 			}
 			catch (Exception ex)
 			{
@@ -90,7 +90,6 @@ namespace MyConnections.ViewModels.Pages
 		private void SetProgress(bool doShowProgress)
 		{
 			ShowProgress = doShowProgress;
-			OnPropertyChanged(nameof(ShowProgress));
 		}
 
 		[RelayCommand]
@@ -123,10 +122,7 @@ namespace MyConnections.ViewModels.Pages
 					{
 						CurrentSelection = null;
 						OnPropertyChanged(nameof(CurrentSelection));
-
 						Connections.Clear();
-						Connections = new List<NetworkConnectionInfo>();
-						OnPropertyChanged(nameof(Connections));
 
 						foreach (var proc in procs)
 						{
