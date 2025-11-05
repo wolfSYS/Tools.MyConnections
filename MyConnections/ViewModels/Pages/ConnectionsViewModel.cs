@@ -174,7 +174,6 @@ namespace MyConnections.ViewModels.Pages
 			{
 				CurrentSelection = null;
 				OnPropertyChanged(nameof(CurrentSelection));
-
 				Connections.Clear();
 
 				// Run the enumeration on a thread pool thread – the API is blocking
@@ -183,6 +182,7 @@ namespace MyConnections.ViewModels.Pages
 				var conns = ConnectionCollector.GetAllOutgoingConnections();
 
 				await SetProgressAsync(true);
+
 				foreach (var c in conns)
 					Connections.Add(c);
 			}
