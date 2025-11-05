@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Threading;
 using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
 using MyConnections.Interfaces;
@@ -62,7 +63,7 @@ namespace MyConnections.ViewModels.Pages
 
 		private async Task RefreshConnectionsAsync()
 		{
-			SetProgress(true);
+			await SetProgressAsync(true);
 			try
 			{
 				CurrentSelection = null;
@@ -83,13 +84,26 @@ namespace MyConnections.ViewModels.Pages
 			finally
 			{
 				OnPropertyChanged(nameof(Connections));
-				SetProgress(false);
+				await SetProgressAsync(false);
 			}
 		}
 
-		private void SetProgress(bool doShowProgress)
+		private async Task SetProgressAsync(bool doShowProgress)
 		{
+			//ShowProgress = doShowProgress;
+			// make sure we’re on the UI thread
+			if (!Application.Current.Dispatcher.CheckAccess())
+			{
+				await Application.Current.Dispatcher.InvokeAsync(
+					() => SetProgressAsync(doShowProgress), DispatcherPriority.Background);
+				return;
+			}
+
+			// change the property and force the UI to repaint
 			ShowProgress = doShowProgress;
+
+			// a minimal amount of work to guarantee the UI sees the change
+			await Dispatcher.Yield(DispatcherPriority.Background);
 		}
 
 		[RelayCommand]
@@ -112,7 +126,7 @@ namespace MyConnections.ViewModels.Pages
 					if (string.IsNullOrWhiteSpace(exe))
 						return;
 
-					SetProgress(true);
+					await SetProgressAsync(true);
 
 					var procs = Process.GetProcesses()
 						.Where(p => IsSameExecutable(p, exe))
