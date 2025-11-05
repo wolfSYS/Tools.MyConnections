@@ -114,9 +114,11 @@ namespace MyConnections.ViewModels.Pages
 			{
 				Settings.Default.NrOfConfirmGeneralWarningsFW = nrOfWarnings + 1;
 				Settings.Default.Save();
+
+				return await ShowDialogYesNo("Important",
+					"Altering the settings for Windows Firewall could result in unwanted results\nunless you're absolutely shure what you are doing.\n\nDo you really want to contine and add a new firewall rule?");
 			}
-			return await ShowDialogYesNo("Important",
-				"Altering the settings for Windows Firewall could result in unwanted results\nunless you're absolutely shure what you are doing.\n\nDo you really want to contine and add a new firewall rule?");
+			return true;
 		}
 
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
