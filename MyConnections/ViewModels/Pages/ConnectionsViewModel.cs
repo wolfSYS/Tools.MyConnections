@@ -111,6 +111,7 @@ namespace MyConnections.ViewModels.Pages
 							rule.Direction = FirewallDirection.Outbound;
 							FirewallManager.Instance.Rules.Add(rule);
 
+							_logger.Information($"Added rule '{ruleName}' for process '{exe}' to the Windows Firewall.");
 							ShowInfo("Sucess", $"New rule for blocking {exe} added to Windows Firewall.");
 						}
 					}
