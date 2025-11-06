@@ -102,15 +102,18 @@ namespace MyConnections.ViewModels.Pages
 						$"BLOCK {exe}");
 					if (!string.IsNullOrEmpty(ruleName))
 					{
-						var rule = FirewallManager.Instance.CreateApplicationRule(
-							@"MyApp Rule",
-							FirewallAction.Block,
-							info.ProcessPath
-						);
-						rule.Direction = FirewallDirection.Outbound;
-						FirewallManager.Instance.Rules.Add(rule);
+						if (!FirewallRuleAlreadyExists(ruleName))
+						{
+							var rule = FirewallManager.Instance.CreateApplicationRule(
+								@"MyApp Rule",
+								FirewallAction.Block,
+								info.ProcessPath
+							);
+							rule.Direction = FirewallDirection.Outbound;
+							FirewallManager.Instance.Rules.Add(rule);
 
-						ShowInfo("Sucess", $"New rule for blocking {exe} added to Windows Firewall.");
+							ShowInfo("Sucess", $"New rule for blocking {exe} added to Windows Firewall.");
+						}
 					}
 				}
 			}
