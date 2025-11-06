@@ -18,6 +18,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
 	<Grid VerticalAlignment="Top">
@@ -37,7 +38,7 @@
 				Orientation="Horizontal">
 			<ui:Button Content="Refresh"
 				   ToolTip="Refresh the List of Connections"
-				   Command="{Binding ViewModel.RefreshConnectionCommand}"
+				   Command="{Binding ViewModel.RefreshConnection}"
 				   Icon="{ui:SymbolIcon ArrowClockwise24}" />
 			<ui:ProgressRing IsIndeterminate="True"
 						 Height="28" Width="28"

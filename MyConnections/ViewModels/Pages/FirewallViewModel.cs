@@ -14,6 +14,12 @@ namespace MyConnections.ViewModels.Pages
 	{
 		private bool _isInitialized = false;
 
+		[ObservableProperty]
+		private ObservableCollection<IFirewallRule> _rules  =
+			new ObservableCollection<IFirewallRule>();
+
+
+
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
 					IContentDialogService dialogService,
@@ -25,6 +31,9 @@ namespace MyConnections.ViewModels.Pages
 
 		public override Task OnNavigatedFromAsync()
 		{
+			Rules.Clear();
+			_isInitialized = false;
+
 			return Task.CompletedTask;
 		}
 
@@ -38,7 +47,35 @@ namespace MyConnections.ViewModels.Pages
 
 		private void InitializeViewModel()
 		{
+			RefreshRulesAsync();
 			_isInitialized = true;
+		}
+
+		private async Task RefreshRulesAsync()
+		{
+			try
+			{
+				await SetProgressAsync(false);
+				Rules.Clear();
+
+				foreach (var r in FirewallManager.Instance.Rules)
+					Rules.Add(r);
+			}
+			catch (Exception ex) 
+			{
+				_logger.Error(ex, "FirewallVM::RefreshRules");
+				ShowError(ex);
+			}
+			finally
+			{
+				await SetProgressAsync(false);
+			}
+		}
+
+		[RelayCommand]
+		private async Task RefreshConnection()
+		{
+			await RefreshRulesAsync();
 		}
 	}
 }

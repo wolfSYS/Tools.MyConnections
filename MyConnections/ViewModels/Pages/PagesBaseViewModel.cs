@@ -8,7 +8,7 @@ using Wpf.Ui.Controls;
 namespace MyConnections.ViewModels
 {
 	/// <summary>
-	/// All ViewModels that need dialog / snackbar / progress handling inherit from this class.
+	/// All VMs that need INavigationAware and Wpf.UI stuff (dialogs, snackbar, progress) inherit from this class.
 	/// </summary>
 	public abstract partial class PagesBaseViewModel : ObservableObject, INavigationAware
 	{

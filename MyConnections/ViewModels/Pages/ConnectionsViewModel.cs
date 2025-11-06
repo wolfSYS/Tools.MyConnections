@@ -32,6 +32,10 @@ namespace MyConnections.ViewModels.Pages
 
 		public override Task OnNavigatedFromAsync()
 		{
+			CurrentSelection = null;
+			Connections.Clear();
+			_isInitialized = false;
+
 			return Task.CompletedTask;
 		}
 
