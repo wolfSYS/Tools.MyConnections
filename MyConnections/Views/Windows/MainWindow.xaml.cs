@@ -31,7 +31,7 @@ namespace MyConnections.Views.Windows
 
 			InitializeComponent();
 
-			// set content presenters for both Snackbar and ContentDialog (Leo WPF UI)
+			// set content presenters for both Snackbar and ContentDialog (Lepo WPF UI)
 			var snackbarService = (ISnackbarService)App.Services.GetRequiredService<ISnackbarService>();
 			var contentDialogService = (IContentDialogService)App.Services.GetRequiredService<IContentDialogService>();
 			snackbarService.SetSnackbarPresenter(SnackbarPresenter);

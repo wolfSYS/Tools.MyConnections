@@ -15,6 +15,7 @@ using MyConnections.Properties;
 using MyConnections.Services;
 using Serilog.Configuration;
 using Windows.System;
+using WindowsFirewallHelper;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
@@ -91,7 +92,13 @@ namespace MyConnections.ViewModels.Pages
 		{
 			if (await FirewallConfirmWarning())
 			{
-
+				var rule = FirewallManager.Instance.CreateApplicationRule(
+					@"MyApp Rule",
+					FirewallAction.Block,
+					info.ProcessPath
+				);
+				rule.Direction = FirewallDirection.Outbound;
+				FirewallManager.Instance.Rules.Add(rule);
 			}
 		}
 
@@ -117,6 +124,21 @@ namespace MyConnections.ViewModels.Pages
 			}
 			return true;
 		}
+
+		/// <summary>
+		/// Does a rule with this name already exist in windows firewall?
+		/// </summary>
+		private bool FirewallRuleAlreadyExists(string ruleName)
+		{
+			var myRule = FirewallManager.Instance.Rules.SingleOrDefault(r => r.Name == ruleName);
+			if (myRule != null)
+			{
+				ShowError(new Exception($"There already exists a rule with the name {ruleName}, please choose another name."));
+				return true;
+			}
+			return false;
+		}
+
 
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
 		private void FirewallDummy(NetworkConnectionInfo info)
