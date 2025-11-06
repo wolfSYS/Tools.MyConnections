@@ -1,0 +1,26 @@
+﻿<ui:ContentDialog
+		x:Class="MyConnections.Views.Dialogs.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+		xmlns:local="clr-namespace:MyConnections.Views.Dialogs"
+        Title="User Input required"
+		CloseButtonText="Close"
+	    DialogMaxWidth="750"
+		DialogMaxHeight="680"
+		Height="450" 
+		Width="440"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+
+	<ui:ContentDialog.Resources>
+		<Style BasedOn="{StaticResource {x:Type ui:ContentDialog}}" TargetType="{x:Type local:InputDialog}" />
+	</ui:ContentDialog.Resources>
+
+	<StackPanel>
+		<TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
+		<ui:TextBox x:Name="InputBox"
+                           Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           Margin="0,24,0,10"/>
+	</StackPanel>
+</ui:ContentDialog>

@@ -13,6 +13,7 @@ using MyConnections.Interfaces;
 using MyConnections.Models;
 using MyConnections.Properties;
 using MyConnections.Services;
+using MyConnections.Views.Dialogs;
 using Serilog.Configuration;
 using Windows.System;
 using WindowsFirewallHelper;
@@ -90,15 +91,33 @@ namespace MyConnections.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanKillProcess))]
 		private async Task FirewallBlockProcess(NetworkConnectionInfo info)
 		{
-			if (await FirewallConfirmWarning())
+			try
 			{
-				var rule = FirewallManager.Instance.CreateApplicationRule(
-					@"MyApp Rule",
-					FirewallAction.Block,
-					info.ProcessPath
-				);
-				rule.Direction = FirewallDirection.Outbound;
-				FirewallManager.Instance.Rules.Add(rule);
+				var exe = Path.GetFileName(info.ProcessPath);
+				if (!string.IsNullOrEmpty(exe) && await FirewallConfirmWarning())
+				{
+
+					var ruleName = await ShowInputDialog("Rule Name",
+						"Enter a unique name for the new rule that should be added to Windows Firewall.",
+						$"BLOCK {exe}");
+					if (!string.IsNullOrEmpty(ruleName))
+					{
+						//var rule = FirewallManager.Instance.CreateApplicationRule(
+						//	@"MyApp Rule",
+						//	FirewallAction.Block,
+						//	info.ProcessPath
+						//);
+						//rule.Direction = FirewallDirection.Outbound;
+						//FirewallManager.Instance.Rules.Add(rule);
+
+						ShowInfo("Sucess", $"New rule for blocking {exe} added to Windows Firewall.");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionVM::FirewallBlockProcess");
+				ShowError(ex);
 			}
 		}
 
@@ -163,7 +182,7 @@ namespace MyConnections.ViewModels.Pages
 			catch (Exception ex)
 			{
 				_logger.Debug($"ConnectionsVM:IsSameExecutable => {ex.Message}");
-				return false; // treat it as “not a match”
+				return false; // treat it as "not a match"
 			}
 		}
 
@@ -322,6 +341,19 @@ namespace MyConnections.ViewModels.Pages
 				ControlAppearance.Caution,
 				new SymbolIcon(SymbolRegular.ErrorCircle24),
 				TimeSpan.FromSeconds(8));
+		}
+
+		private async Task<string> ShowInputDialog(string title, string message, string defaultValue = "")
+		{
+			var dlgHost = _dialogService.GetDialogHost();
+			var dlg = new InputDialog(dlgHost, title, message, defaultValue);
+
+			var res = await dlg.ShowAsync();
+
+			if (res == ContentDialogResult.Primary)
+				return dlg.InputText;
+			else
+				return string.Empty;
 		}
 	}
 }
