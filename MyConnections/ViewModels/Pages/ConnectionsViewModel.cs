@@ -155,6 +155,7 @@ namespace MyConnections.ViewModels.Pages
 			var myRule = FirewallManager.Instance.Rules.SingleOrDefault(r => r.Name == ruleName);
 			if (myRule != null)
 			{
+				_logger.Warning($"The Windows Firewall rule '{ruleName}' already exists and can't be added a second time.");
 				ShowError(new Exception($"There already exists a rule with the name {ruleName}, please choose another name."));
 				return true;
 			}
