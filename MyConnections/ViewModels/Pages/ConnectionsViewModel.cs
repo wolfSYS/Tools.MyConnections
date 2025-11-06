@@ -96,7 +96,6 @@ namespace MyConnections.ViewModels.Pages
 				var exe = Path.GetFileName(info.ProcessPath);
 				if (!string.IsNullOrEmpty(exe) && await FirewallConfirmWarning())
 				{
-
 					var ruleName = await ShowInputDialog("Rule Name",
 						"Enter a unique name for the new rule that should be added to Windows Firewall.",
 						$"BLOCK {exe}");

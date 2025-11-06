@@ -5,7 +5,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 		xmlns:local="clr-namespace:MyConnections.Views.Dialogs"
         Title="User Input required"
-		CloseButtonText="Close"
+		CloseButtonText="Cancel"
 	    DialogMaxWidth="750"
 		DialogMaxHeight="680"
 		Height="450" 
