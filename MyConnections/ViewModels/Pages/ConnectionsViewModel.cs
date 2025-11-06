@@ -105,7 +105,7 @@ namespace MyConnections.ViewModels.Pages
 						if (!FirewallRuleAlreadyExists(ruleName))
 						{
 							var rule = FirewallManager.Instance.CreateApplicationRule(
-								@"MyApp Rule",
+								ruleName,
 								FirewallAction.Block,
 								info.ProcessPath
 							);
