@@ -125,11 +125,36 @@ namespace MyConnections.ViewModels.Pages
 		}
 
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private async Task FirewallBlockConnection(NetworkConnectionInfo info)
+		private async Task FirewallBlockPort(NetworkConnectionInfo info)
 		{
-			if (await FirewallConfirmWarning())
+			try
 			{
+				if (await FirewallConfirmWarning())
+				{
+					var portNr = info.LocalPort;
+					var ruleName = await ShowInputDialog("Rule Name",
+						"Enter a unique name for the new rule that should be added to Windows Firewall.",
+						$"BLOCK LOCAL PORT {portNr}");
 
+					if (!string.IsNullOrEmpty(ruleName))
+					{
+						var rule = FirewallManager.Instance.CreatePortRule(
+							ruleName,
+							FirewallAction.Block,
+							(ushort)portNr,
+							FirewallProtocol.Any
+						);
+						FirewallManager.Instance.Rules.Add(rule);
+
+						_logger.Information($"Added rule '{ruleName}' for local port '{portNr}' to the Windows Firewall.");
+						ShowInfo("Sucess", $"New rule for blocking local port {portNr} added to Windows Firewall.");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionVM::FirewallBlockPort");
+				ShowError(ex);
 			}
 		}
 

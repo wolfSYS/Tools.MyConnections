@@ -71,9 +71,9 @@
 								  Icon="{ui:SymbolIcon ShareScreenStop24}"
 								  Command="{Binding ViewModel.FirewallBlockProcessCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
-						<MenuItem Header="Block this Connection" 
+						<MenuItem Header="Block local Port" 
 								  Icon="{ui:SymbolIcon CloudDismiss24}"
-								  Command="{Binding ViewModel.FirewallBlockConnectionCommand}"
+								  Command="{Binding ViewModel.FirewallBlockPortCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
 					</ContextMenu>
 				</ui:DropDownButton.Flyout>
