@@ -19,9 +19,33 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
-	
-	<ScrollViewer>
+
+	<Grid VerticalAlignment="Top">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<!--- Pseudo-Menu -->
+		<StackPanel Grid.Row="0"
+				Grid.Column="0" Grid.ColumnSpan="1"
+				Orientation="Horizontal">
+			<ui:Button Content="Refresh"
+				   ToolTip="Refresh the List of Connections"
+				   Command="{Binding ViewModel.RefreshConnectionCommand}"
+				   Icon="{ui:SymbolIcon ArrowClockwise24}" />
+			<ui:ProgressRing IsIndeterminate="True"
+						 Height="28" Width="28"
+						 Margin="36,0,0,0"
+						 Visibility="{Binding ViewModel.ShowProgress, Converter={StaticResource BoolToVis}}" />
+		</StackPanel>
+
 		
-	</ScrollViewer>
+	</Grid>
 
 </Page>

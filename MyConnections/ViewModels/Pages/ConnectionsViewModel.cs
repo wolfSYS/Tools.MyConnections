@@ -25,12 +25,8 @@ using Wpf.Ui.Extensions;
 
 namespace MyConnections.ViewModels.Pages
 {
-	public partial class ConnectionsViewModel : ObservableObject, INavigationAware
+	public partial class ConnectionsViewModel : PagesBaseViewModel
 	{
-		private readonly IContentDialogService _dialogService;
-		private readonly Interfaces.ILoggerService _logger;
-		private readonly ISnackbarService _snackbarService;
-
 		[ObservableProperty]
 		private ObservableCollection<NetworkConnectionInfo> _connections =
 			new ObservableCollection<NetworkConnectionInfo>();
@@ -40,32 +36,26 @@ namespace MyConnections.ViewModels.Pages
 
 		private bool _isInitialized = false;
 
-		[ObservableProperty]
-		private bool _showProgress = true;
-
-		public ConnectionsViewModel(Interfaces.ILoggerService logger, IContentDialogService dialogService, ISnackbarService snackbarService)
+		public ConnectionsViewModel(
+					Interfaces.ILoggerService logger,
+					IContentDialogService dialogService,
+					ISnackbarService snackbarService)
+					: base(logger, dialogService, snackbarService)
 		{
-			_logger = logger;
-			_dialogService = dialogService;
-			_snackbarService = snackbarService;
+			// BaseVM will care about DY
 		}
 
-		Task INavigationAware.OnNavigatedFromAsync()
+		public override Task OnNavigatedFromAsync()
 		{
 			return Task.CompletedTask;
 		}
 
-		public async Task<Task> OnNavigatedToAsync()
+		public override Task OnNavigatedToAsync()
 		{
 			if (!_isInitialized)
-				await InitializeViewModel();
+				InitializeViewModel();
 
 			return Task.CompletedTask;
-		}
-
-		Task INavigationAware.OnNavigatedToAsync()
-		{
-			return OnNavigatedToAsync();
 		}
 
 		private bool CanKillProcess(NetworkConnectionInfo info)
@@ -310,79 +300,10 @@ namespace MyConnections.ViewModels.Pages
 			}
 		}
 
-		private async Task SetProgressAsync(bool doShowProgress)
-		{
-			// make sure we’re on the UI thread
-			if (!Application.Current.Dispatcher.CheckAccess())
-			{
-				await Application.Current.Dispatcher.InvokeAsync(
-					() => SetProgressAsync(doShowProgress), DispatcherPriority.Background);
-				return;
-			}
-
-			// change the property and force the UI to repaint
-			ShowProgress = doShowProgress;
-
-			// a minimal amount of work to guarantee the UI sees the change
-			await Dispatcher.Yield(DispatcherPriority.Background);
-		}
-
 		[RelayCommand(CanExecute = nameof(CanShowDetails))]
 		private async Task ShowDetails(NetworkConnectionInfo info)
 		{
 		}
 
-		/// <summary>
-		/// Displays a Yes/No dialog
-		/// </summary>
-		/// <returns>TRUE for "yes" and FALSE for "no"</returns>
-		private async Task<bool> ShowDialogYesNo(string title, string message)
-		{
-			var contentDialog = new ContentDialog();
-
-			contentDialog.SetCurrentValue(ContentDialog.TitleProperty, title);
-			contentDialog.SetCurrentValue(ContentControl.ContentProperty, message);
-			contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonTextProperty, "YES");
-			contentDialog.SetCurrentValue(ContentDialog.SecondaryButtonIconProperty, new SymbolIcon(SymbolRegular.Checkmark24));
-			contentDialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "NO");
-			contentDialog.SetCurrentValue(ContentDialog.CloseButtonIconProperty, new SymbolIcon(SymbolRegular.Dismiss24));
-
-			// Pass CancellationToken.None as required by the interface
-			var dlgResult = await _dialogService.ShowAsync(contentDialog, CancellationToken.None);
-			return dlgResult == ContentDialogResult.Secondary;
-		}
-
-		private void ShowInfo(string title, string message)
-		{
-			_snackbarService.Show(
-				title,
-				message,
-				ControlAppearance.Info,
-				new SymbolIcon(SymbolRegular.Info24),
-				TimeSpan.FromSeconds(8));
-		}
-
-		private void ShowError(Exception ex)
-		{
-			_snackbarService.Show(
-				"Error occured.",
-				ex.Message,
-				ControlAppearance.Caution,
-				new SymbolIcon(SymbolRegular.ErrorCircle24),
-				TimeSpan.FromSeconds(8));
-		}
-
-		private async Task<string> ShowInputDialog(string title, string message, string defaultValue = "")
-		{
-			var dlgHost = _dialogService.GetDialogHost();
-			var dlg = new InputDialog(dlgHost, title, message, defaultValue);
-
-			var res = await dlg.ShowAsync();
-
-			if (res == ContentDialogResult.Primary)
-				return dlg.InputText;
-			else
-				return string.Empty;
-		}
 	}
 }
