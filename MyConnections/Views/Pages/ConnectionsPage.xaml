@@ -67,13 +67,13 @@
 							   Margin="4,0,0,0">
 				<ui:DropDownButton.Flyout>
 					<ContextMenu>
-						<MenuItem Header="Allow" 
-								  Icon="{ui:SymbolIcon CalendarCheckmark24}"
-								  Command="{Binding ViewModel.FirewallAllowCommand}"
-								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
-						<MenuItem Header="Block" 
+						<MenuItem Header="Block entire Process" 
 								  Icon="{ui:SymbolIcon ShareScreenStop24}"
-								  Command="{Binding ViewModel.FirewallBlockCommand}"
+								  Command="{Binding ViewModel.FirewallBlockProcessCommand}"
+								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+						<MenuItem Header="Block this Connection" 
+								  Icon="{ui:SymbolIcon CloudDismiss24}"
+								  Command="{Binding ViewModel.FirewallBlockConnectionCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
 					</ContextMenu>
 				</ui:DropDownButton.Flyout>

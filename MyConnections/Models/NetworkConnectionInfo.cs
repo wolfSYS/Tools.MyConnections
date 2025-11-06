@@ -27,8 +27,15 @@ namespace MyConnections.Models
 		{
 			get
 			{
-				if(!string.IsNullOrEmpty(ProcessPath) && string.Equals(ProcessPath, "PID:4", StringComparison.OrdinalIgnoreCase))
-					return "SYSTEM";
+				if (!string.IsNullOrEmpty(ProcessPath))
+				{
+					if (string.Equals(ProcessPath, "PID:0", StringComparison.OrdinalIgnoreCase))
+						return ProcessPath + " (System Idle Process)";
+					else if (string.Equals(ProcessPath, "PID:4", StringComparison.OrdinalIgnoreCase))
+						return ProcessPath + " (Windows Kernel)";
+					else
+						return ProcessPath;
+				}
 				else
 					return ProcessPath;
 			}

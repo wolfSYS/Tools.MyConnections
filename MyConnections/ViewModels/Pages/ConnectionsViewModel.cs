@@ -70,10 +70,7 @@ namespace MyConnections.ViewModels.Pages
 		{
 			if (info != null)
 			{
-				if (info.NormalizedProcessPath == "SYSTEM")
-					return false;
-				else
-					return true;
+				return !info.NormalizedProcessPath.StartsWith("PID:");
 			}
 			else
 				return false;
@@ -89,8 +86,8 @@ namespace MyConnections.ViewModels.Pages
 			return info != null ? true : false;
 		}
 
-		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private async Task FirewallAllow(NetworkConnectionInfo info)
+		[RelayCommand(CanExecute = nameof(CanKillProcess))]
+		private async Task FirewallBlockProcess(NetworkConnectionInfo info)
 		{
 			if (await FirewallConfirmWarning())
 			{
@@ -99,7 +96,7 @@ namespace MyConnections.ViewModels.Pages
 		}
 
 		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private async Task FirewallBlock(NetworkConnectionInfo info)
+		private async Task FirewallBlockConnection(NetworkConnectionInfo info)
 		{
 			if (await FirewallConfirmWarning())
 			{
