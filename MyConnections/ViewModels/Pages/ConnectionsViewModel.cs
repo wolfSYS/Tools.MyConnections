@@ -1,27 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using Microsoft.Extensions.Logging;
 using MyConnections.Helpers;
-using MyConnections.Interfaces;
 using MyConnections.Models;
 using MyConnections.Properties;
-using MyConnections.Services;
-using MyConnections.Views.Dialogs;
-using Serilog.Configuration;
-using Windows.System;
 using WindowsFirewallHelper;
 using Wpf.Ui;
-using Wpf.Ui.Abstractions.Controls;
-using Wpf.Ui.Appearance;
-using Wpf.Ui.Controls;
-using Wpf.Ui.Extensions;
 
 namespace MyConnections.ViewModels.Pages
 {
@@ -78,6 +63,40 @@ namespace MyConnections.ViewModels.Pages
 			return info != null ? true : false;
 		}
 
+		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
+		private async Task FirewallBlockPort(NetworkConnectionInfo info)
+		{
+			try
+			{
+				if (await FirewallConfirmWarning())
+				{
+					var portNr = info.LocalPort;
+					var ruleName = await ShowInputDialog("Rule Name",
+						"Enter a unique name for the new rule that should be added to Windows Firewall.",
+						$"BLOCK LOCAL PORT {portNr}");
+
+					if (!string.IsNullOrEmpty(ruleName))
+					{
+						var rule = FirewallManager.Instance.CreatePortRule(
+							ruleName,
+							FirewallAction.Block,
+							(ushort)portNr,
+							FirewallProtocol.Any
+						);
+						FirewallManager.Instance.Rules.Add(rule);
+
+						_logger.Information($"Added rule '{ruleName}' for local port '{portNr}' to the Windows Firewall.");
+						ShowInfo("Sucess", $"New rule for blocking local port {portNr} added to Windows Firewall.");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionVM::FirewallBlockPort");
+				ShowError(ex);
+			}
+		}
+
 		[RelayCommand(CanExecute = nameof(CanKillProcess))]
 		private async Task FirewallBlockProcess(NetworkConnectionInfo info)
 		{
@@ -114,40 +133,6 @@ namespace MyConnections.ViewModels.Pages
 			}
 		}
 
-		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private async Task FirewallBlockPort(NetworkConnectionInfo info)
-		{
-			try
-			{
-				if (await FirewallConfirmWarning())
-				{
-					var portNr = info.LocalPort;
-					var ruleName = await ShowInputDialog("Rule Name",
-						"Enter a unique name for the new rule that should be added to Windows Firewall.",
-						$"BLOCK LOCAL PORT {portNr}");
-
-					if (!string.IsNullOrEmpty(ruleName))
-					{
-						var rule = FirewallManager.Instance.CreatePortRule(
-							ruleName,
-							FirewallAction.Block,
-							(ushort)portNr,
-							FirewallProtocol.Any
-						);
-						FirewallManager.Instance.Rules.Add(rule);
-
-						_logger.Information($"Added rule '{ruleName}' for local port '{portNr}' to the Windows Firewall.");
-						ShowInfo("Sucess", $"New rule for blocking local port {portNr} added to Windows Firewall.");
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.Error(ex, "ConnectionVM::FirewallBlockPort");
-				ShowError(ex);
-			}
-		}
-
 		private async Task<bool> FirewallConfirmWarning()
 		{
 			int nrOfWarnings = Settings.Default.NrOfConfirmGeneralWarningsFW;
@@ -160,6 +145,12 @@ namespace MyConnections.ViewModels.Pages
 					"Altering the settings for Windows Firewall could result in unwanted results\nunless you're absolutely shure what you are doing.\n\nDo you really want to contine and add a new firewall rule?");
 			}
 			return true;
+		}
+
+		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
+		private void FirewallDummy(NetworkConnectionInfo info)
+		{
+			// nothing to see|do here^^
 		}
 
 		/// <summary>
@@ -175,13 +166,6 @@ namespace MyConnections.ViewModels.Pages
 				return true;
 			}
 			return false;
-		}
-
-
-		[RelayCommand(CanExecute = nameof(CanShowFirewall))]
-		private void FirewallDummy(NetworkConnectionInfo info)
-		{
-			// nothing to see|do here^^
 		}
 
 		private async Task InitializeViewModel()
@@ -304,6 +288,5 @@ namespace MyConnections.ViewModels.Pages
 		private async Task ShowDetails(NetworkConnectionInfo info)
 		{
 		}
-
 	}
 }

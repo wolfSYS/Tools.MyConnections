@@ -1,16 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using MyConnections.Helpers;
+using MyConnections.Models;
 using MyConnections.Properties;
-using Windows.Storage;
+using WindowsFirewallHelper;
 using Wpf.Ui;
-using Wpf.Ui.Abstractions.Controls;
-using Wpf.Ui.Appearance;
 
 namespace MyConnections.ViewModels.Pages
 {
-    public partial class FirewallViewModel : PagesBaseViewModel
+	public partial class FirewallViewModel : PagesBaseViewModel
 	{
-        private bool _isInitialized = false;
+		private bool _isInitialized = false;
 
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
@@ -35,9 +37,8 @@ namespace MyConnections.ViewModels.Pages
 		}
 
 		private void InitializeViewModel()
-        {
-            _isInitialized = true;
+		{
+			_isInitialized = true;
 		}
-
-    }
+	}
 }
