@@ -55,7 +55,7 @@ namespace MyConnections.ViewModels.Pages
 		{
 			try
 			{
-				await SetProgressAsync(false);
+				await SetProgressAsync(true);
 				Rules.Clear();
 
 				foreach (var r in FirewallManager.Instance.Rules)
