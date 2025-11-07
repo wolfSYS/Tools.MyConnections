@@ -95,7 +95,7 @@ namespace MyConnections.Helpers
 
 					var info = new NetworkConnectionInfo
 					{
-						Protocol = "TCP",
+						Protocol = "TCP4",
 						LocalAddress = new IPAddress(row.localAddr),
 						LocalPort = (ushort)IPAddress.NetworkToHostOrder((short)row.localPort),
 						RemoteAddress = new IPAddress(row.remoteAddr),
@@ -147,7 +147,7 @@ namespace MyConnections.Helpers
 					// UDP is connectionless Unfortunately the API doesn't give the remote port/address for UDP, so we leave those fields empty.
 					var info = new NetworkConnectionInfo
 					{
-						Protocol = "UDP",
+						Protocol = "UDP4",
 						LocalAddress = new IPAddress(row.localAddr),
 						LocalPort = (ushort)IPAddress.NetworkToHostOrder((short)row.localPort),
 						RemoteAddress = IPAddress.None,

@@ -60,18 +60,23 @@
 					   CommandParameter="{Binding ViewModel.CurrentSelection}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon DocumentText24}" />
-			<ui:DropDownButton Content="Firewall" 
+			<ui:DropDownButton Content="Block" 
 							   Icon="{ui:SymbolIcon Fire24}"
 							   Command="{Binding ViewModel.FirewallDummyCommand}"
 							   CommandParameter="{Binding ViewModel.CurrentSelection}"
 							   Margin="4,0,0,0">
 				<ui:DropDownButton.Flyout>
 					<ContextMenu>
-						<MenuItem Header="Block entire Process" 
+						<MenuItem Header="Block connection to IP via hosts entry" 
+								  Icon="{ui:SymbolIcon Fire24}"
+								  Command="{Binding ViewModel.FirewallBlockPortCommand}"
+								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+						<Separator />
+						<MenuItem Header="Windows Firewall: Block entire Process" 
 								  Icon="{ui:SymbolIcon ShareScreenStop24}"
 								  Command="{Binding ViewModel.FirewallBlockProcessCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
-						<MenuItem Header="Block local Port" 
+						<MenuItem Header="Windows Firewall: Block local Port" 
 								  Icon="{ui:SymbolIcon CloudDismiss24}"
 								  Command="{Binding ViewModel.FirewallBlockPortCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
@@ -99,6 +104,32 @@
 					 ItemsSource="{Binding ViewModel.Connections, Mode=OneWay}"
 					 SelectedItem="{Binding ViewModel.CurrentSelection, Mode=TwoWay}"
 					 SelectionMode="Single">
+			<ui:ListView.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Details" 
+						  Icon="{ui:SymbolIcon DocumentText24}"
+						  Command="{Binding ViewModel.ShowDetailsCommand}"
+						  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+					<MenuItem Header="End Process" 
+						  Icon="{ui:SymbolIcon RecordStop24}"
+						  Command="{Binding ViewModel.KillProcessCommand}"
+						  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+					<Separator />
+					<MenuItem Header="Block connection to IP via hosts entry" 
+						  Icon="{ui:SymbolIcon Fire24}"
+						  Command="{Binding ViewModel.FirewallBlockPortCommand}"
+						  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+					<Separator />
+					<MenuItem Header="Windows Firewall: Block entire Process" 
+						  Icon="{ui:SymbolIcon ShareScreenStop24}"
+						  Command="{Binding ViewModel.FirewallBlockProcessCommand}"
+						  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+					<MenuItem Header="Windows Firewall: Block local Port" 
+						  Icon="{ui:SymbolIcon CloudDismiss24}"
+						  Command="{Binding ViewModel.FirewallBlockPortCommand}"
+						  CommandParameter="{Binding ViewModel.CurrentSelection}" />
+				</ContextMenu>
+			</ui:ListView.ContextMenu>
 			<ui:ListView.ItemTemplate>
 				<DataTemplate DataType="{x:Type models:NetworkConnectionInfo}">
 					<Grid Margin="8,0">
@@ -120,9 +151,11 @@
 							   VerticalAlignment="Center" HorizontalAlignment="Center" />
 						<!-- Full process path -->
 						<TextBlock Grid.Row="0"
-								   Grid.Column="1" Grid.ColumnSpan="2"
+								   Grid.Column="1" Grid.ColumnSpan="3"
 								   Margin="12,12,0,0"
 								   FontWeight="Bold"
+								   HorizontalAlignment="Stretch"
+								   TextTrimming="CharacterEllipsis"
 								   Text="{Binding NormalizedProcessPath, Mode=OneWay}" />
 						<!-- remote IP & port -->
 						<TextBlock Grid.Row="1"
