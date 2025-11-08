@@ -266,7 +266,6 @@ namespace ConnectionMgr.ViewModels.Pages
 						proc.CloseMainWindow();
 						proc.Kill();
 						await SetProgressAsync(true);
-						proc.WaitForExit();
 					}
 					catch (Exception ex)
 					{
@@ -302,6 +301,7 @@ namespace ConnectionMgr.ViewModels.Pages
 			try
 			{
 				Process proc = Process.GetProcessById(pid);
+				proc.CloseMainWindow();
 				proc.Kill();
 				ret = true;
 			}
