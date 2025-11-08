@@ -225,7 +225,6 @@ namespace ConnectionMgr.ViewModels.Pages
 					{
 						int pID = Convert.ToInt32(info.ProcessPath?.Substring(4));
 						ok = KillProcessAndChildrenByID(pID);
-						string x = "";
 					}
 				}
 				catch (Exception ex)
@@ -300,7 +299,6 @@ namespace ConnectionMgr.ViewModels.Pages
 			foreach (ManagementObject mo in moc)
 			{
 				ret = KillProcessAndChildrenByID(Convert.ToInt32(mo["ProcessID"]));
-				string x = "";
 			}
 			try
 			{
