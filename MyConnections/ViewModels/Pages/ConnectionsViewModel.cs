@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Management;
+using System.Text.RegularExpressions;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
@@ -51,7 +53,13 @@ namespace ConnectionMgr.ViewModels.Pages
 		{
 			if (info != null)
 			{
-				return !info.NormalizedProcessPath.StartsWith("PID:");
+				if (!info.NormalizedProcessPath.StartsWith("PID:"))
+					return true;
+				else
+				{
+					// 0|4 => false, every other PID => true
+					return Regex.IsMatch(info.NormalizedProcessPath, @"^PID:(?![04]$)\d+$");
+				}
 			}
 			else
 				return false;
@@ -209,32 +217,15 @@ namespace ConnectionMgr.ViewModels.Pages
 
 					await SetProgressAsync(true);
 
-					var procs = Process.GetProcesses()
-						.Where(p => IsSameExecutable(p, exe))
-						.ToArray();
-
-					if (procs.Length > 0)
+					if (!info.NormalizedProcessPath.StartsWith("PID:"))
 					{
-						CurrentSelection = null;
-						OnPropertyChanged(nameof(CurrentSelection));
-						Connections.Clear();
-
-						foreach (var proc in procs)
-						{
-							try
-							{
-								proc.CloseMainWindow();
-								proc.Kill();
-								await SetProgressAsync(true);
-								proc.WaitForExit();
-							}
-							catch (Exception ex)
-							{
-								_logger.Warning(ex, $"ConnectionsVM:KillProcess({exe2}) => could not kill PID {proc.Id}");
-							}
-						}
-						procs = null;
-						ok = true;
+						ok = await KillProcessForExecuteable(info.NormalizedProcessPath);
+					}
+					else
+					{
+						int pID = Convert.ToInt32(info.ProcessPath?.Substring(4));
+						ok = KillProcessAndChildrenByID(pID);
+						string x = "";
 					}
 				}
 				catch (Exception ex)
@@ -250,6 +241,80 @@ namespace ConnectionMgr.ViewModels.Pages
 					await RefreshConnectionsAsync();
 				}
 			}
+		}
+
+		/// <summary>
+		/// Kills a process for the given executeable.
+		/// </summary>
+		/// <param name="fullExeName">Full path to the *.EXE file</param>
+		private async Task<bool> KillProcessForExecuteable(string fullExeName)
+		{
+			var ret = true;
+			var procs = Process.GetProcesses()
+				.Where(p => IsSameExecutable(p, fullExeName))
+				.ToArray();
+
+			if (procs.Length > 0)
+			{
+				CurrentSelection = null;
+				OnPropertyChanged(nameof(CurrentSelection));
+				Connections.Clear();
+
+				foreach (var proc in procs)
+				{
+					try
+					{
+						proc.CloseMainWindow();
+						proc.Kill();
+						await SetProgressAsync(true);
+						proc.WaitForExit();
+					}
+					catch (Exception ex)
+					{
+						ret = false;
+						_logger.Warning(ex, $"ConnectionsVM:KillProcess({fullExeName}) => could not kill PID {proc.Id}");
+					}
+				}
+				procs = null;
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Kill a process, and all of its children, grandchildren, etc.
+		/// </summary>
+		/// <param name="pid">Process ID.</param>
+		private bool KillProcessAndChildrenByID(int pid)
+		{
+			var ret = false;
+
+			// Cannot close 'system idle process'.
+			if (pid == 0 || pid == 4)
+			{
+				return false;
+			}
+			ManagementObjectSearcher searcher = 
+				new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
+
+			ManagementObjectCollection moc = searcher.Get();
+			foreach (ManagementObject mo in moc)
+			{
+				ret = KillProcessAndChildrenByID(Convert.ToInt32(mo["ProcessID"]));
+				string x = "";
+			}
+			try
+			{
+				Process proc = Process.GetProcessById(pid);
+				proc.Kill();
+				ret = true;
+			}
+			catch (ArgumentException ae)
+			{
+				// Process already exited.
+				ret = true;
+				_logger.Warning(ae, $"ConnectionsVM::KillProcessAndChildren({pid}) ==> Process already exited, can't kill it therefore.");
+			}
+			return ret;
 		}
 
 		[RelayCommand]
