@@ -50,6 +50,22 @@ namespace ConnectionMgr.Helpers
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		public struct MIB_TCP6ROW_OWNER_PID
+		{
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public byte[] localAddr;
+
+			public ushort localPort;
+
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public byte[] remoteAddr;
+
+			public ushort remotePort;
+			public uint state;
+			public uint owningPid;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		internal struct MIB_TCPROW_OWNER_MODULE
 		{
 			public uint state;
@@ -73,6 +89,16 @@ namespace ConnectionMgr.Helpers
 		{
 			public uint localAddr;   // IPv4
 			public uint localPort;   // in network byte order
+			public uint owningPid;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MIB_UDP6ROW_OWNER_PID
+		{
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public byte[] localAddr;
+
+			public ushort localPort;
 			public uint owningPid;
 		}
 

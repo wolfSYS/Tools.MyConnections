@@ -12,6 +12,7 @@ namespace ConnectionMgr.Helpers
 	public static class ConnectionCollector
 	{
 		private const int AF_INET = 2;    // IPv4
+		private const int AF_INET6 = 23;  // IPv6
 
 		/// <summary>
 		/// Enumerates every outbound TCP/UDP connection on the machine.
@@ -22,9 +23,11 @@ namespace ConnectionMgr.Helpers
 
 			// ----------------------- TCP connections -----------------------
 			result.AddRange(GetTcpConnectionsVer4());
+			result.AddRange(GetTcpConnectionsVer6());
 
 			// ----------------------- UDP connections -----------------------
 			result.AddRange(GetUdpConnectionsVer4());
+			result.AddRange(GetUdpConnectionsVer6());
 
 			return result.OrderBy(con => con.ProcessPath).ToList();
 		}
@@ -58,6 +61,9 @@ namespace ConnectionMgr.Helpers
 			}
 		}
 
+		/* ------------------------------------------------------------------ *
+		 *  TCP – IPv4                                                       *
+		 * ------------------------------------------------------------------ */
 		private static List<NetworkConnectionInfo> GetTcpConnectionsVer4()
 		{
 			var result = new List<NetworkConnectionInfo>();
@@ -116,6 +122,69 @@ namespace ConnectionMgr.Helpers
 			return result;
 		}
 
+		/* ------------------------------------------------------------------ *
+		 *  TCP – IPv6                                                        *
+		 * ------------------------------------------------------------------ */
+		private static List<NetworkConnectionInfo> GetTcpConnectionsVer6()
+		{
+			var result = new List<NetworkConnectionInfo>();
+			int buffSize = 0;
+
+			int ret = NativeMethods.GetExtendedTcpTable(IntPtr.Zero, ref buffSize, true,
+				AF_INET6, NativeMethods.TcpTableClass.TCP_TABLE_OWNER_PID_ALL, 0);
+
+			if (ret != 122) // 122 == ERROR_INSUFFICIENT_BUFFER
+				throw new Win32Exception(ret);
+
+			var ptr = Marshal.AllocHGlobal(buffSize);
+			try
+			{
+				ret = NativeMethods.GetExtendedTcpTable(ptr, ref buffSize, true,
+					AF_INET6, NativeMethods.TcpTableClass.TCP_TABLE_OWNER_PID_ALL, 0);
+
+				if (ret != 0)
+					throw new Win32Exception(ret);
+
+				int entries = Marshal.ReadInt32(ptr);
+				IntPtr rowPtr = IntPtr.Add(ptr, sizeof(int));
+
+				for (int i = 0; i < entries; i++)
+				{
+					var row = Marshal.PtrToStructure<NativeMethods.MIB_TCP6ROW_OWNER_PID>(rowPtr);
+
+					// Outbound only (remote address not zero)
+					if (IsZeroIPv6(row.remoteAddr))
+					{
+						rowPtr = IntPtr.Add(rowPtr, Marshal.SizeOf<NativeMethods.MIB_TCP6ROW_OWNER_PID>());
+						continue;
+					}
+
+					var info = new NetworkConnectionInfo
+					{
+						Protocol = "TCP6",
+						LocalAddress = new IPAddress(row.localAddr),
+						LocalPort = (ushort)IPAddress.NetworkToHostOrder((short)row.localPort),
+						RemoteAddress = new IPAddress(row.remoteAddr),
+						RemotePort = (ushort)IPAddress.NetworkToHostOrder((short)row.remotePort),
+						State = TcpStateToString(row.state),
+						ProcessPath = GetProcessPath((int)row.owningPid)
+					};
+
+					result.Add(info);
+					rowPtr = IntPtr.Add(rowPtr, Marshal.SizeOf<NativeMethods.MIB_TCP6ROW_OWNER_PID>());
+				}
+			}
+			finally
+			{
+				Marshal.FreeHGlobal(ptr);
+			}
+
+			return result;
+		}
+
+		/* ------------------------------------------------------------------ *
+		 *  UDP – IPv4                                                        *
+		 * ------------------------------------------------------------------ */
 		private static List<NetworkConnectionInfo> GetUdpConnectionsVer4()
 		{
 			var result = new List<NetworkConnectionInfo>();
@@ -169,6 +238,60 @@ namespace ConnectionMgr.Helpers
 			return result;
 		}
 
+		/* ------------------------------------------------------------------ *
+		 *  UDP – IPv6                                                        *
+		 * ------------------------------------------------------------------ */
+		private static List<NetworkConnectionInfo> GetUdpConnectionsVer6()
+		{
+			var result = new List<NetworkConnectionInfo>();
+			int buffSize = 0;
+
+			int ret = NativeMethods.GetExtendedUdpTable(IntPtr.Zero, ref buffSize, true,
+				AF_INET6, NativeMethods.UdpTableClass.UDP_TABLE_OWNER_PID, 0);
+
+			if (ret != 122)
+				throw new Win32Exception(ret);
+
+			var ptr = Marshal.AllocHGlobal(buffSize);
+			try
+			{
+				ret = NativeMethods.GetExtendedUdpTable(ptr, ref buffSize, true,
+					AF_INET6, NativeMethods.UdpTableClass.UDP_TABLE_OWNER_PID, 0);
+
+				if (ret != 0)
+					throw new Win32Exception(ret);
+
+				int entries = Marshal.ReadInt32(ptr);
+				IntPtr rowPtr = IntPtr.Add(ptr, sizeof(int));
+
+				for (int i = 0; i < entries; i++)
+				{
+					var row = Marshal.PtrToStructure<NativeMethods.MIB_UDP6ROW_OWNER_PID>(rowPtr);
+
+					// Remote address is not available – we only keep the “local” end
+					var info = new NetworkConnectionInfo
+					{
+						Protocol = "UDP6",
+						LocalAddress = new IPAddress(row.localAddr),
+						LocalPort = (ushort)IPAddress.NetworkToHostOrder((short)row.localPort),
+						RemoteAddress = IPAddress.IPv6None,   // no remote end‑point for UDP‑6
+						RemotePort = 0,
+						State = null,
+						ProcessPath = GetProcessPath((int)row.owningPid)
+					};
+
+					result.Add(info);
+					rowPtr = IntPtr.Add(rowPtr, Marshal.SizeOf<NativeMethods.MIB_UDP6ROW_OWNER_PID>());
+				}
+			}
+			finally
+			{
+				Marshal.FreeHGlobal(ptr);
+			}
+
+			return result;
+		}
+
 		// -------------------------------------------------------------------- Helpers --------------------------------------------------------------------
 		private static string TcpStateToString(uint state)
 		{
@@ -190,5 +313,7 @@ namespace ConnectionMgr.Helpers
 				_ => $"UNKNOWN({state})"
 			};
 		}
+
+		private static bool IsZeroIPv6(byte[] addr) => addr.All(b => b == 0);
 	}
 }
