@@ -21,10 +21,10 @@ namespace ConnectionMgr.Helpers
 			var result = new List<NetworkConnectionInfo>();
 
 			// ----------------------- TCP connections -----------------------
-			result.AddRange(GetTcpConnections());
+			result.AddRange(GetTcpConnectionsVer4());
 
 			// ----------------------- UDP connections -----------------------
-			result.AddRange(GetUdpConnections());
+			result.AddRange(GetUdpConnectionsVer4());
 
 			return result.OrderBy(con => con.ProcessPath).ToList();
 		}
@@ -58,7 +58,7 @@ namespace ConnectionMgr.Helpers
 			}
 		}
 
-		private static List<NetworkConnectionInfo> GetTcpConnections()
+		private static List<NetworkConnectionInfo> GetTcpConnectionsVer4()
 		{
 			var result = new List<NetworkConnectionInfo>();
 
@@ -116,7 +116,7 @@ namespace ConnectionMgr.Helpers
 			return result;
 		}
 
-		private static List<NetworkConnectionInfo> GetUdpConnections()
+		private static List<NetworkConnectionInfo> GetUdpConnectionsVer4()
 		{
 			var result = new List<NetworkConnectionInfo>();
 
