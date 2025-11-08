@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyConnections.Helpers
+namespace ConnectionMgr.Helpers
 {
 	/// <summary>
 	/// Class for Native API wrappers

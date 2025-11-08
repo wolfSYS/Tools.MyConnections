@@ -1,10 +1,10 @@
-﻿using MyConnections.Services;
-using MyConnections.ViewModels.Pages;
+﻿using ConnectionMgr.Services;
+using ConnectionMgr.ViewModels.Pages;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
 
-namespace MyConnections.Views.Pages
+namespace ConnectionMgr.Views.Pages
 {
     public partial class ConnectionsPage : INavigableView<ConnectionsViewModel>
     {

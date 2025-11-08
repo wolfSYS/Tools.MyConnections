@@ -7,9 +7,9 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Microsoft.Extensions.DependencyInjection;
-using MyConnections.Interfaces;
+using ConnectionMgr.Interfaces;
 
-namespace MyConnections.Converters
+namespace ConnectionMgr.Converters
 {
 	/// <summary>
 	/// Turns the full path to an executable into the icon that Windows associates with that file.

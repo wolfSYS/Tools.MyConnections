@@ -1,4 +1,4 @@
-﻿namespace MyConnections.Models
+﻿namespace ConnectionMgr.Models
 {
     public class AppConfig
     {

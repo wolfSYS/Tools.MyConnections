@@ -1,11 +1,11 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Threading;
-using MyConnections.Views.Dialogs;
+using ConnectionMgr.Views.Dialogs;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
 
-namespace MyConnections.ViewModels
+namespace ConnectionMgr.ViewModels
 {
 	/// <summary>
 	/// All VMs that need INavigationAware and Wpf.UI stuff (dialogs, snackbar, progress) inherit from this class.

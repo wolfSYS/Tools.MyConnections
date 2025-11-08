@@ -5,9 +5,9 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using MyConnections.Models;
+using ConnectionMgr.Models;
 
-namespace MyConnections.Helpers
+namespace ConnectionMgr.Helpers
 {
 	public static class ConnectionCollector
 	{

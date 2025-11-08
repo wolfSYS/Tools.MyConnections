@@ -5,17 +5,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MyConnections.Properties;
-using MyConnections.Services;
-using MyConnections.ViewModels.Pages;
-using MyConnections.ViewModels.Windows;
-using MyConnections.Views.Pages;
-using MyConnections.Views.Windows;
+using ConnectionMgr.Properties;
+using ConnectionMgr.Services;
+using ConnectionMgr.ViewModels.Pages;
+using ConnectionMgr.ViewModels.Windows;
+using ConnectionMgr.Views.Pages;
+using ConnectionMgr.Views.Windows;
 using Wpf.Ui;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.DependencyInjection;
 
-namespace MyConnections
+namespace ConnectionMgr
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using MyConnections.Properties;
+using ConnectionMgr.Properties;
 using Windows.Storage;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
 
-namespace MyConnections.ViewModels.Pages
+namespace ConnectionMgr.ViewModels.Pages
 {
     public partial class SettingsViewModel : ObservableObject, INavigationAware
     {
@@ -33,7 +33,7 @@ namespace MyConnections.ViewModels.Pages
 		private void InitializeViewModel()
 		{
 			CurrentTheme = ApplicationThemeManager.GetAppTheme();
-			AppVersion = $"wolfSYS.Tools.MyConnections - ver. {GetAssemblyVersion()}";
+			AppVersion = $"wolfSYS.Tools.ConnectionMgr - ver. {GetAssemblyVersion()}";
 			_isInitialized = true;
 		}
 

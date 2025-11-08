@@ -2,13 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using MyConnections.Helpers;
-using MyConnections.Models;
-using MyConnections.Properties;
+using ConnectionMgr.Helpers;
+using ConnectionMgr.Models;
+using ConnectionMgr.Properties;
 using WindowsFirewallHelper;
 using Wpf.Ui;
 
-namespace MyConnections.ViewModels.Pages
+namespace ConnectionMgr.ViewModels.Pages
 {
 	public partial class FirewallViewModel : PagesBaseViewModel
 	{

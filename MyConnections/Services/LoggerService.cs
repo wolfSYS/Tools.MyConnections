@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Serilog;
-using MyConnections.Interfaces;
-using ILoggerService = MyConnections.Interfaces.ILoggerService;
-using MyConnections.Properties;
+using ConnectionMgr.Interfaces;
+using ILoggerService = ConnectionMgr.Interfaces.ILoggerService;
+using ConnectionMgr.Properties;
 
-namespace MyConnections.Services
+namespace ConnectionMgr.Services
 {
 	/// <summary>
 	/// Singleton for Logging

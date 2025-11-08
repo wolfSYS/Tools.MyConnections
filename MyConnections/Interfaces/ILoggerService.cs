@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace MyConnections.Interfaces
+namespace ConnectionMgr.Interfaces
 {
 	public interface ILoggerService
 	{

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyConnections.Views.Pages;
-using MyConnections.Views.Windows;
+using ConnectionMgr.Views.Pages;
+using ConnectionMgr.Views.Windows;
 using Wpf.Ui;
 
-namespace MyConnections.Services
+namespace ConnectionMgr.Services
 {
     /// <summary>
     /// Managed host of the application.

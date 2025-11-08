@@ -10,9 +10,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Authors>wolfSYS.net</Authors>
     <Company>wolfSYS.net</Company>
-    <Product>MyConnections</Product>
-    <Title>MyConnections</Title>
-    <PackageId>wolfSYS.Tools.MyConnections</PackageId>
+    <Product>ConnectionMgr</Product>
+    <Title>ConnectionMgr</Title>
+    <PackageId>wolfSYS.Tools.ConnectionMgr</PackageId>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 

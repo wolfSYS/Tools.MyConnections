@@ -1,13 +1,13 @@
 ﻿<Page
-    x:Class="MyConnections.Views.Pages.ConnectionsPage"
+    x:Class="ConnectionMgr.Views.Pages.ConnectionsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:MyConnections.Views.Pages"
+    xmlns:local="clr-namespace:ConnectionMgr.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-	xmlns:conv="clr-namespace:MyConnections.Converters"
-	xmlns:models="clr-namespace:MyConnections.Models"
+	xmlns:conv="clr-namespace:ConnectionMgr.Converters"
+	xmlns:models="clr-namespace:ConnectionMgr.Models"
     Title="DashboardPage"
     d:DataContext="{d:DesignInstance local:ConnectionsPage,
                                      IsDesignTimeCreatable=False}"

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Wpf.Ui.Controls;
 
-namespace MyConnections.Views.Dialogs
+namespace ConnectionMgr.Views.Dialogs
 {
 	/// <summary>
 	/// Interaction logic for InputDialog.xaml

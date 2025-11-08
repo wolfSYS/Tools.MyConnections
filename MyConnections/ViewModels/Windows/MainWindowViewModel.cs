@@ -1,12 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using Wpf.Ui.Controls;
 
-namespace MyConnections.ViewModels.Windows
+namespace ConnectionMgr.ViewModels.Windows
 {
     public partial class MainWindowViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _applicationTitle = "wolfSYS.Tools.MyConnections";
+        private string _applicationTitle = "wolfSYS.Tools.ConnectionMgr";
 
         [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()

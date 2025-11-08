@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics.Eventing.Reader;
 using Microsoft.Extensions.DependencyInjection;
-using MyConnections.Properties;
-using MyConnections.ViewModels.Windows;
+using ConnectionMgr.Properties;
+using ConnectionMgr.ViewModels.Windows;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
-namespace MyConnections.Views.Windows
+namespace ConnectionMgr.Views.Windows
 {
     public partial class MainWindow : INavigationWindow
     {

@@ -1,4 +1,4 @@
-namespace MyConnections.Resources
+namespace ConnectionMgr.Resources
 {
     public partial class Translations
     {

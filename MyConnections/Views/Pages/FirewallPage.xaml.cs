@@ -1,7 +1,7 @@
-﻿using MyConnections.ViewModels.Pages;
+﻿using ConnectionMgr.ViewModels.Pages;
 using Wpf.Ui.Abstractions.Controls;
 
-namespace MyConnections.Views.Pages
+namespace ConnectionMgr.Views.Pages
 {
     public partial class FirewallPage : INavigableView<FirewallViewModel>
     {

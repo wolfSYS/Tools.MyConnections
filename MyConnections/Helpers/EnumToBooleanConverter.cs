@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using Wpf.Ui.Appearance;
 
-namespace MyConnections.Helpers
+namespace ConnectionMgr.Helpers
 {
     internal class EnumToBooleanConverter : IValueConverter
     {

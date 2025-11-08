@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Eventing.Reader;
 using System.Net;
 
-namespace MyConnections.Models
+namespace ConnectionMgr.Models
 {
 	public class NetworkConnectionInfo
 	{
