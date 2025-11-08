@@ -69,7 +69,7 @@
 					<ContextMenu>
 						<MenuItem Header="Block connection to IP via hosts entry" 
 								  Icon="{ui:SymbolIcon Fire24}"
-								  Command="{Binding ViewModel.FirewallBlockPortCommand}"
+								  Command="{Binding ViewModel.BlockViaHostFileCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />
 						<Separator />
 						<MenuItem Header="Windows Firewall: Block entire Process" 
@@ -117,7 +117,7 @@
 					<Separator />
 					<MenuItem Header="Block connection to IP via hosts entry" 
 						  Icon="{ui:SymbolIcon Fire24}"
-						  Command="{Binding ViewModel.FirewallBlockPortCommand}"
+						  Command="{Binding ViewModel.BlockViaHostFileCommand}"
 						  CommandParameter="{Binding ViewModel.CurrentSelection}" />
 					<Separator />
 					<MenuItem Header="Windows Firewall: Block entire Process" 

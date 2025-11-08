@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
+using ConnectionMgr.ExtensionMethods;
+using Microsoft.Extensions.Logging;
 using WindowsFirewallHelper;
 using Wpf.Ui;
 
@@ -72,6 +74,19 @@ namespace ConnectionMgr.ViewModels.Pages
 				// FW can only block processes with a given binary executeable
 				if (!info.NormalizedProcessPath.StartsWith("PID:"))
 					return true;
+				else
+					return false;
+			}
+			else
+				return false;
+		}
+
+		private bool CanBlockViaHostFile(NetworkConnectionInfo info)
+		{
+			if (info != null)
+			{
+				if (info.RemoteAddress != null)
+					return info.RemoteAddress.IsPublic();
 				else
 					return false;
 			}
@@ -366,6 +381,11 @@ namespace ConnectionMgr.ViewModels.Pages
 
 		[RelayCommand(CanExecute = nameof(CanShowDetails))]
 		private async Task ShowDetails(NetworkConnectionInfo info)
+		{
+		}
+
+		[RelayCommand(CanExecute = nameof(CanBlockViaHostFile))]
+		private async Task BlockViaHostFile(NetworkConnectionInfo info)
 		{
 		}
 	}
