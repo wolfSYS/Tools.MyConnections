@@ -65,6 +65,20 @@ namespace ConnectionMgr.ViewModels.Pages
 				return false;
 		}
 
+		private bool CanFirewallBlockProcess(NetworkConnectionInfo info)
+		{
+			if (info != null)
+			{
+				// FW can only block processes with a given binary executeable
+				if (!info.NormalizedProcessPath.StartsWith("PID:"))
+					return true;
+				else
+					return false;
+			}
+			else
+				return false;
+		}
+
 		private bool CanShowDetails(NetworkConnectionInfo info)
 		{
 			return info != null ? true : false;
@@ -109,7 +123,7 @@ namespace ConnectionMgr.ViewModels.Pages
 			}
 		}
 
-		[RelayCommand(CanExecute = nameof(CanKillProcess))]
+		[RelayCommand(CanExecute = nameof(CanFirewallBlockProcess))]
 		private async Task FirewallBlockProcess(NetworkConnectionInfo info)
 		{
 			try
