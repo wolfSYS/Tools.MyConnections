@@ -287,11 +287,10 @@ namespace ConnectionMgr.ViewModels.Pages
 		{
 			var ret = false;
 
-			// Cannot close 'system idle process'.
+			// Cannot close 'system idle process' and 'windows kernel'.
 			if (pid == 0 || pid == 4)
-			{
 				return false;
-			}
+
 			ManagementObjectSearcher searcher = 
 				new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
 
