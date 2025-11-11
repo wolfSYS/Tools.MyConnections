@@ -100,7 +100,7 @@ namespace ConnectionMgr.ViewModels.Pages
 
 					File.AppendAllLines(@"C:\Windows\System32\drivers\etc\hosts", actions);
 
-					_logger.Information(actions[1]);
+					_logger.Information(actions[1].Replace("#ConnectionMgr", "(Windows Hosts file)"));
 					ShowInfo("Done", $"The remote IP {info.RemoteAddress?.ToString()} has been added to the Windows Hosts file.");
 				}
 			}
