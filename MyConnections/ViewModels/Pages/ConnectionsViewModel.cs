@@ -3,12 +3,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
+using System.Text;
 using System.Text.RegularExpressions;
+using ConnectionMgr.ExtensionMethods;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
-using ConnectionMgr.ExtensionMethods;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
+using Serilog.Core;
 using WindowsFirewallHelper;
 using Wpf.Ui;
 
@@ -397,7 +400,7 @@ namespace ConnectionMgr.ViewModels.Pages
 					{
 						if (string.IsNullOrEmpty(entry.Trim()))
 							continue;
-						if (entry.Contains(info.RemoteConnection) && !entry.Trim().StartsWith("#"))
+						if (entry.Contains(info.RemoteAddress?.ToString())  && !entry.Trim().StartsWith("#"))
 							return true;
 					}
 					return false;
@@ -406,16 +409,30 @@ namespace ConnectionMgr.ViewModels.Pages
 
 			try
 			{
-				string[] hostFileEntries = System.IO.File.ReadAllLines(@"C:\Windows\System32\drivers\etc\hosts");
+				string[] hostFileEntries = File.ReadAllLines(@"C:\Windows\System32\drivers\etc\hosts");
 
 				if (DoesEntryExist(info, hostFileEntries))
 				{
-					// we allready have an entry in hosts file for the given IP adr
-					ShowWarning("Failed.", $"An entry for then remote IP adr {info.RemoteHostName} allready exists in the Windows Hosts File.");
+					// we already have an entry in hosts file for the given IP adr
+					ShowWarning("Failed.", $"An entry for the remote IP adr {info.RemoteHostName} already exists in the Windows Hosts file.");
 				}
 				else
 				{
 					// add remote IP adr to hosts file
+
+					string[] actions = new string[3];
+					actions[0] = "#";
+					actions[2] = $"{info.RemoteAddress?.ToString()} 127.0.0.1";
+
+					if (info.RemoteAddress?.ToString() != info.RemoteHostName)
+						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress} (host name: {info.RemoteHostName})      #ConnectionMgr";
+					else
+						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress}      #ConnectionMgr";
+
+					File.AppendAllLines(@"C:\Windows\System32\drivers\etc\hosts", actions);
+
+					_logger.Information(actions[1]);
+					ShowInfo("Done", $"The remote IP {info.RemoteAddress?.ToString()} has been added to the Windows Hosts file.");
 				}
 			}
 			catch (Exception ex)
