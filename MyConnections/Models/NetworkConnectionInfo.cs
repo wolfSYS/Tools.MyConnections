@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Eventing.Reader;
 using System.Net;
+using ConnectionMgr.ExtensionMethods;
 
 namespace ConnectionMgr.Models
 {
@@ -64,6 +65,14 @@ namespace ConnectionMgr.Models
 			get
 			{
 				return RemoteAddress?.ToString() + " : " + RemotePort.ToString();
+			}
+		}
+
+		public string RemoteHostName
+		{
+			get
+			{
+				return RemoteAddress?.GetHostName() ?? string.Empty;
 			}
 		}
 

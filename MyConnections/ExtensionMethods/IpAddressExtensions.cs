@@ -25,6 +25,9 @@ namespace ConnectionMgr.ExtensionMethods
 			{
 				byte[] b = ip.GetAddressBytes();
 
+				if (ip.ToString() == "0.0.0.0")
+					return false;
+
 				// 10.0.0.0/8
 				if (b[0] == 10)
 					return false;
@@ -57,6 +60,9 @@ namespace ConnectionMgr.ExtensionMethods
 				if (IPAddress.IsLoopback(ip))
 					return false;
 
+				if (ip.ToString() == "::")
+					return false;
+
 				// fe80::/10 (Link‑local)
 				if (ip.IsIPv6LinkLocal)
 					return false;
@@ -76,6 +82,31 @@ namespace ConnectionMgr.ExtensionMethods
 
 			// 4.  Anything that survived the tests is public
 			return true;
+		}
+
+		/// <summary>
+		/// Get's the host name for the given IP Adr
+		/// </summary>
+		/// <param name="ip"></param>
+		/// <returns></returns>
+		public static string GetHostName(this IPAddress ip)
+		{
+			if (ip.IsLocal())
+			{
+				return ip.ToString(); //string.Empty;
+			}
+			else
+			{
+				try
+				{
+					IPHostEntry hostEntry = Dns.GetHostEntry(ip);
+					return hostEntry.HostName;
+				}
+				catch (Exception e) 
+				{
+					return ip.ToString();
+				}
+			}
 		}
 	}
 }
