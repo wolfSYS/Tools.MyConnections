@@ -414,7 +414,7 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (DoesEntryExist(info, hostFileEntries))
 				{
 					// we already have an entry in hosts file for the given IP adr
-					ShowWarning("Failed.", $"An entry for the remote IP adr {info.RemoteHostName} already exists in the Windows Hosts file.");
+					ShowWarning("Failed.", $"An entry for the remote IP adr {info.RemoteAddress?.ToString()} already exists in the Windows Hosts file.");
 				}
 				else
 				{
