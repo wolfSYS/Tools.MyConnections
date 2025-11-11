@@ -54,17 +54,70 @@ namespace ConnectionMgr.ViewModels.Pages
 			return Task.CompletedTask;
 		}
 
-		private bool CanKillProcess(NetworkConnectionInfo info)
+		[RelayCommand(CanExecute = nameof(CanBlockViaHostFile))]
+		private async Task BlockViaHostFile(NetworkConnectionInfo info)
+		{
+			bool DoesEntryExist(NetworkConnectionInfo info, string[] hostFileEntries)
+			{
+				if (hostFileEntries.Length == 0)
+					return false;
+				else
+				{
+					foreach (var entry in hostFileEntries)
+					{
+						if (string.IsNullOrEmpty(entry.Trim()))
+							continue;
+						if (entry.Contains(info.RemoteAddress?.ToString()) && !entry.Trim().StartsWith("#"))
+							return true;
+					}
+					return false;
+				}
+			}
+
+			try
+			{
+				string[] hostFileEntries = File.ReadAllLines(@"C:\Windows\System32\drivers\etc\hosts");
+
+				if (DoesEntryExist(info, hostFileEntries))
+				{
+					// we already have an entry in hosts file for the given IP adr
+					var msg = $"An entry for the remote IP adr {info.RemoteAddress?.ToString()} already exists in the Windows Hosts file.";
+					_logger.Debug(msg);
+					ShowWarning("Failed.", msg);
+				}
+				else
+				{
+					// add remote IP adr to hosts file
+					string[] actions = new string[3];
+					actions[0] = "#";
+					actions[2] = $"{info.RemoteAddress?.ToString()} 127.0.0.1";
+
+					if (info.RemoteAddress?.ToString() != info.RemoteHostName)
+						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress} (host name: {info.RemoteHostName})      #ConnectionMgr";
+					else
+						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress}      #ConnectionMgr";
+
+					File.AppendAllLines(@"C:\Windows\System32\drivers\etc\hosts", actions);
+
+					_logger.Information(actions[1]);
+					ShowInfo("Done", $"The remote IP {info.RemoteAddress?.ToString()} has been added to the Windows Hosts file.");
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionsVM::BlockViaHostFile");
+				ShowError(ex);
+			}
+		}
+
+		private bool CanBlockViaHostFile(NetworkConnectionInfo info)
 		{
 			if (info != null)
 			{
-				if (!info.NormalizedProcessPath.StartsWith("PID:"))
-					return true;
+				if (info.RemoteAddress != null)
+					return info.RemoteAddress.IsPublic();
 				else
-				{
-					// 0|4 => false, every other PID => true
-					return Regex.IsMatch(info.NormalizedProcessPath, @"^PID:(?![04]$)\d+$");
-				}
+					return false;
 			}
 			else
 				return false;
@@ -84,14 +137,17 @@ namespace ConnectionMgr.ViewModels.Pages
 				return false;
 		}
 
-		private bool CanBlockViaHostFile(NetworkConnectionInfo info)
+		private bool CanKillProcess(NetworkConnectionInfo info)
 		{
 			if (info != null)
 			{
-				if (info.RemoteAddress != null)
-					return info.RemoteAddress.IsPublic();
+				if (!info.NormalizedProcessPath.StartsWith("PID:"))
+					return true;
 				else
-					return false;
+				{
+					// 0|4 => false, every other PID => true
+					return Regex.IsMatch(info.NormalizedProcessPath, @"^PID:(?![04]$)\d+$");
+				}
 			}
 			else
 				return false;
@@ -275,6 +331,42 @@ namespace ConnectionMgr.ViewModels.Pages
 		}
 
 		/// <summary>
+		/// Kill a process, and all of its children, grandchildren, etc.
+		/// </summary>
+		/// <param name="pid">Process ID.</param>
+		private bool KillProcessAndChildrenByID(int pid)
+		{
+			var ret = false;
+
+			// Cannot close 'system idle process' and 'windows kernel'.
+			if (pid == 0 || pid == 4)
+				return false;
+
+			ManagementObjectSearcher searcher =
+				new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
+
+			ManagementObjectCollection moc = searcher.Get();
+			foreach (ManagementObject mo in moc)
+			{
+				ret = KillProcessAndChildrenByID(Convert.ToInt32(mo["ProcessID"]));
+			}
+			try
+			{
+				Process proc = Process.GetProcessById(pid);
+				proc.CloseMainWindow();
+				proc.Kill();
+				ret = true;
+			}
+			catch (ArgumentException ae)
+			{
+				// Process already exited.
+				ret = true;
+				_logger.Warning(ae, $"ConnectionsVM::KillProcessAndChildren({pid}) ==> Process already exited, can't kill it therefore.");
+			}
+			return ret;
+		}
+
+		/// <summary>
 		/// Kills a process for the given executeable.
 		/// </summary>
 		/// <param name="fullExeName">Full path to the *.EXE file</param>
@@ -306,42 +398,6 @@ namespace ConnectionMgr.ViewModels.Pages
 					}
 				}
 				procs = null;
-			}
-			return ret;
-		}
-
-		/// <summary>
-		/// Kill a process, and all of its children, grandchildren, etc.
-		/// </summary>
-		/// <param name="pid">Process ID.</param>
-		private bool KillProcessAndChildrenByID(int pid)
-		{
-			var ret = false;
-
-			// Cannot close 'system idle process' and 'windows kernel'.
-			if (pid == 0 || pid == 4)
-				return false;
-
-			ManagementObjectSearcher searcher = 
-				new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
-
-			ManagementObjectCollection moc = searcher.Get();
-			foreach (ManagementObject mo in moc)
-			{
-				ret = KillProcessAndChildrenByID(Convert.ToInt32(mo["ProcessID"]));
-			}
-			try
-			{
-				Process proc = Process.GetProcessById(pid);
-				proc.CloseMainWindow();
-				proc.Kill();
-				ret = true;
-			}
-			catch (ArgumentException ae)
-			{
-				// Process already exited.
-				ret = true;
-				_logger.Warning(ae, $"ConnectionsVM::KillProcessAndChildren({pid}) ==> Process already exited, can't kill it therefore.");
 			}
 			return ret;
 		}
@@ -385,63 +441,6 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanShowDetails))]
 		private async Task ShowDetails(NetworkConnectionInfo info)
 		{
-		}
-
-		[RelayCommand(CanExecute = nameof(CanBlockViaHostFile))]
-		private async Task BlockViaHostFile(NetworkConnectionInfo info)
-		{
-			bool DoesEntryExist(NetworkConnectionInfo info, string[] hostFileEntries)
-			{
-				if (hostFileEntries.Length == 0)
-					return false;
-				else
-				{
-					foreach (var entry in hostFileEntries)
-					{
-						if (string.IsNullOrEmpty(entry.Trim()))
-							continue;
-						if (entry.Contains(info.RemoteAddress?.ToString())  && !entry.Trim().StartsWith("#"))
-							return true;
-					}
-					return false;
-				}
-			}
-
-			try
-			{
-				string[] hostFileEntries = File.ReadAllLines(@"C:\Windows\System32\drivers\etc\hosts");
-
-				if (DoesEntryExist(info, hostFileEntries))
-				{
-					// we already have an entry in hosts file for the given IP adr
-					var msg = $"An entry for the remote IP adr {info.RemoteAddress?.ToString()} already exists in the Windows Hosts file.";
-					_logger.Debug(msg);
-					ShowWarning("Failed.", msg);
-				}
-				else
-				{
-					// add remote IP adr to hosts file
-
-					string[] actions = new string[3];
-					actions[0] = "#";
-					actions[2] = $"{info.RemoteAddress?.ToString()} 127.0.0.1";
-
-					if (info.RemoteAddress?.ToString() != info.RemoteHostName)
-						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress} (host name: {info.RemoteHostName})      #ConnectionMgr";
-					else
-						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress}      #ConnectionMgr";
-
-					File.AppendAllLines(@"C:\Windows\System32\drivers\etc\hosts", actions);
-
-					_logger.Information(actions[1]);
-					ShowInfo("Done", $"The remote IP {info.RemoteAddress?.ToString()} has been added to the Windows Hosts file.");
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.Error(ex, "ConnectionsVM::BlockViaHostFile");
-				ShowError(ex);
-			}
 		}
 	}
 }
