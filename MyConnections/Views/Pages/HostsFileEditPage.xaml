@@ -48,19 +48,20 @@
 		</StackPanel>
 
 		<!-- "Editor" -->
-		<!-- <Grid Grid.Row="1"> -->
-			<TextBox HorizontalAlignment="Stretch" Grid.Row="1"
+		<ScrollViewer Grid.Row="1"
+					  HorizontalScrollBarVisibility="Auto"
+					  VerticalScrollBarVisibility="Auto">
+			<TextBox HorizontalAlignment="Stretch"
 					 VerticalAlignment="Stretch"
+					 Width="Auto"
+					 Height="Auto"
 					 Margin="2,18,2,12"
 					 FontFamily="Consolas"
 					 AcceptsReturn="True"
 					 TextWrapping="NoWrap"
-					 VerticalScrollBarVisibility="Visible"
-					 HorizontalScrollBarVisibility="Visible"
 					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay}"
 					 />
-	<!--- </Grid> -->
+		</ScrollViewer>
 
 	</Grid>
-
 </Page>
