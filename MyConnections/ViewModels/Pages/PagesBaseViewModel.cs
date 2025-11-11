@@ -106,6 +106,8 @@ namespace ConnectionMgr.ViewModels
 				ControlAppearance.Info,
 				new SymbolIcon(SymbolRegular.Info24),
 				TimeSpan.FromSeconds(8));
+
+			_logger.Debug(message);
 		}
 
 		/// <summary>
@@ -119,6 +121,8 @@ namespace ConnectionMgr.ViewModels
 				ControlAppearance.Caution,
 				new SymbolIcon(SymbolRegular.Info24),
 				TimeSpan.FromSeconds(8));
+
+			_logger.Debug(message);
 		}
 
 		/// <summary>
