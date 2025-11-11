@@ -17,6 +17,9 @@ namespace ConnectionMgr.ViewModels.Pages
 		[ObservableProperty]
 		private string _hostsFileContent = string.Empty;
 
+		[ObservableProperty]
+		private bool _hasChanges = false;
+
 
 
 		public HostsFileEditViewModel(
@@ -53,9 +56,23 @@ namespace ConnectionMgr.ViewModels.Pages
 
 		private void ReadHostsFile()
 		{
-			HostsFileContent = File.ReadAllText(@"C:\Windows\System32\drivers\etc\hosts");
+			try
+			{
+				HostsFileContent = File.ReadAllText(@"C:\Windows\System32\drivers\etc\hosts");
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "HostFileEditPage::ReadHostsFile");
+				ShowError(ex);
+			}
 		}
 
+
+		public void Editor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (e.Changes.Any())
+				HasChanges = true;
+		}
 
 		[RelayCommand]
 		private async Task RefreshConnection()
