@@ -88,7 +88,7 @@ namespace ConnectionMgr.ViewModels.Pages
 				}
 				else
 				{
-					// add remote IP adr to hosts file
+					// add remote IP adr to hosts file and let it point to localhost
 					string[] actions = new string[3];
 					actions[0] = "#";
 					actions[2] = $"{info.RemoteAddress?.ToString()} 127.0.0.1";
