@@ -47,15 +47,17 @@
 						 Visibility="{Binding ViewModel.ShowProgress, Converter={StaticResource BoolToVis}}" />
 		</StackPanel>
 
-		<!-- Editor -->
+		<!-- "Editor" -->
 		<Grid Grid.Row="1">
 			<TextBox HorizontalAlignment="Stretch"
-						VerticalAlignment="Stretch"
-						Margin="2,18,2,12"
-						FontFamily="Consolas"
-						AcceptsReturn="True"
-						TextWrapping="Wrap" 
-						VerticalScrollBarVisibility="Visible"/>
+					 VerticalAlignment="Stretch"
+					 Margin="2,18,2,12"
+					 FontFamily="Consolas"
+					 AcceptsReturn="True"
+					 TextWrapping="Wrap"
+					 VerticalScrollBarVisibility="Visible"
+					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay}"
+					 />
 		</Grid>
 
 	</Grid>

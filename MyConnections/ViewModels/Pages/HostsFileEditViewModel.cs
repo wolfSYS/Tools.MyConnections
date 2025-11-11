@@ -15,8 +15,7 @@ namespace ConnectionMgr.ViewModels.Pages
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
-		private ObservableCollection<IFirewallRule> _rules  =
-			new ObservableCollection<IFirewallRule>();
+		private string _hostsFileContent = string.Empty;
 
 
 
@@ -31,7 +30,6 @@ namespace ConnectionMgr.ViewModels.Pages
 
 		public override Task OnNavigatedFromAsync()
 		{
-			Rules.Clear();
 			_isInitialized = false;
 
 			return Task.CompletedTask;
@@ -47,35 +45,22 @@ namespace ConnectionMgr.ViewModels.Pages
 
 		private void InitializeViewModel()
 		{
-			RefreshRulesAsync();
+			SetProgressAsync(true);
+			ReadHostsFile();
 			_isInitialized = true;
+			SetProgressAsync(false);
 		}
 
-		private async Task RefreshRulesAsync()
+		private void ReadHostsFile()
 		{
-			try
-			{
-				await SetProgressAsync(true);
-				Rules.Clear();
-
-				foreach (var r in FirewallManager.Instance.Rules)
-					Rules.Add(r);
-			}
-			catch (Exception ex) 
-			{
-				_logger.Error(ex, "FirewallVM::RefreshRules");
-				ShowError(ex);
-			}
-			finally
-			{
-				await SetProgressAsync(false);
-			}
+			HostsFileContent = File.ReadAllText(@"C:\Windows\System32\drivers\etc\hosts");
 		}
+
 
 		[RelayCommand]
 		private async Task RefreshConnection()
 		{
-			await RefreshRulesAsync();
+			//await RefreshRulesAsync();
 		}
 	}
 }
