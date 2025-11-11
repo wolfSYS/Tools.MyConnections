@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ConnectionMgr.Models;
+using ConnectionMgr.Properties;
 
 namespace ConnectionMgr.Helpers
 {
@@ -22,12 +23,18 @@ namespace ConnectionMgr.Helpers
 			var result = new List<NetworkConnectionInfo>();
 
 			// ----------------------- TCP connections -----------------------
-			result.AddRange(GetTcpConnectionsVer4());
-			result.AddRange(GetTcpConnectionsVer6());
+			if (Settings.Default.CaptureTCP4)
+				result.AddRange(GetTcpConnectionsVer4());
+
+			if (Settings.Default.CaptureTCP6)
+				result.AddRange(GetTcpConnectionsVer6());
 
 			// ----------------------- UDP connections -----------------------
-			result.AddRange(GetUdpConnectionsVer4());
-			result.AddRange(GetUdpConnectionsVer6());
+			if (Settings.Default.CaptureUDP4)
+				result.AddRange(GetUdpConnectionsVer4());
+
+			if (Settings.Default.CaptureUDP6)
+				result.AddRange(GetUdpConnectionsVer6());
 
 			return result.OrderBy(con => con.ProcessPath).ToList();
 		}
