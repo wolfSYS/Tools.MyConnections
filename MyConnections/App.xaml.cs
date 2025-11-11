@@ -60,8 +60,8 @@ namespace ConnectionMgr
 
                 services.AddSingleton<ConnectionsPage>();
                 services.AddSingleton<ConnectionsViewModel>();
-                services.AddSingleton<FirewallPage>();
-                services.AddSingleton<FirewallViewModel>();
+                services.AddSingleton<HostsFileEditPage>();
+                services.AddSingleton<HostsFileEditViewModel>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
             }).Build();

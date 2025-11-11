@@ -10,7 +10,7 @@ using Wpf.Ui;
 
 namespace ConnectionMgr.ViewModels.Pages
 {
-	public partial class FirewallViewModel : PagesBaseViewModel
+	public partial class HostsFileEditViewModel : PagesBaseViewModel
 	{
 		private bool _isInitialized = false;
 
@@ -20,7 +20,7 @@ namespace ConnectionMgr.ViewModels.Pages
 
 
 
-		public FirewallViewModel(
+		public HostsFileEditViewModel(
 					Interfaces.ILoggerService logger,
 					IContentDialogService dialogService,
 					ISnackbarService snackbarService)

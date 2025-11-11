@@ -3,11 +3,11 @@ using Wpf.Ui.Abstractions.Controls;
 
 namespace ConnectionMgr.Views.Pages
 {
-    public partial class FirewallPage : INavigableView<FirewallViewModel>
+    public partial class HostsFileEditPage : INavigableView<HostsFileEditViewModel>
     {
-        public FirewallViewModel ViewModel { get; }
+        public HostsFileEditViewModel ViewModel { get; }
 
-        public FirewallPage(FirewallViewModel viewModel)
+        public HostsFileEditPage(HostsFileEditViewModel viewModel)
         {
             ViewModel = viewModel;
             DataContext = this;

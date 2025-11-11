@@ -19,9 +19,9 @@ namespace ConnectionMgr.ViewModels.Windows
             },
 			new NavigationViewItem()
 			{
-				Content = "Firewall",
-				Icon = new SymbolIcon { Symbol = SymbolRegular.Fire24 },
-				TargetPageType = typeof(Views.Pages.FirewallPage)
+				Content = "Hosts File",
+				Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentTableCube24 },
+				TargetPageType = typeof(Views.Pages.HostsFileEditPage)
 			}
 		};
 
