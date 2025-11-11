@@ -57,6 +57,7 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanBlockViaHostFile))]
 		private async Task BlockViaHostFile(NetworkConnectionInfo info)
 		{
+			// local function since we only need it here
 			bool DoesEntryExist(NetworkConnectionInfo info, string[] hostFileEntries)
 			{
 				if (hostFileEntries.Length == 0)
