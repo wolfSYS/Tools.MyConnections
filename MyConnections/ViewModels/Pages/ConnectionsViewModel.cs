@@ -387,6 +387,42 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanBlockViaHostFile))]
 		private async Task BlockViaHostFile(NetworkConnectionInfo info)
 		{
+			bool DoesEntryExist(NetworkConnectionInfo info, string[] hostFileEntries)
+			{
+				if (hostFileEntries.Length == 0)
+					return false;
+				else
+				{
+					foreach (var entry in hostFileEntries)
+					{
+						if (string.IsNullOrEmpty(entry.Trim()))
+							continue;
+						if (entry.Contains(info.RemoteConnection) && !entry.Trim().StartsWith("#"))
+							return true;
+					}
+					return false;
+				}
+			}
+
+			try
+			{
+				string[] hostFileEntries = System.IO.File.ReadAllLines(@"C:\Windows\System32\drivers\etc\hosts");
+
+				if (DoesEntryExist(info, hostFileEntries))
+				{
+					// we allready have an entry in hosts file for the given IP adr
+					ShowWarning("Failed.", $"An entry for then remote IP adr {info.RemoteHostName} allready exists in the Windows Hosts File.");
+				}
+				else
+				{
+					// add remote IP adr to hosts file
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionsVM::BlockViaHostFile");
+				ShowError(ex);
+			}
 		}
 	}
 }

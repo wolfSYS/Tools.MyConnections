@@ -90,7 +90,7 @@ namespace ConnectionMgr.ViewModels
 			_snackbarService.Show(
 				"Error occured.",
 				ex.Message,
-				ControlAppearance.Caution,
+				ControlAppearance.Danger,
 				new SymbolIcon(SymbolRegular.ErrorCircle24),
 				TimeSpan.FromSeconds(8));
 		}
@@ -104,6 +104,19 @@ namespace ConnectionMgr.ViewModels
 				title,
 				message,
 				ControlAppearance.Info,
+				new SymbolIcon(SymbolRegular.Info24),
+				TimeSpan.FromSeconds(8));
+		}
+
+		/// <summary>
+		/// Shows a snackbar “info” message.
+		/// </summary>
+		protected void ShowWarning(string title, string message)
+		{
+			_snackbarService.Show(
+				title,
+				message,
+				ControlAppearance.Caution,
 				new SymbolIcon(SymbolRegular.Info24),
 				TimeSpan.FromSeconds(8));
 		}
