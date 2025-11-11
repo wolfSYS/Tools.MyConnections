@@ -22,8 +22,35 @@
 	
 	<ScrollViewer>
 		<StackPanel>
+			<!-- Kind of network traffic -->
+			<TextBlock
+                FontSize="20"
+                FontWeight="Medium"
+                Text="Show Network Traffic" />
+			<StackPanel Orientation="Horizontal">
+			    <CheckBox Margin="8,2,0,0"
+				          Content="TCP ver 4" 
+					      Command="{Binding ViewModel.SetCaptureTCP4Command}"
+					      IsChecked="{Binding ViewModel.CaptureTCP4, Mode=OneWay}"  />
+				<CheckBox Margin="128,2,0,0"
+				          Content="TCP ver 6" 
+					      Command="{Binding ViewModel.SetCaptureTCP6Command}"
+					      IsChecked="{Binding ViewModel.CaptureTCP6, Mode=OneWay}"  />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<CheckBox Margin="8,2,0,0"
+				          Content="UDP ver 4" 
+					      Command="{Binding ViewModel.SetCaptureUDP4Command}"
+					      IsChecked="{Binding ViewModel.CaptureUDP4, Mode=OneWay}"  />
+				<CheckBox Margin="128,2,0,0"
+				          Content="UDP ver 6" 
+					      Command="{Binding ViewModel.SetCaptureUDP6Command}"
+					      IsChecked="{Binding ViewModel.CaptureUDP6, Mode=OneWay}"  />
+			</StackPanel>
+
 			<!-- Logfiles -->
 			<TextBlock
+				Margin="0,24,0,0"
                 FontSize="20"
                 FontWeight="Medium"
                 Text="Logfiles" />

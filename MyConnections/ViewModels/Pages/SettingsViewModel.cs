@@ -20,6 +20,19 @@ namespace ConnectionMgr.ViewModels.Pages
 		[ObservableProperty]
 		private bool _logLevelDebug = Settings.Default.LogLevelDebug;
 
+		[ObservableProperty]
+		private bool _captureTCP4 = Settings.Default.CaptureTCP4;
+
+		[ObservableProperty]
+		private bool _captureTCP6 = Settings.Default.CaptureTCP4;
+
+		[ObservableProperty]
+		private bool _captureUDP4 = Settings.Default.CaptureUDP4;
+
+		[ObservableProperty]
+		private bool _captureUDP6 = Settings.Default.CaptureUDP6;
+
+
 		public Task OnNavigatedToAsync()
 		{
 			if (!_isInitialized)
@@ -50,6 +63,43 @@ namespace ConnectionMgr.ViewModels.Pages
 			Settings.Default.LogLevelDebug = LogLevelDebug;
 			Settings.Default.Save();
 		}
+
+
+
+		[RelayCommand]
+		private void SetCaptureTCP4()
+		{
+			CaptureTCP4 = !CaptureTCP4;
+			Settings.Default.CaptureTCP4 = CaptureTCP4;
+			Settings.Default.Save();
+		}
+
+		[RelayCommand]
+		private void SetCaptureTCP6()
+		{
+			CaptureTCP6 = !CaptureTCP6;
+			Settings.Default.CaptureTCP6 = CaptureTCP6;
+			Settings.Default.Save();
+		}
+
+		[RelayCommand]
+		private void SetCaptureUDP4()
+		{
+			CaptureUDP4 = !CaptureUDP4;
+			Settings.Default.CaptureUDP4 = CaptureUDP4;
+			Settings.Default.Save();
+		}
+
+		[RelayCommand]
+		private void SetCaptureUDP6()
+		{
+			CaptureUDP6 = !CaptureUDP6;
+			Settings.Default.CaptureUDP6 = CaptureUDP6;
+			Settings.Default.Save();
+		}
+
+
+
 
 		[RelayCommand]
 		public void OpenLogFile()

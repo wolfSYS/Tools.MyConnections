@@ -58,5 +58,53 @@ namespace ConnectionMgr.Properties {
                 this["NrOfConfirmGeneralWarningsFW"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CaptureTCP4 {
+            get {
+                return ((bool)(this["CaptureTCP4"]));
+            }
+            set {
+                this["CaptureTCP4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CaptureTCP6 {
+            get {
+                return ((bool)(this["CaptureTCP6"]));
+            }
+            set {
+                this["CaptureTCP6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CaptureUDP4 {
+            get {
+                return ((bool)(this["CaptureUDP4"]));
+            }
+            set {
+                this["CaptureUDP4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CaptureUDP6 {
+            get {
+                return ((bool)(this["CaptureUDP6"]));
+            }
+            set {
+                this["CaptureUDP6"] = value;
+            }
+        }
     }
 }
