@@ -52,22 +52,7 @@
 		<ScrollViewer Grid.Row="1"
               HorizontalScrollBarVisibility="Auto"
               VerticalScrollBarVisibility="Auto">
-			<TextBox Grid.Row="1" 
-					 HorizontalAlignment="Stretch"
-					 VerticalAlignment="Stretch"
-					 Width="Auto"
-					 Margin="2,18,2,12"
-					 FontFamily="Consolas"
-					 AcceptsReturn="True"
-					 TextWrapping="NoWrap"
-									 Height="{Binding RelativeSource={RelativeSource AncestorType=Page},
-									Path=ActualHeight,
-									Converter={StaticResource HeightMinusMarginsConverter}}"
-					 MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Page},
-									Path=ActualHeight,
-									Converter={StaticResource HeightMinusMarginsConverter}}"
-					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay}" />
-			</ScrollViewer>
+		</ScrollViewer>
 
 	</Grid>
 </Page>

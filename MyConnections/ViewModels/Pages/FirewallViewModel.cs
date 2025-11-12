@@ -15,12 +15,8 @@ namespace ConnectionMgr.ViewModels.Pages
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
-		private string _hostsFileContent = string.Empty;
-
-		[ObservableProperty]
-		private bool _hasChanges = false;
-
-
+		private ObservableCollection<IFirewallRule> _rules =
+			new ObservableCollection<IFirewallRule>();
 
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
@@ -48,31 +44,31 @@ namespace ConnectionMgr.ViewModels.Pages
 
 		private void InitializeViewModel()
 		{
-			SetProgressAsync(true);
-			ReadHostsFile();
+			GetFirewallRules();
 			_isInitialized = true;
-			SetProgressAsync(false);
 		}
 
-		private void ReadHostsFile()
+		private async Task GetFirewallRules()
 		{
 			try
 			{
-				HostsFileContent = File.ReadAllText(@"C:\Windows\System32\drivers\etc\hosts");
+				await SetProgressAsync(true);
+				Rules.Clear();
+
+				var filteresRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
+				foreach (var rule in filteresRules)
+					Rules.Add(rule);
+
+				await SetProgressAsync(false);
 			}
 			catch (Exception ex)
 			{
+				await SetProgressAsync(false);
 				_logger.Error(ex, "HostFileEditPage::ReadHostsFile");
 				ShowError(ex);
 			}
 		}
 
-
-		public void Editor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-		{
-			if (e.Changes.Any())
-				HasChanges = true;
-		}
 
 		[RelayCommand]
 		private async Task RefreshConnection()
