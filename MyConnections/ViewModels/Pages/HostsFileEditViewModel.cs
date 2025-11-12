@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Controls;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
@@ -12,6 +13,8 @@ namespace ConnectionMgr.ViewModels.Pages
 {
 	public partial class HostsFileEditViewModel : PagesBaseViewModel
 	{
+		const string PATH_TO_HOSTSFILE = @"C:\Windows\System32\drivers\etc\hosts";
+
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
@@ -46,38 +49,73 @@ namespace ConnectionMgr.ViewModels.Pages
 			return Task.CompletedTask;
 		}
 
-		private void InitializeViewModel()
+		private async Task InitializeViewModel()
 		{
-			SetProgressAsync(true);
-			ReadHostsFile();
+			await ReadHostsFile();
 			_isInitialized = true;
-			SetProgressAsync(false);
 		}
 
-		private void ReadHostsFile()
+
+
+		private async Task ReadHostsFile()
 		{
 			try
 			{
-				HostsFileContent = File.ReadAllText(@"C:\Windows\System32\drivers\etc\hosts");
+				await SetProgressAsync(true);
+				HostsFileContent = File.ReadAllText(PATH_TO_HOSTSFILE);
+				await SetProgressAsync(false);
+				HasChanges = false;
 			}
 			catch (Exception ex)
 			{
 				_logger.Error(ex, "HostFileEditPage::ReadHostsFile");
+				await SetProgressAsync(false);
 				ShowError(ex);
 			}
 		}
 
 
-		public void Editor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		private bool CanExecuteFile(bool hasChanges)
 		{
-			if (e.Changes.Any())
-				HasChanges = true;
+			return HasChanges;
 		}
 
 		[RelayCommand]
-		private async Task RefreshConnection()
+		private async Task EditorTextChanged(TextBox box)
 		{
-			//await RefreshRulesAsync();
+			HasChanges = true;
+		}
+
+
+		[RelayCommand(CanExecute = nameof(CanExecuteFile))]
+		private async Task SaveFile(bool hasChanges)
+		{
+			if (!hasChanges)
+				return;
+
+			try
+			{
+				await SetProgressAsync(true);
+				File.WriteAllText(PATH_TO_HOSTSFILE, HostsFileContent);
+				await SetProgressAsync(false);
+				HasChanges = false;
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "HostFileEditPage::SaveFile");
+				await SetProgressAsync(false);
+				ShowError(ex);
+			}
+		}
+
+		[RelayCommand(CanExecute = nameof(CanExecuteFile))]
+		private void CancelChanges(bool hasChanges)
+		{
+			if (!hasChanges)
+				return;
+
+			ReadHostsFile();
+			ShowInfo("Pending Changes Canceled", "The content of the Hosts File is now in its orriginal state again.");
 		}
 	}
 }

@@ -15,6 +15,5 @@ namespace ConnectionMgr.Views.Pages
             InitializeComponent();
         }
 
-
     }
 }

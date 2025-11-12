@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:ConnectionMgr.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     Title="HostsFileEditPage"
     d:DataContext="{d:DesignInstance local:HostsFileEditPage,
                                      IsDesignTimeCreatable=False}"
@@ -34,11 +35,13 @@
 					Orientation="Horizontal">
 			<ui:Button Content="Save"
 					   ToolTip="Save changes to Hosts file"
-					   Command="{Binding ViewModel.RefreshConnectionCommand}"
+					   Command="{Binding ViewModel.SaveFileCommand}"
+					   CommandParameter="{Binding ViewModel.HasChanges}"
 					   Icon="{ui:SymbolIcon DocumentSave24}" />
 			<ui:Button Content="Cancel"
 					   ToolTip="Cancel pending changes"
-					   Command="{Binding ViewModel.RefreshConnectionCommand}"
+					   Command="{Binding ViewModel.CancelChangesCommand}"
+					   CommandParameter="{Binding ViewModel.HasChanges}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon DismissCircle24}" />
 			<!-- ProgressRing -->
@@ -53,6 +56,7 @@
               HorizontalScrollBarVisibility="Auto"
               VerticalScrollBarVisibility="Auto">
 			<TextBox Grid.Row="1" 
+					 x:Name="txtEditor"
 					 HorizontalAlignment="Stretch"
 					 VerticalAlignment="Stretch"
 					 Width="Auto"
@@ -60,14 +64,22 @@
 					 FontFamily="Consolas"
 					 AcceptsReturn="True"
 					 TextWrapping="NoWrap"
-									 Height="{Binding RelativeSource={RelativeSource AncestorType=Page},
+					 Height="{Binding RelativeSource={RelativeSource AncestorType=Page},
 									Path=ActualHeight,
 									Converter={StaticResource HeightMinusMarginsConverter}}"
 					 MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Page},
 									Path=ActualHeight,
 									Converter={StaticResource HeightMinusMarginsConverter}}"
-					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay}" />
-			</ScrollViewer>
+					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="TextChanged">
+						<i:InvokeCommandAction 
+							Command="{Binding ViewModel.EditorTextChangedCommand}" 
+							CommandParameter="{Binding ElementName=txtEditor}" />
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</TextBox>
+		</ScrollViewer>
 
 	</Grid>
 </Page>
