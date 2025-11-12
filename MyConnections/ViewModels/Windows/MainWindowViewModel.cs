@@ -17,6 +17,12 @@ namespace ConnectionMgr.ViewModels.Windows
                 Icon = new SymbolIcon { Symbol = SymbolRegular.ServerSurfaceMultiple16 },
                 TargetPageType = typeof(Views.Pages.ConnectionsPage)
             },
+            new NavigationViewItem()
+			{
+				Content = "Firewall",
+				Icon = new SymbolIcon { Symbol = SymbolRegular.Fire24 },
+				TargetPageType = typeof(Views.Pages.FirewallPage)
+			},
 			new NavigationViewItem()
 			{
 				Content = "Hosts File",
