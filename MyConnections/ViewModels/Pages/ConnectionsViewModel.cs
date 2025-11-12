@@ -82,7 +82,7 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (DoesEntryExist(info, hostFileEntries))
 				{
 					// we already have an entry in hosts file for the given IP adr
-					var msg = $"An entry for the remote IP adr {info.RemoteAddress?.ToString()} already exists in the Windows Hosts file.";
+					var msg = $"An entry for the remote IP adr {info.RemoteAddress?.ToString()} already exists in the Windows Hosts file, aborting.";
 					_logger.Debug(msg);
 					ShowWarning("Failed.", msg);
 				}
