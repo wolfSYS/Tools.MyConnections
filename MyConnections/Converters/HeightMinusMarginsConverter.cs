@@ -15,7 +15,7 @@ namespace ConnectionMgr.Converters
 		{
 			if (value is double actualHeight)
 			{
-				const double margin = 24; // 12 top + 12 bottom
+				const double margin = 56; //24; // 12 top + 12 bottom
 				return actualHeight - margin;
 			}
 			return Binding.DoNothing;
