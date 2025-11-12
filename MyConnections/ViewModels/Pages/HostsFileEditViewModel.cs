@@ -102,6 +102,7 @@ namespace ConnectionMgr.ViewModels.Pages
 				await SetProgressAsync(true);
 				File.WriteAllText(PATH_TO_HOSTSFILE, HostsFileContent);
 				await SetProgressAsync(false);
+				_logger.Debug("Changes in Windows Hosts File saved to disc.");
 				ShowInfo("File saved", "The Hosts File has been successfully written to disc.");
 				HasChanges = false;
 			}
