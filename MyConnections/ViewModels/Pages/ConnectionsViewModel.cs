@@ -178,16 +178,27 @@ namespace ConnectionMgr.ViewModels.Pages
 
 					if (!string.IsNullOrEmpty(ruleName))
 					{
-						var rule = FirewallManager.Instance.CreatePortRule(
-							ruleName,
-							FirewallAction.Block,
-							(ushort)portNr,
-							FirewallProtocol.Any
-						);
-						FirewallManager.Instance.Rules.Add(rule);
+						if (!ruleName.Contains("#ConnectionMgr"))
+							ruleName += " #ConnectionMgr";
 
-						_logger.Information($"Added rule '{ruleName}' for local port '{portNr}' to the Windows Firewall.");
-						ShowInfo("Sucess", $"New rule for blocking local port {portNr} added to Windows Firewall.");
+						if (!FirewallRuleAlreadyExists(ruleName))
+						{
+							var rule = FirewallManager.Instance.CreatePortRule(
+								ruleName,
+								FirewallAction.Block,
+								(ushort)portNr,
+								FirewallProtocol.Any
+							);
+							FirewallManager.Instance.Rules.Add(rule);
+
+							_logger.Information($"Added rule '{ruleName}' for local port '{portNr}' to the Windows Firewall.");
+							ShowInfo("Sucess", $"New rule for blocking local port {portNr} added to Windows Firewall.");
+						}
+						else
+						{
+							_logger.Warning($"A Firewall rule with the name '{ruleName}' already exists, aborting.");
+							ShowWarning("Rule already exists", "A Rule with this name already exists in your Windows Firewall configuration.");
+						}
 					}
 				}
 			}
@@ -211,6 +222,9 @@ namespace ConnectionMgr.ViewModels.Pages
 						$"BLOCK {exe}");
 					if (!string.IsNullOrEmpty(ruleName))
 					{
+						if (!ruleName.Contains("#ConnectionMgr"))
+							ruleName += " #ConnectionMgr";
+
 						if (!FirewallRuleAlreadyExists(ruleName))
 						{
 							var rule = FirewallManager.Instance.CreateApplicationRule(
@@ -223,6 +237,11 @@ namespace ConnectionMgr.ViewModels.Pages
 
 							_logger.Information($"Added rule '{ruleName}' for process '{exe}' to the Windows Firewall.");
 							ShowInfo("Sucess", $"New rule for blocking {exe} added to Windows Firewall.");
+						}
+						else
+						{
+							_logger.Warning($"A Firewall rule with the name '{ruleName}' already exists, aborting.");
+							ShowWarning("Rule already exists", "A Rule with this name already exists in your Windows Firewall configuration.");
 						}
 					}
 				}
