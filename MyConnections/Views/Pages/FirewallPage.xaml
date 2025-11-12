@@ -41,6 +41,11 @@
 					   Command="{Binding ViewModel.RefreshConnectionCommand}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon DismissCircle24}" />
+			<ui:Button Content="Open Firewall"
+					   ToolTip="Opens the Windows Firewall"
+					   Command="{Binding ViewModel.OpenWindowsFirewallCommand}"
+					   Margin="4,0,0,0"
+					   Icon="{ui:SymbolIcon WindowShield24}" />
 			<!-- ProgressRing -->
 			<ui:ProgressRing IsIndeterminate="True"
 						 Height="28" Width="28"

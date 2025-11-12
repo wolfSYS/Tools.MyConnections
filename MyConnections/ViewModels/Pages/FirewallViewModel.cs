@@ -64,7 +64,7 @@ namespace ConnectionMgr.ViewModels.Pages
 			catch (Exception ex)
 			{
 				await SetProgressAsync(false);
-				_logger.Error(ex, "HostFileEditPage::ReadHostsFile");
+				_logger.Error(ex, "FirewallVM::GetFirewallRules");
 				ShowError(ex);
 			}
 		}
@@ -74,6 +74,28 @@ namespace ConnectionMgr.ViewModels.Pages
 		private async Task RefreshConnection()
 		{
 			//await RefreshRulesAsync();
+		}
+
+		[RelayCommand]
+		private async Task OpenWindowsFirewall()
+		{
+			try
+			{
+				ProcessStartInfo psi = new()
+				{
+					FileName = "mmc.exe",
+					Arguments = "wf.msc",
+					UseShellExecute = true,
+					Verb = "runas"
+				};
+
+				Process.Start(psi);
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "FirewallVM::OpenWindowsFirewall");
+				ShowError(ex);
+			}
 		}
 	}
 }
