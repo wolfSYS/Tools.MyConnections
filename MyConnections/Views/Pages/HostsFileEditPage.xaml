@@ -66,8 +66,7 @@
 					 MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Page},
 									Path=ActualHeight,
 									Converter={StaticResource HeightMinusMarginsConverter}}"
-					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay}"
-					 />
+					 Text="{Binding ViewModel.HostsFileContent, Mode=TwoWay}" />
 			</ScrollViewer>
 
 	</Grid>
