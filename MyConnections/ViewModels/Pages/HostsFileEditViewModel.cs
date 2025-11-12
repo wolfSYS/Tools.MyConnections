@@ -54,7 +54,7 @@ namespace ConnectionMgr.ViewModels.Pages
 				return;
 
 			ReadHostsFile();
-			ShowInfo("Pending Changes Canceled", "The content of the Hosts File is now in its orriginal state again.");
+			ShowInfo("Pending changes canceled", "The content of the Hosts File is now in its orriginal state again.");
 		}
 
 		private bool CanExecuteFile(bool hasChanges)
