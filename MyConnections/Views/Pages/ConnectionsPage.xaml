@@ -139,8 +139,8 @@
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="2*" />
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
 						<!-- Image that shows the real exe icon -->
@@ -158,25 +158,42 @@
 								   TextTrimming="CharacterEllipsis"
 								   Text="{Binding NormalizedProcessPath, Mode=OneWay}" />
 						<!-- remote IP & port -->
-						<TextBlock Grid.Row="1"
-								   Grid.Column="1"
-								   Margin="12,6,0,0"
-								   FontWeight="Bold"
-								   HorizontalAlignment="Left"
-								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-								   Text="{Binding RemoteConnection, Mode=OneWay}" />
+						<StackPanel Grid.Row="1"
+									Grid.Column="1"
+									Margin="12,6,0,0"
+									Orientation="Horizontal">
+							<TextBlock VerticalAlignment="Center"
+									   FontSize="11"
+									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+									   Text="Remote Socket:" />
+							<TextBlock Margin="8,0,0,0"								   
+									   FontWeight="Bold"
+									   HorizontalAlignment="Left"
+									   VerticalAlignment="Center"
+									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+									   Text="{Binding RemoteConnection, Mode=OneWay}" />
+						</StackPanel>
 						<!-- local IP & port -->
-						<TextBlock Grid.Row="1"
-								   Grid.Column="2"
-								   Margin="0,6,0,0"
-								   HorizontalAlignment="Left"
-								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-								   Text="{Binding LocalConnection, Mode=OneWay}" />
+						<StackPanel Grid.Row="1"
+									Grid.Column="2"
+									Margin="0,6,0,0"
+									Orientation="Horizontal">
+							<TextBlock VerticalAlignment="Center"
+									   FontSize="11"
+									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+									   Text="Local Socket:" />
+							<TextBlock Margin="8,0,0,0"								   
+									   HorizontalAlignment="Left"
+									   VerticalAlignment="Center"
+									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+									   Text="{Binding LocalConnection, Mode=OneWay}" />
+						</StackPanel>
 						<!-- protocoll & state -->
 						<TextBlock Grid.Row="3"
 								   Grid.Column="3"
 								   Margin="0,6,12,0"
 								   HorizontalAlignment="Right"
+								   VerticalAlignment="Center"
 								   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
 								   Text="{Binding StateProtInfo, Mode=OneWay}" />
 					</Grid>
