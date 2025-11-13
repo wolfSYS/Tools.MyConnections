@@ -20,6 +20,7 @@
     mc:Ignorable="d">
 	<Page.Resources>
 		<conv:ProcessPathToIconConverter x:Key="ExeIconConverter" />
+		<conv:PublicIpToFontWeightBoldConverter x:Key="PublicIpAdrToBold"/>
 		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
 		<DrawingImage x:Key="GrayCirclePlaceholder">
@@ -167,7 +168,7 @@
 									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
 									   Text="Remote Socket:" />
 							<TextBlock Margin="8,0,0,0"								   
-									   FontWeight="Bold"
+									   FontWeight="{Binding RemoteAddress, Converter={StaticResource PublicIpAdrToBold}}"
 									   HorizontalAlignment="Left"
 									   VerticalAlignment="Center"
 									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
