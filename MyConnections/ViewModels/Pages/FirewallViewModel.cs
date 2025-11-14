@@ -55,7 +55,8 @@ namespace ConnectionMgr.ViewModels.Pages
 				await SetProgressAsync(true);
 				Rules.Clear();
 
-				var filteresRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
+				//var filteresRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
+				var filteresRules = FirewallManager.Instance.Rules.OrderBy(x => x.Name);
 				foreach (var rule in filteresRules)
 					Rules.Add(rule);
 
