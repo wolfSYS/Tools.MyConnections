@@ -32,15 +32,23 @@
 		<!--- Pseudo-Menu -->
 		<StackPanel Grid.Row="0"
 					Orientation="Horizontal">
-			<ui:Button Content="Save"
-					   ToolTip="Save changes to Hosts file"
-					   Command="{Binding ViewModel.RefreshConnectionCommand}"
-					   Icon="{ui:SymbolIcon DocumentSave24}" />
-			<ui:Button Content="Cancel"
-					   ToolTip="Cancel pending changes"
-					   Command="{Binding ViewModel.RefreshConnectionCommand}"
+			<ui:Button Content="Enable"
+					   ToolTip="Enables the deactivated Rule"
+					   Command="{Binding ViewModel.EnableRuleCommand}"
+					   CommandParameter="{Binding ViewModel.CurrentSelection}"
+					   Icon="{ui:SymbolIcon FlashCheckmark24}" />
+			<ui:Button Content="Disable"
+					   ToolTip="Disables the active Rule"
+					   Command="{Binding ViewModel.DisableRuleCommand}"
+					   CommandParameter="{Binding ViewModel.CurrentSelection}"
 					   Margin="4,0,0,0"
-					   Icon="{ui:SymbolIcon DismissCircle24}" />
+					   Icon="{ui:SymbolIcon ChannelDismiss24}" />
+			<ui:Button Content="Delete"
+					   ToolTip="Removes the Rule from the Firewall"
+					   Command="{Binding ViewModel.DeleteRuleCommand}"
+					   CommandParameter="{Binding ViewModel.CurrentSelection}"
+					   Margin="4,0,0,0"
+					   Icon="{ui:SymbolIcon Delete24}" />
 			<ui:Button Content="Open Firewall"
 					   ToolTip="Opens the Windows Firewall"
 					   Command="{Binding ViewModel.OpenWindowsFirewallCommand}"
@@ -59,7 +67,8 @@
 					 HorizontalContentAlignment="Stretch"
 					 AutoGenerateColumns="False"
 					 IsReadOnly="True"
-					 ItemsSource="{Binding ViewModel.Rules, Mode=OneWay}">
+					 ItemsSource="{Binding ViewModel.Rules, Mode=OneWay}"
+					 SelectedItem="{Binding ViewModel.CurrentSelection}" >
 			<ui:DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="260" />
 				<DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnable}" />

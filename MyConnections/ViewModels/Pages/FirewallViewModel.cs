@@ -18,6 +18,9 @@ namespace ConnectionMgr.ViewModels.Pages
 		private ObservableCollection<IFirewallRule> _rules =
 			new ObservableCollection<IFirewallRule>();
 
+		[ObservableProperty]
+		private IFirewallRule _currentSelection;
+
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
 					IContentDialogService dialogService,
@@ -55,8 +58,8 @@ namespace ConnectionMgr.ViewModels.Pages
 				await SetProgressAsync(true);
 				Rules.Clear();
 
-				var filteresRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
-				//var filteresRules = FirewallManager.Instance.Rules.OrderBy(x => x.Name);
+				//var filteresRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
+				var filteresRules = FirewallManager.Instance.Rules.OrderBy(x => x.Name);
 				foreach (var rule in filteresRules)
 					Rules.Add(rule);
 
@@ -70,9 +73,44 @@ namespace ConnectionMgr.ViewModels.Pages
 			}
 		}
 
+		private bool CanEnableRule(IFirewallRule rule)
+		{
+			if ((rule != null) && !rule.IsEnable)
+				return true;
 
-		[RelayCommand]
-		private async Task RefreshConnection()
+			return false;
+		}
+
+		private bool CanDisableRule(IFirewallRule rule)
+		{
+			if ((rule != null) && rule.IsEnable)
+				return true;
+
+			return false;
+		}
+
+		private bool CanDeleteRule(IFirewallRule rule)
+		{
+			if (rule != null) 
+				return true;
+
+			return false;
+		}
+
+		[RelayCommand(CanExecute = nameof(CanEnableRule))]
+		private async Task EnableRule(IFirewallRule rule)
+		{
+			//await RefreshRulesAsync();
+		}
+
+		[RelayCommand(CanExecute = nameof(CanDisableRule))]
+		private async Task DisableRule(IFirewallRule rule)
+		{
+			//await RefreshRulesAsync();
+		}
+
+		[RelayCommand(CanExecute = nameof(CanDeleteRule))]
+		private async Task DeleteRule(IFirewallRule rule)
 		{
 			//await RefreshRulesAsync();
 		}
