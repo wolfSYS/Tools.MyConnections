@@ -7,18 +7,10 @@ using Wpf.Ui.Appearance;
 
 namespace ConnectionMgr.ViewModels.Pages
 {
-    public partial class SettingsViewModel : ObservableObject, INavigationAware
-    {
-		private bool _isInitialized = false;
-
+	public partial class SettingsViewModel : ObservableObject, INavigationAware
+	{
 		[ObservableProperty]
 		private string _appVersion = String.Empty;
-
-		[ObservableProperty]
-		private ApplicationTheme _currentTheme = ApplicationTheme.Unknown;
-
-		[ObservableProperty]
-		private bool _logLevelDebug = Settings.Default.LogLevelDebug;
 
 		[ObservableProperty]
 		private bool _captureTCP4 = Settings.Default.CaptureTCP4;
@@ -32,6 +24,15 @@ namespace ConnectionMgr.ViewModels.Pages
 		[ObservableProperty]
 		private bool _captureUDP6 = Settings.Default.CaptureUDP6;
 
+		[ObservableProperty]
+		private ApplicationTheme _currentTheme = ApplicationTheme.Unknown;
+
+		private bool _isInitialized = false;
+
+		[ObservableProperty]
+		private bool _logLevelDebug = Settings.Default.LogLevelDebug;
+
+		public Task OnNavigatedFromAsync() => Task.CompletedTask;
 
 		public Task OnNavigatedToAsync()
 		{
@@ -41,13 +42,16 @@ namespace ConnectionMgr.ViewModels.Pages
 			return Task.CompletedTask;
 		}
 
-		public Task OnNavigatedFromAsync() => Task.CompletedTask;
-
-		private void InitializeViewModel()
+		[RelayCommand]
+		public void OpenLogFile()
 		{
-			CurrentTheme = ApplicationThemeManager.GetAppTheme();
-			AppVersion = $"wolfSYS.Tools.ConnectionMgr - ver. {GetAssemblyVersion()}";
-			_isInitialized = true;
+			var logFilePath = $@"{AppContext.BaseDirectory}\logfiles\log.txt";
+
+			Process process = new Process();
+			process.StartInfo.FileName = "explorer.exe";
+			process.StartInfo.Arguments = Path.GetDirectoryName(logFilePath);
+			process.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+			process.Start();
 		}
 
 		private string GetAssemblyVersion()
@@ -56,15 +60,43 @@ namespace ConnectionMgr.ViewModels.Pages
 				?? String.Empty;
 		}
 
-		[RelayCommand]
-		private void SetLogLevel()
+		private void InitializeViewModel()
 		{
-			LogLevelDebug = !LogLevelDebug;
-			Settings.Default.LogLevelDebug = LogLevelDebug;
-			Settings.Default.Save();
+			CurrentTheme = ApplicationThemeManager.GetAppTheme();
+			AppVersion = $"wolfSYS.Tools.ConnectionMgr - ver. {GetAssemblyVersion()}";
+			_isInitialized = true;
 		}
 
+		[RelayCommand]
+		private void OnChangeTheme(string parameter)
+		{
+			switch (parameter)
+			{
+				case "theme_light":
+					if (CurrentTheme == ApplicationTheme.Light)
+						break;
 
+					ApplicationThemeManager.Apply(ApplicationTheme.Light);
+					CurrentTheme = ApplicationTheme.Light;
+
+					Settings.Default.Theme = "theme_light";
+					Settings.Default.Save();
+
+					break;
+
+				default:
+					if (CurrentTheme == ApplicationTheme.Dark)
+						break;
+
+					ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+					CurrentTheme = ApplicationTheme.Dark;
+
+					Settings.Default.Theme = "theme_dark";
+					Settings.Default.Save();
+
+					break;
+			}
+		}
 
 		[RelayCommand]
 		private void SetCaptureTCP4()
@@ -98,50 +130,12 @@ namespace ConnectionMgr.ViewModels.Pages
 			Settings.Default.Save();
 		}
 
-
-
 		[RelayCommand]
-		public void OpenLogFile()
+		private void SetLogLevel()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}\logfiles\log.txt";
-
-			Process process = new Process();
-			process.StartInfo.FileName = "explorer.exe";
-			process.StartInfo.Arguments = Path.GetDirectoryName(logFilePath);
-			process.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-			process.Start();
-		}
-
-		[RelayCommand]
-		private void OnChangeTheme(string parameter)
-		{
-			switch (parameter)
-			{
-				case "theme_light":
-					if (CurrentTheme == ApplicationTheme.Light)
-						break;
-
-					ApplicationThemeManager.Apply(ApplicationTheme.Light);
-					CurrentTheme = ApplicationTheme.Light;
-
-					Settings.Default.Theme = "theme_light";
-					Settings.Default.Save();
-
-					break;
-
-				default:
-					if (CurrentTheme == ApplicationTheme.Dark)
-						break;
-
-					ApplicationThemeManager.Apply(ApplicationTheme.Dark);
-					CurrentTheme = ApplicationTheme.Dark;
-
-					Settings.Default.Theme = "theme_dark";
-					Settings.Default.Save();
-
-					break;
-			}
+			LogLevelDebug = !LogLevelDebug;
+			Settings.Default.LogLevelDebug = LogLevelDebug;
+			Settings.Default.Save();
 		}
 	}
 }
-
