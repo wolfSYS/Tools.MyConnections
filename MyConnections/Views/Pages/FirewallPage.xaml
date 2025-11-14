@@ -19,7 +19,8 @@
     mc:Ignorable="d">
     <Page.Resources>
 		<conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-		<conv:EmptyCountToVisibilityConverter x:Key="EmptyGridConverter" />
+		<conv:EmptyCountToVisibilityConverter x:Key="EmptyCountToVisible" />
+		<conv:EmptyCountToCollapsedConverter x:Key="EmptyCountToCollapsed" />
 		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
@@ -67,6 +68,7 @@
 					 HorizontalContentAlignment="Stretch"
 					 AutoGenerateColumns="False"
 					 IsReadOnly="True"
+					 Visibility="{Binding ViewModel.Rules.Count, Converter={StaticResource EmptyCountToCollapsed}}"
 					 ItemsSource="{Binding ViewModel.Rules, Mode=OneWay}"
 					 SelectedItem="{Binding ViewModel.CurrentSelection}" >
 			<ui:DataGrid.Columns>
@@ -77,15 +79,6 @@
 				<DataGridTextColumn Header="Service" Binding="{Binding ServiceName}" />
 				<DataGridTextColumn Header="Application" Binding="{Binding ApplicationName}" />
 			</ui:DataGrid.Columns>
-			<ui:DataGrid.Style>
-				<Style TargetType="DataGrid">
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="0">
-							<Setter Property="Visibility" Value="Collapsed"/>
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</ui:DataGrid.Style>			
 		</ui:DataGrid>
 		
 		<!-- when DataGrid has no content -->
@@ -93,8 +86,7 @@
 					HorizontalAlignment="Stretch"
 					VerticalAlignment="Center"
 					Height="400"
-					Visibility="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=DataGrid}, 
-                                 Converter={StaticResource EmptyGridConverter}}">
+					Visibility="{Binding ViewModel.Rules.Count, Converter={StaticResource EmptyCountToVisible}}">
 			<TextBlock Margin="0,128,0,0"
                 FontSize="20"
                 FontWeight="Medium"
