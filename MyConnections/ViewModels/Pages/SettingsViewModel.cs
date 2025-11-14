@@ -100,7 +100,6 @@ namespace ConnectionMgr.ViewModels.Pages
 
 
 
-
 		[RelayCommand]
 		public void OpenLogFile()
 		{

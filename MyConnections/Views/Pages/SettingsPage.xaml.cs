@@ -14,5 +14,10 @@ namespace ConnectionMgr.Views.Pages
 
             InitializeComponent();
         }
+
+		private void CardExpander_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+		{
+
+        }
     }
 }

@@ -20,78 +20,89 @@
         <conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
 	
-	<ScrollViewer>
+	<ScrollViewer IsEnabled="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 		<StackPanel>
 			<!-- Kind of network traffic -->
-			<TextBlock
-                FontSize="20"
-                FontWeight="Medium"
-                Text="Show Network Traffic" />
-			<StackPanel Orientation="Horizontal">
-			    <CheckBox Margin="8,2,0,0"
-				          Content="TCP ver 4" 
-					      Command="{Binding ViewModel.SetCaptureTCP4Command}"
-					      IsChecked="{Binding ViewModel.CaptureTCP4, Mode=OneWay}"  />
-				<CheckBox Margin="128,2,0,0"
-				          Content="TCP ver 6" 
-					      Command="{Binding ViewModel.SetCaptureTCP6Command}"
-					      IsChecked="{Binding ViewModel.CaptureTCP6, Mode=OneWay}"  />
-			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<CheckBox Margin="8,2,0,0"
-				          Content="UDP ver 4" 
-					      Command="{Binding ViewModel.SetCaptureUDP4Command}"
-					      IsChecked="{Binding ViewModel.CaptureUDP4, Mode=OneWay}"  />
-				<CheckBox Margin="128,2,0,0"
-				          Content="UDP ver 6" 
-					      Command="{Binding ViewModel.SetCaptureUDP6Command}"
-					      IsChecked="{Binding ViewModel.CaptureUDP6, Mode=OneWay}"  />
-			</StackPanel>
+			<ui:CardExpander CornerRadius="0,0,8,8" 
+							 IsExpanded="true"
+							 Header="Show Network Traffic">
+				<StackPanel>
+					<StackPanel Orientation="Horizontal">
+			            <CheckBox Margin="8,2,0,0"
+				                  Content="TCP ver 4" 
+					              Command="{Binding ViewModel.SetCaptureTCP4Command}"
+					              IsChecked="{Binding ViewModel.CaptureTCP4, Mode=OneWay}"  />
+				        <CheckBox Margin="128,2,0,0"
+				                  Content="TCP ver 6" 
+					              Command="{Binding ViewModel.SetCaptureTCP6Command}"
+					              IsChecked="{Binding ViewModel.CaptureTCP6, Mode=OneWay}"  />
+			        </StackPanel>
+					    <StackPanel Orientation="Horizontal">
+						    <CheckBox Margin="8,2,0,0"
+				                  Content="UDP ver 4" 
+					              Command="{Binding ViewModel.SetCaptureUDP4Command}"
+					              IsChecked="{Binding ViewModel.CaptureUDP4, Mode=OneWay}"  />
+						    <CheckBox Margin="128,2,0,0"
+				                  Content="UDP ver 6" 
+					              Command="{Binding ViewModel.SetCaptureUDP6Command}"
+					              IsChecked="{Binding ViewModel.CaptureUDP6, Mode=OneWay}"  />
+                    </StackPanel>
+				</StackPanel>
+			</ui:CardExpander>
 
 			<!-- Logfiles -->
-			<TextBlock
-				Margin="0,24,0,0"
-                FontSize="20"
-                FontWeight="Medium"
-                Text="Logfiles" />
-			<CheckBox Margin="8,2,0,0"
-				      Content="Log also debug infos to logfiles" 
-					  Command="{Binding ViewModel.SetLogLevelCommand}"
-					  IsChecked="{Binding ViewModel.LogLevelDebug, Mode=OneWay}"  />
-			<ui:Button Margin="16,4,0,0"
-					   Content="show log files"
-					   Command="{Binding ViewModel.OpenLogFileCommand}"
-					   Icon="{ui:SymbolIcon DocumentText24}" />
+			<ui:CardExpander CornerRadius="0,0,8,8"
+							 IsExpanded="false"
+							 Header="Logfiles">
+				<StackPanel>
+					<CheckBox Margin="8,2,0,0"
+				              Content="Log also debug infos to logfiles" 
+					          Command="{Binding ViewModel.SetLogLevelCommand}"
+					          IsChecked="{Binding ViewModel.LogLevelDebug, Mode=OneWay}"  />
+			        <ui:Button Margin="16,4,0,0"
+					           Content="show log files"
+					           Command="{Binding ViewModel.OpenLogFileCommand}"
+					           Icon="{ui:SymbolIcon DocumentText24}" />
+			    </StackPanel>
+			</ui:CardExpander>
 
 			<!-- Theme -->
-			<TextBlock
-				Margin="0,24,0,0"
-                FontSize="20"
-                FontWeight="Medium"
-                Text="Personalization" />
-            <TextBlock Margin="0,12,0,0" Text="Theme" />
-            <RadioButton
-                Margin="8,8,0,0"
-                Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-                CommandParameter="theme_light"
-                Content="Light"
-                GroupName="themeSelect"
-                IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
-            <RadioButton
-                Margin="8,2,0,0"
-                Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-                CommandParameter="theme_dark"
-                Content="Dark"
-                GroupName="themeSelect"
-                IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+			<ui:CardExpander CornerRadius="0,0,8,8"
+							 IsExpanded="false"
+							 Header="Personalization/Theme">
+				<StackPanel>
+					<RadioButton
+							Margin="8,8,0,0"
+							Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+							CommandParameter="theme_light"
+							Content="Light"
+							GroupName="themeSelect"
+							IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
+					<RadioButton
+							Margin="8,2,0,0"
+							Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+							CommandParameter="theme_dark"
+							Content="Dark"
+							GroupName="themeSelect"
+							IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+				</StackPanel>
+			</ui:CardExpander>
 
 			<!-- About -->
-            <TextBlock
-                Margin="0,24,0,0"
-                FontSize="20"
-                FontWeight="Medium"
-                Text="About ConnectionMgr" />
-            <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+			<ui:CardExpander CornerRadius="0,0,8,8"
+							 IsExpanded="false"
+							 Header="About">
+				<StackPanel>
+					<TextBlock
+						Margin="0,24,0,0"
+						FontSize="20"
+						FontWeight="Medium"
+						Text="About ConnectionMgr" />
+					<TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+				</StackPanel>
+			</ui:CardExpander>
+
+			<StackPanel Height="24" />
 		</StackPanel>
 	</ScrollViewer>
 
