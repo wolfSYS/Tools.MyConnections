@@ -117,8 +117,12 @@ namespace ConnectionMgr.ViewModels.Pages
 			{
 				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
 
-				await ShowDialogYesNo("Important",
-					"Altering the settings for Windows Firewall could result in unwanted results\nunless you're absolutely shure what you are doing.\n\nDo you really want to contine and add a new firewall rule?");
+				if (await ShowDialogYesNo("Delete Rule",
+					$"Do you really want to remove the Firewall Rule '{displayRuleName}'?\nThis action can not be undone."))
+				{
+					// TODO: remove
+					await GetFirewallRules();
+				}
 
 			}
 			catch (Exception ex)

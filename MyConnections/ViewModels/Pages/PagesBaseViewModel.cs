@@ -66,6 +66,9 @@ namespace ConnectionMgr.ViewModels
 		/// <summary>
 		/// Shows a modal “yes / no” dialog (the same layout that the old code used).
 		/// </summary>
+		/// <returns>
+		/// TRUE = yes | FALSE = no
+		/// </returns>
 		protected async Task<bool> ShowDialogYesNo(string title, string message)
 		{
 			var cd = new ContentDialog();
