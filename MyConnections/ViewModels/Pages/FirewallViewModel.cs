@@ -100,19 +100,18 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanEnableRule))]
 		private async Task EnableRule(IFirewallRule rule)
 		{
-			//await RefreshRulesAsync();
+			//await GetFirewallRules();
 		}
 
 		[RelayCommand(CanExecute = nameof(CanDisableRule))]
 		private async Task DisableRule(IFirewallRule rule)
 		{
-			//await RefreshRulesAsync();
+			//await GetFirewallRules();
 		}
 
 		[RelayCommand(CanExecute = nameof(CanDeleteRule))]
 		private async Task DeleteRule(IFirewallRule rule)
 		{
-			//await RefreshRulesAsync();
 			try
 			{
 				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
@@ -121,9 +120,10 @@ namespace ConnectionMgr.ViewModels.Pages
 					$"Do you really want to remove the Firewall Rule '{displayRuleName}'?\nThis action can not be undone."))
 				{
 					// TODO: remove
+					FirewallManager.Instance.Rules.Remove(rule);
+					_logger.Information($"Rule {displayRuleName}' removed from MS Windows Firewall.");
 					await GetFirewallRules();
 				}
-
 			}
 			catch (Exception ex)
 			{
