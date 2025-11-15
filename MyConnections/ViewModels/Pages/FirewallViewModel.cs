@@ -58,8 +58,8 @@ namespace ConnectionMgr.ViewModels.Pages
 				await SetProgressAsync(true);
 				Rules.Clear();
 
-				var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
-				//var filteredRules = FirewallManager.Instance.Rules.OrderBy(x => x.Name);
+				//var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
+				var filteredRules = FirewallManager.Instance.Rules.OrderBy(x => x.Name);
 				foreach (var rule in filteredRules)
 					Rules.Add(rule);
 
@@ -113,6 +113,19 @@ namespace ConnectionMgr.ViewModels.Pages
 		private async Task DeleteRule(IFirewallRule rule)
 		{
 			//await RefreshRulesAsync();
+			try
+			{
+				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
+
+				await ShowDialogYesNo("Important",
+					"Altering the settings for Windows Firewall could result in unwanted results\nunless you're absolutely shure what you are doing.\n\nDo you really want to contine and add a new firewall rule?");
+
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "FirewallVM::DeleteRule");
+				ShowError(ex);
+			}
 		}
 
 		[RelayCommand]

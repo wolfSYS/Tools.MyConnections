@@ -21,6 +21,7 @@
 		<conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 		<conv:EmptyCountToVisibilityConverter x:Key="EmptyCountToVisible" />
 		<conv:EmptyCountToCollapsedConverter x:Key="EmptyCountToCollapsed" />
+		<conv:StripAppTagFromFwRuleConverter x:Key="StripTagConverter" />
 		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
@@ -43,7 +44,7 @@
 					   Command="{Binding ViewModel.DisableRuleCommand}"
 					   CommandParameter="{Binding ViewModel.CurrentSelection}"
 					   Margin="4,0,0,0"
-					   Icon="{ui:SymbolIcon ChannelDismiss24}" />
+					   Icon="{ui:SymbolIcon SquareDismiss16}" />
 			<ui:Button Content="Delete"
 					   ToolTip="Removes the Rule from the Firewall"
 					   Command="{Binding ViewModel.DeleteRuleCommand}"
@@ -72,8 +73,12 @@
 					 ItemsSource="{Binding ViewModel.Rules, Mode=OneWay}"
 					 SelectedItem="{Binding ViewModel.CurrentSelection}" >
 			<ui:DataGrid.Columns>
-				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="260" />
-				<DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnable}" />
+				<DataGridTextColumn Header="Name" Width="260">
+					<DataGridTextColumn.Binding>
+						<Binding Path="Name" Converter="{StaticResource StripTagConverter}"/>
+					</DataGridTextColumn.Binding>
+				</DataGridTextColumn>
+				<DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnable}" IsReadOnly="True" />
 				<DataGridTextColumn Header="Remote Port" Binding="{Binding RemotePorts[0]}" />
 				<DataGridTextColumn Header="Local Port" Binding="{Binding LocalPorts[0]}" />
 				<DataGridTextColumn Header="Service" Binding="{Binding ServiceName}" />
