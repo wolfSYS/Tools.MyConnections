@@ -122,7 +122,7 @@ namespace ConnectionMgr.ViewModels.Pages
 					FirewallManager.Instance.Rules.Remove(rule);
 					_logger.Information($"Rule {displayRuleName}' removed from MS Windows Firewall.");
 					await GetFirewallRules();
-					ShowInfo("Removed successfully", $"The Rule '{}' has been removed successfully from the Windows Firewall.");
+					ShowInfo("Removed successfully", $"The Rule '{displayRuleName}' has been removed successfully from the Windows Firewall.");
 				}
 			}
 			catch (Exception ex)
