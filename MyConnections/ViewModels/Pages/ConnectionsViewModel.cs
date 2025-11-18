@@ -482,17 +482,16 @@ What is this Prozess known for?
 Is it dangerous?
 
 '''info
-Prozess: {info.ProcessPath}
+Prozess (full path or PID): {info.NormalizedProcessPath}
 
-Remote IP:   {info.RemoteAddress}
-Remote Port: {info.RemotePort}
-Local IP:    {info.LocalAddress}
-Local Port:  {info.LocalPort}
-
+Remote IP:     {info.RemoteAddress}
+Remote Port:   {info.RemotePort}
+Local IP:      {info.LocalAddress}
+Local Port:    {info.LocalPort}
 Network State: {info.State}
 '''";
 				var answer = await chat.GetChatResponseAsync(prompt);
-				await SetProgressAsync(true);
+				await SetProgressAsync(false);
 
 				if (!string.IsNullOrEmpty(answer))
 				{
@@ -500,7 +499,7 @@ Network State: {info.State}
 				}
 				else
 				{
-					ShowError(new Exception("Unable to invoke OpenAI, please check your settings."));
+					ShowError(new Exception("Unable to invoke OpenAI API, please check your settings."));
 				}
 			}
 			catch (Exception ex)

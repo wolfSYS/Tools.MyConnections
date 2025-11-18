@@ -25,7 +25,7 @@ Do not include any follow-up questions like for example ""Do you want me to ..."
 	{
 		var serverUrl = Settings.Default.OpenAiServerUrl;
 		var apiKey = Settings.Default.OpenAiApiKey;
-		_model = "gemma3:12b"; // Settings.Default.OpenAiModel;
+		_model = Settings.Default.OpenAiModel; //		"gemma3:12b"; // Settings.Default.OpenAiModel;
 
 		var options = new OpenAIClientOptions
 		{
