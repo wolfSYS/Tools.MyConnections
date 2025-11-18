@@ -11,7 +11,7 @@ public class OpenAiChatService
 {
 	private readonly OpenAIClient _client;
 	private readonly string _model;
-	private readonly string _systemPrompt = @"You are an IT Security Professional that knows everything about MS Windows prozecess, networking and security threads.
+	private readonly string _systemPrompt = @"You are an IT Security Professional that knows everything about MS Windows processes, networking and security threads.
 Do not include any follow-up questions like for example ""Do you want me to ..."", just give the summary.";
 
 	/// <summary>
@@ -25,7 +25,7 @@ Do not include any follow-up questions like for example ""Do you want me to ..."
 	{
 		var serverUrl = Settings.Default.OpenAiServerUrl;
 		var apiKey = Settings.Default.OpenAiApiKey;
-		_model = Settings.Default.OpenAiModel; //		"gemma3:12b"; // Settings.Default.OpenAiModel;
+		_model = Settings.Default.OpenAiModel;
 
 		var options = new OpenAIClientOptions
 		{
