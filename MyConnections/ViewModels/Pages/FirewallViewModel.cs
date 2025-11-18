@@ -155,7 +155,7 @@ namespace ConnectionMgr.ViewModels.Pages
 					$"Do you really want to remove the Firewall Rule '{displayRuleName}'?\nThis action can not be undone."))
 				{
 					FirewallManager.Instance.Rules.Remove(rule);
-					_logger.Information($"Rule {displayRuleName}' removed from MS Windows Firewall.");
+					_logger.Information($"Rule '{displayRuleName}' removed from MS Windows Firewall.");
 					await GetFirewallRules();
 					ShowInfo("Removed successfully", $"The Rule '{displayRuleName}' has been removed successfully from the Windows Firewall.");
 				}
