@@ -47,8 +47,8 @@ Do not include any follow-up questions like for example ""Do you want me to ..."
 		// Build the message list: System → User
 		var messages = new ChatMessage[]
 		{
-		          // Only add system if we actually have one
-		          !string.IsNullOrWhiteSpace(systemPrompt ?? _systemPrompt)
+			// Only add system if we actually have one
+			!string.IsNullOrWhiteSpace(systemPrompt ?? _systemPrompt)
 				? ChatMessage.CreateSystemMessage(systemPrompt ?? _systemPrompt)
 				: null,
 			ChatMessage.CreateUserMessage(userPrompt)
