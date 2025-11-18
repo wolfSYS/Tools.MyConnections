@@ -95,15 +95,15 @@ namespace ConnectionMgr.ViewModels.Pages
 
 					string[] actions = new string[4];
 					actions[0] = "#";
-					actions[2] = $"{remoteAdr} 127.0.0.1";
+					actions[2] = $"127.0.0.1 {remoteAdr}";
 
 					var hostName = info.RemoteHostName;
-					if (hostName != remoteAdr && hostName != "127.0.0.1" && hostName != "localhost")
-						actions[3] = $"{hostName} 127.0.0.1";
+					if (hostName != info.RemoteAddress?.ToString() && hostName != "127.0.0.1" && hostName != "localhost")
+						actions[3] = $"127.0.0.1 {hostName}";
 					else
 						actions[3] = "#";
 
-					if (remoteAdr != info.RemoteHostName)
+					if (info.RemoteAddress?.ToString() != info.RemoteHostName)
 						actions[1] = $"# BLOCK connection to remote IP Adr {remoteAdr} [{info.RemoteHostName}]      #ConnectionMgr";
 					else
 						actions[1] = $"# BLOCK connection to remote IP Adr {remoteAdr}      #ConnectionMgr";
