@@ -45,7 +45,7 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand]
 		public void OpenLogFile()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}\logfiles\log.txt";
+			var logFilePath = $@"{AppContext.BaseDirectory}logfiles\log.txt";
 
 			Process process = new Process();
 			process.StartInfo.FileName = "explorer.exe";
