@@ -77,7 +77,7 @@ namespace ConnectionMgr.Services
 
 		public void InitLoggerDebug()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}\logfiles\log.txt"; // winui3: ApplicationData.Current.LocalFolder.Path + @"\Log\log.txt";
+			var logFilePath = $@"{AppContext.BaseDirectory}logfiles\log.txt"; // winui3: ApplicationData.Current.LocalFolder.Path + @"\Log\log.txt";
 			log = new LoggerConfiguration()
 						.MinimumLevel.Debug()
 						.WriteTo.Console()
@@ -87,7 +87,7 @@ namespace ConnectionMgr.Services
 
 		public void InitLoggerWarning()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}\logfiles\log.txt";  // winui3: ApplicationData.Current.LocalFolder.Path + @"\Log\log.txt";
+			var logFilePath = $@"{AppContext.BaseDirectory}logfiles\log.txt";  // winui3: ApplicationData.Current.LocalFolder.Path + @"\Log\log.txt";
 			log = new LoggerConfiguration()
 						.MinimumLevel.Warning()
 						.WriteTo.Console()
