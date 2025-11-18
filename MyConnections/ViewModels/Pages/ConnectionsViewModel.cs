@@ -495,7 +495,8 @@ Network State: {info.State}
 
 				if (!string.IsNullOrEmpty(answer))
 				{
-					await ShowAiOverview("AI Overview", answer);
+					var dlgSummary = new AiOverview("AI Overview", answer);
+					dlgSummary.ShowDialog();
 				}
 				else
 				{

@@ -55,8 +55,8 @@
 					   ToolTip="Refresh the List of Connections"
 					   Command="{Binding ViewModel.RefreshConnectionCommand}"
 					   Icon="{ui:SymbolIcon ArrowClockwise24}" />
-			<ui:Button Content="Details"
-					   ToolTip="Show details for the current selection"
+			<ui:Button Content="AI Overview"
+					   ToolTip="Show details for the current selected connection"
 					   Command="{Binding ViewModel.ShowDetailsCommand}"
 					   CommandParameter="{Binding ViewModel.CurrentSelection}"
 					   Margin="4,0,0,0"

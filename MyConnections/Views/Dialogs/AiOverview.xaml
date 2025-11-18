@@ -1,4 +1,4 @@
-﻿<ui:ContentDialog
+﻿<ui:FluentWindow
 		x:Class="ConnectionMgr.Views.Dialogs.AiOverview"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,23 +8,63 @@
 		Height="680" 
 		Width="1280"
         ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+		ExtendsContentIntoTitleBar="True"
+		WindowBackdropType="Mica"
+		WindowCornerPreference="Round"
+		WindowStartupLocation="CenterOwner">
 
-	<ui:ContentDialog.Resources>
+	<ui:FluentWindow.Resources>
 		<Style BasedOn="{StaticResource {x:Type ui:ContentDialog}}" TargetType="{x:Type local:AiOverview}" />
-	</ui:ContentDialog.Resources>
+	</ui:FluentWindow.Resources>
 
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
-			<RowDefinition Height="8" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="16" />
 		</Grid.RowDefinitions>
-		<TextBox x:Name="txtEditor" Grid.Row="0" Margin="8,8,8,8"
-				 FontFamily="Consolas"
-				 AcceptsReturn="True"
-				 TextWrapping="Wrap" 
-				 VerticalScrollBarVisibility="Visible"
-				 ScrollViewer.CanContentScroll="True"
-				 Text="{Binding Message}" />
+
+		<TextBlock Grid.Row="0"
+				   Margin="8,8,0,0"
+				   x:Name="txtTitle"
+				   Text="AI Overview" 
+				   FontSize="22" />
+
+		<ScrollViewer Grid.Row="1">
+			<TextBox x:Name="txtEditor" 
+					 IsReadOnly="True"
+					 Margin="8,24,8,8"
+					 FontFamily="Consolas"
+					 AcceptsReturn="True"
+					 TextWrapping="Wrap" 
+					 Text="{Binding Message}" />
+		</ScrollViewer>
+
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<ui:Button Content="Clipboard"
+				   Grid.Column="0"
+				   Icon="{ui:SymbolIcon ClipboardTextLtr24}"
+				   VerticalAlignment="Center"
+				   HorizontalAlignment="Center"				   
+				   Click="OnButtonCopyClick"
+				   Width="140"
+				   Margin="0,8,0,0" />
+			<ui:Button Content="Close"
+				   Grid.Column="1"
+				   Icon="{ui:SymbolIcon Dismiss24}"
+				   Appearance="Primary"
+				   VerticalAlignment="Center"
+				   HorizontalAlignment="Center"				   
+				   Click="OnButtonCloseClick"
+				   Width="140"
+				   Margin="0,8,0,0" />
+		</Grid>
+
 	</Grid>
-</ui:ContentDialog>
+</ui:FluentWindow>

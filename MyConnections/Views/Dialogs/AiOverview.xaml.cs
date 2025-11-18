@@ -17,26 +17,31 @@ using Wpf.Ui.Controls;
 namespace ConnectionMgr.Views.Dialogs
 {
 	/// <summary>
-	/// Interaction logic for InputDialog.xaml
+	/// Display AI summary
 	/// </summary>
-	public partial class AiOverview : ContentDialog
+	public partial class AiOverview : FluentWindow
 	{
 		public string InputText { get; set; }
 		public string Message { get; set; }
 		public bool DialogResult {get; set; }
 
-		public AiOverview(ContentPresenter? contentPresenter, string title, string message) : base(contentPresenter)
+		public AiOverview(string title, string message)
 		{
 			InitializeComponent();
 			DataContext = this;
 			Title = title;
+			txtTitle.Text = title;
 			Message = message;
 		}
 
-		protected override void OnButtonClick(ContentDialogButton button)
+		private void OnButtonCloseClick(object sender, RoutedEventArgs e)
 		{
-			base.OnButtonClick(button);
-			return;
+			this.Close();
+		}
+
+		private void OnButtonCopyClick(object sender, RoutedEventArgs e)
+		{
+			Clipboard.SetText(Message);
 		}
 	}
 }
