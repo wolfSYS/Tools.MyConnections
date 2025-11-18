@@ -89,19 +89,29 @@ namespace ConnectionMgr.ViewModels.Pages
 				else
 				{
 					// add remote IP adr to hosts file and let it point to localhost
-					string[] actions = new string[3];
-					actions[0] = "#";
-					actions[2] = $"{info.RemoteAddress?.ToString()} 127.0.0.1";
+					string remoteAdr = info.RemoteAddress?.ToString();
+					if (info.RemoteAddress?.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+						remoteAdr = $"[{remoteAdr}]";
 
-					if (info.RemoteAddress?.ToString() != info.RemoteHostName)
-						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress} (host name: {info.RemoteHostName})      #ConnectionMgr";
+					string[] actions = new string[4];
+					actions[0] = "#";
+					actions[2] = $"{remoteAdr} 127.0.0.1";
+
+					var hostName = info.RemoteHostName;
+					if (hostName != remoteAdr && hostName != "127.0.0.1" && hostName != "localhost")
+						actions[3] = $"{hostName} 127.0.0.1";
 					else
-						actions[1] = $"# BLOCK connection to remote IP Adr {info.RemoteAddress}      #ConnectionMgr";
+						actions[3] = "#";
+
+					if (remoteAdr != info.RemoteHostName)
+						actions[1] = $"# BLOCK connection to remote IP Adr {remoteAdr} [{info.RemoteHostName}]      #ConnectionMgr";
+					else
+						actions[1] = $"# BLOCK connection to remote IP Adr {remoteAdr}      #ConnectionMgr";
 
 					File.AppendAllLines(@"C:\Windows\System32\drivers\etc\hosts", actions);
 
 					_logger.Information(actions[1].Replace("#ConnectionMgr", "(Windows Hosts file)"));
-					ShowInfo("Done", $"The remote IP {info.RemoteAddress?.ToString()} has been added to the Windows Hosts file.");
+					ShowInfo("Done", $"The remote IP {remoteAdr} has been added to the Windows Hosts file.");
 				}
 			}
 			catch (Exception ex)

@@ -93,7 +93,7 @@ namespace ConnectionMgr.ExtensionMethods
 		{
 			if (ip.IsLocal())
 			{
-				return ip.ToString(); //string.Empty;
+				return "localhost";  //ip.ToString(); //string.Empty;
 			}
 			else
 			{
