@@ -11,16 +11,14 @@ public class OpenAiChatService
 {
 	private readonly OpenAIClient _client;
 	private readonly string _model;
+
 	private readonly string _systemPrompt = @"You are an IT Security Professional that knows everything about MS Windows processes, networking and security threads.
 Do not include any follow-up questions like for example ""Do you want me to ..."", just give the summary.";
 
 	/// <summary>
-	/// Create a client that talks to Ollama.
+	/// Create a client that talks to any OpenAI compatible API.
 	/// </summary>
-	/// <param name="systemPrompt">
-	/// Optional system message that will be sent on every request.
-	/// If null, the class will try to read Settings.Default.SystemPrompt.
-	/// </param>
+	/// <param name="systemPrompt">Optional system message that will be sent on every request.</param>
 	public OpenAiChatService(string systemPrompt = null)
 	{
 		var serverUrl = Settings.Default.OpenAiServerUrl;
@@ -39,10 +37,9 @@ Do not include any follow-up questions like for example ""Do you want me to ..."
 	/// <summary>
 	/// Call the chat endpoint and return the assistant’s reply.
 	/// </summary>
-	/// <param name="userPrompt">User’s message.</param>
+	/// <param name="userPrompt">  User’s message.</param>
 	/// <param name="systemPrompt">
-	/// Optional system message for this particular call. If null, the instance‑level
-	/// system prompt (or none) is used.
+	/// Optional system message for this particular call. If null, the instance‑level system prompt (or none) is used.
 	/// </param>
 	/// <returns>Assistant reply.</returns>
 	public async Task<string> GetChatResponseAsync(string userPrompt, string systemPrompt = null)
@@ -69,7 +66,7 @@ Do not include any follow-up questions like for example ""Do you want me to ..."
 			else
 			{
 				StringBuilder sb = new StringBuilder();
-				foreach(var c in response.Value.Content)
+				foreach (var c in response.Value.Content)
 					sb.Append(c.Text);
 				return sb.ToString();
 			}
