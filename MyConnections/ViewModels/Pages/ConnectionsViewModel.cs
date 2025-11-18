@@ -471,6 +471,33 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand(CanExecute = nameof(CanShowDetails))]
 		private async Task ShowDetails(NetworkConnectionInfo info)
 		{
+			try
+			{
+				var chat = new OpenAiChatService();
+				var prompt = @$"What is this Kind of Connection?
+What known Application is associated with the Prozess?
+What is this Prozess known for?
+Is it dangerous?
+
+'''info
+Prozess: {info.ProcessPath}
+
+Remote IP:   {info.RemoteAddress}
+Remote Port: {info.RemotePort}
+Local IP:    {info.LocalAddress}
+Local Port:  {info.LocalPort}
+
+Network State: {info.State}
+'''";
+				var answer = await chat.GetChatResponseAsync(prompt);
+
+				await ShowDialogYesNo("AI overview", answer);
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "ConnectionsVM::ShowDetails");
+				ShowError(ex);
+			}
 		}
 	}
 }

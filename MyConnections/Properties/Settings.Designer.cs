@@ -106,5 +106,41 @@ namespace ConnectionMgr.Properties {
                 this["CaptureUDP6"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:11434/v1")]
+        public string OpenAiServerUrl {
+            get {
+                return ((string)(this["OpenAiServerUrl"]));
+            }
+            set {
+                this["OpenAiServerUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("gpt-oss:20b")]
+        public string OpenAiModel {
+            get {
+                return ((string)(this["OpenAiModel"]));
+            }
+            set {
+                this["OpenAiModel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NOT-NEEDED-FOR-OLLAMA")]
+        public string OpenAiApiKey {
+            get {
+                return ((string)(this["OpenAiApiKey"]));
+            }
+            set {
+                this["OpenAiApiKey"] = value;
+            }
+        }
     }
 }

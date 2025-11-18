@@ -50,6 +50,35 @@
 				</StackPanel>
 			</ui:CardExpander>
 
+			<!-- OpenAI settings -->
+			<ui:CardExpander CornerRadius="0,0,8,8" 
+				 IsExpanded="true"
+				 Header="OpenAI settings">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"
+							   Text="Open AI Server Url:" />
+					<TextBox Grid.Column="1" Grid.Row="0" Margin="8,0,0,0"
+							 Text="{Binding ViewModel.OpenAiServerUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"
+							   Text="Open AI Api Key:" />
+					<TextBox Grid.Column="1" Grid.Row="1" Margin="8,4,0,0"
+							 Text="{Binding ViewModel.OpenAiApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"
+							   Text="LLM model name:" />
+					<TextBox Grid.Column="1" Grid.Row="2" Margin="8,4,0,0"
+							 Text="{Binding ViewModel.OpenAiModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				</Grid>
+			</ui:CardExpander>
+
 			<!-- Logfiles -->
 			<ui:CardExpander CornerRadius="0,0,8,8"
 							 IsExpanded="false"

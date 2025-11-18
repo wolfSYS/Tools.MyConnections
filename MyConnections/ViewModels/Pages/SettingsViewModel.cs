@@ -32,6 +32,15 @@ namespace ConnectionMgr.ViewModels.Pages
 		[ObservableProperty]
 		private bool _logLevelDebug = Settings.Default.LogLevelDebug;
 
+		[ObservableProperty]
+		private string _openAiServerUrl = Settings.Default.OpenAiServerUrl;
+
+		[ObservableProperty]
+		private string _openAiApiKey = Settings.Default.OpenAiApiKey;
+
+		[ObservableProperty]
+		private string _openAiModel = Settings.Default.OpenAiModel;
+
 		public Task OnNavigatedFromAsync() => Task.CompletedTask;
 
 		public Task OnNavigatedToAsync()

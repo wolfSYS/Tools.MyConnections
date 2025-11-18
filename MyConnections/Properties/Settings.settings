@@ -23,5 +23,14 @@
     <Setting Name="CaptureUDP6" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="OpenAiServerUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://localhost:11434/v1</Value>
+    </Setting>
+    <Setting Name="OpenAiModel" Type="System.String" Scope="User">
+      <Value Profile="(Default)">gpt-oss:20b</Value>
+    </Setting>
+    <Setting Name="OpenAiApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NOT-NEEDED-FOR-OLLAMA</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
