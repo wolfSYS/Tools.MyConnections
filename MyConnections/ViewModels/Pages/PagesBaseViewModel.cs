@@ -142,6 +142,18 @@ namespace ConnectionMgr.ViewModels
 				   : string.Empty;
 		}
 
+		protected async Task<string> ShowAiOverview(string title, string message)
+		{
+			var dlgHost = _dialogService.GetDialogHost();           // you return the host from the dialog‑service
+			var dlg = new AiOverview(dlgHost, title, message);
+			var result = await dlg.ShowAsync();
+
+			return result == ContentDialogResult.Primary
+				   ? dlg.InputText
+				   : string.Empty;
+		}
+
+
 		#endregion Helper methods (protected – called from derived classes)
 
 		#region Navigation hooks (virtual so that derived VMs can override)

@@ -9,6 +9,7 @@ using ConnectionMgr.ExtensionMethods;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
+using ConnectionMgr.Views.Dialogs;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Serilog.Core;
@@ -473,6 +474,7 @@ namespace ConnectionMgr.ViewModels.Pages
 		{
 			try
 			{
+				await SetProgressAsync(true);
 				var chat = new OpenAiChatService();
 				var prompt = @$"What is this Kind of Connection?
 What known Application is associated with the Prozess?
@@ -490,11 +492,20 @@ Local Port:  {info.LocalPort}
 Network State: {info.State}
 '''";
 				var answer = await chat.GetChatResponseAsync(prompt);
+				await SetProgressAsync(true);
 
-				await ShowDialogYesNo("AI overview", answer);
+				if (!string.IsNullOrEmpty(answer))
+				{
+					await ShowAiOverview("AI Overview", answer);
+				}
+				else
+				{
+					ShowError(new Exception("Unable to invoke OpenAI, please check your settings."));
+				}
 			}
 			catch (Exception ex)
 			{
+				await SetProgressAsync(false);
 				_logger.Error(ex, "ConnectionsVM::ShowDetails");
 				ShowError(ex);
 			}
