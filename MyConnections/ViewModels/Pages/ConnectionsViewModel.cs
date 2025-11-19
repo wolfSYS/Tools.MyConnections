@@ -124,16 +124,10 @@ namespace ConnectionMgr.ViewModels.Pages
 					if (!string.IsNullOrEmpty(na) && na != "::1" && na != "127.0.0.1")
 						if (na != info.RemoteAddress.ToString())
 							return true;
-						else
-							return false;
-					else
-						return false;
 				}
-				else
-					return false;
 			}
-			else
-				return false;
+
+			return false;
 		}
 
 		private bool CanFirewallBlockProcess(NetworkConnectionInfo info)
