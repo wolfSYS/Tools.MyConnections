@@ -52,7 +52,7 @@
 
 			<!-- OpenAI settings -->
 			<ui:CardExpander CornerRadius="0,0,8,8" 
-				 IsExpanded="true"
+				 IsExpanded="false"
 				 Header="OpenAI settings">
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -123,11 +123,14 @@
 							 Header="About">
 				<StackPanel>
 					<TextBlock
-						Margin="0,24,0,0"
+						Margin="0,8,0,0"
 						FontSize="20"
 						FontWeight="Medium"
 						Text="About ConnectionMgr" />
 					<TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+					<ui:Button Margin="0,12,0,0" Content="Website" 
+							   Icon="{ui:SymbolIcon Globe24}" Appearance="Primary"
+							   Command="{Binding ViewModel.VisitWebsiteCommand}" />
 				</StackPanel>
 			</ui:CardExpander>
 

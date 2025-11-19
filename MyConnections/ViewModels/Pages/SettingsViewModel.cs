@@ -1,13 +1,15 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using ConnectionMgr.Properties;
 using Windows.Storage;
+using Wpf.Ui;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
 
 namespace ConnectionMgr.ViewModels.Pages
 {
-	public partial class SettingsViewModel : ObservableObject, INavigationAware
+	public partial class SettingsViewModel : PagesBaseViewModel
 	{
 		[ObservableProperty]
 		private string _appVersion = String.Empty;
@@ -33,17 +35,31 @@ namespace ConnectionMgr.ViewModels.Pages
 		private bool _logLevelDebug = Settings.Default.LogLevelDebug;
 
 		[ObservableProperty]
-		private string _openAiServerUrl = Settings.Default.OpenAiServerUrl;
-
-		[ObservableProperty]
 		private string _openAiApiKey = Settings.Default.OpenAiApiKey;
 
 		[ObservableProperty]
 		private string _openAiModel = Settings.Default.OpenAiModel;
 
-		public Task OnNavigatedFromAsync() => Task.CompletedTask;
+		[ObservableProperty]
+		private string _openAiServerUrl = Settings.Default.OpenAiServerUrl;
 
-		public Task OnNavigatedToAsync()
+		public SettingsViewModel(
+			Interfaces.ILoggerService logger,
+			IContentDialogService dialogService,
+			ISnackbarService snackbarService)
+			: base(logger, dialogService, snackbarService)
+		{
+			// BaseVM will care about DY
+		}
+
+		public override Task OnNavigatedFromAsync()
+		{
+			_isInitialized = false;
+
+			return Task.CompletedTask;
+		}
+
+		public override Task OnNavigatedToAsync()
 		{
 			if (!_isInitialized)
 				InitializeViewModel();
@@ -145,6 +161,25 @@ namespace ConnectionMgr.ViewModels.Pages
 			LogLevelDebug = !LogLevelDebug;
 			Settings.Default.LogLevelDebug = LogLevelDebug;
 			Settings.Default.Save();
+		}
+
+		[RelayCommand]
+		private void VisitWebsite()
+		{
+			try
+			{
+				Process.Start(new ProcessStartInfo("https://www.wolfsys.net") { UseShellExecute = true });
+			}
+			catch (System.ComponentModel.Win32Exception noBrowserEx)
+			{
+				_logger.Error(noBrowserEx, "SettingsVM::VisitWebsite");
+				ShowError(noBrowserEx);
+			}
+			catch (System.Exception otherEx)
+			{
+				_logger.Error(otherEx, "SettingsVM::VisitWebsite");
+				ShowError(otherEx);
+			}
 		}
 	}
 }

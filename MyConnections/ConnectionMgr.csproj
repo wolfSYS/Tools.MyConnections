@@ -16,6 +16,7 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <FileVersion>1.0.1.13</FileVersion>
     <AssemblyVersion>1.0.1.13</AssemblyVersion>
+    <Copyright>Copyright 2025 by wolfSYS.net</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
