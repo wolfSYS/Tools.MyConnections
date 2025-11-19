@@ -68,7 +68,7 @@
 							   Margin="4,0,0,0">
 				<ui:DropDownButton.Flyout>
 					<ContextMenu>
-						<MenuItem Header="Block connection to IP via hosts entry" 
+						<MenuItem Header="Block connection to domain name via hosts entry" 
 								  Icon="{ui:SymbolIcon Fire24}"
 								  Command="{Binding ViewModel.BlockViaHostFileCommand}"
 								  CommandParameter="{Binding ViewModel.CurrentSelection}" />

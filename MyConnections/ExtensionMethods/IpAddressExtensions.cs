@@ -93,7 +93,10 @@ namespace ConnectionMgr.ExtensionMethods
 		{
 			if (ip.IsLocal())
 			{
-				return "localhost";  //ip.ToString(); //string.Empty;
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+					return "127.0.0.1";
+				else
+					return "::1";
 			}
 			else
 			{
