@@ -6,6 +6,7 @@ using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
+using AutoUpdaterDotNET;
 
 namespace ConnectionMgr.Views.Windows
 {
@@ -75,5 +76,13 @@ namespace ConnectionMgr.Views.Windows
         {
             throw new NotImplementedException();
         }
-    }
+
+        /// <summary>
+        /// Check for updates via AutoUpdaterNET
+        /// </summary>
+		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+		{
+			AutoUpdater.Start("https://downloads.wolfsys.net/ConnectionMgr/update.xml");
+		}
+	}
 }

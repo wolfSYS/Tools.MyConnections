@@ -20,6 +20,7 @@
     WindowBackdropType="Mica"
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
+	Loaded="MainWindow_Loaded"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

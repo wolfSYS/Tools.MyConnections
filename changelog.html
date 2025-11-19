@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Change Log of wolfSYS.Tools.ConnectionMgr</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Google Font (Montserrat) – keeps the same modern look -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+	<style>
+			/* ------------------------------------------------------------------
+		       Global reset & typography
+		     ------------------------------------------------------------------ */
+			*, *::before, *::after {
+				box-sizing: border-box;
+			}
+
+			body, h1, h2, p, ul {
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: 'Montserrat', sans-serif;
+				line-height: 1.6;
+				background: #121212; /* dark background */
+				color: #e0e0e0; /* light text */
+				padding: 20px;
+				display: flex;
+				justify-content: center;
+			}
+
+			.container {
+				max-width: 800px;
+				width: 100%;
+				background: #1e1e1e; /* slightly lighter panel */
+				border-radius: 8px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+				overflow: hidden;
+			}
+
+			/* ------------------------------------------------------------------
+		       Header
+		    ------------------------------------------------------------------ */
+			header {
+				background: #242424; /* accent dark header */
+				color: #fff;
+				padding: 20px 30px;
+			}
+
+				header h1 {
+					font-size: 1.8rem;
+					font-weight: 600;
+				}
+
+			/* ------------------------------------------------------------------
+		       Log list
+		     ------------------------------------------------------------------ */
+			.log-list {
+				list-style: none;
+				padding: 20px 30px;
+			}
+
+			.log-item {
+				border-bottom: 1px solid #333; /* subtle separator */
+				padding: 15px 0;
+			}
+
+				.log-item:last-child {
+					border-bottom: none;
+				}
+
+			.log-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				margin-bottom: 5px;
+			}
+
+				.log-header .version {
+					font-weight: 600;
+					color: #61dafb; /* bright accent */
+				}
+
+				.log-header .date {
+					font-size: 0.9rem;
+					color: #bbb;
+				}
+
+			.log-description {
+				margin-left: 20px;
+				font-size: 0.95rem;
+			}
+
+			/* ------------------------------------------------------------------
+		        Responsive tweak
+		     ------------------------------------------------------------------ */
+			@media (max-width: 480px) {
+				.log-header {
+					flex-direction: column;
+					align-items: flex-start;
+				}
+
+					.log-header .date {
+						margin-top: 4px;
+					}
+			}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>Change Log of ws.Tools.ConnectionMgr</h1>
+		</header>
+		<ul class="log-list">
+			<li class="log-item">
+				<div class="log-header">
+					<span class="version">ver 1.0.1.13</span>
+					<span class="date">2025‑11‑19</span>
+				</div>
+				<ul class="log-description">
+					<li>• Added AI overview</li>
+					<li>• Bug Fix for blocking public host name via Windows hosts file</li>
+				</ul>
+			</li>
+			<li class="log-item">
+				<div class="log-header">
+					<span class="version">ver 1.0.1.0</span>
+					<span class="date">2025‑11‑13</span>
+				</div>
+				<ul class="log-description">
+					<li>• Inital release</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>
