@@ -83,14 +83,14 @@ namespace ConnectionMgr.ViewModels.Pages
 
 				if (DoesEntryExist(info, hostFileEntries))
 				{
-					// we already have an entry in hosts file for the given IP adr
+					// we already have an entry in hosts file for the given host name
 					var msg = $"An entry for the host name {info.RemoteHostName} already exists in the Windows Hosts file, aborting.";
 					_logger.Debug(msg);
 					ShowWarning("Failed.", msg);
 				}
 				else
 				{
-					// add remote IP adr to hosts file and let it point to localhost
+					// add remote host name to hosts file and let it point to localhost
 					string hostName = info.RemoteHostName;
 					string[] actions = new string[4];
 					actions[0] = "#";
