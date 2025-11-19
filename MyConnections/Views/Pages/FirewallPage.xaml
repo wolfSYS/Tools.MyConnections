@@ -78,8 +78,6 @@
 						<Binding Path="Name" Converter="{StaticResource StripTagConverter}"/>
 					</DataGridTextColumn.Binding>
 				</DataGridTextColumn>
-				<DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnable}" IsReadOnly="True" />
-				<DataGridTextColumn Header="Remote Port" Binding="{Binding RemotePorts[0]}" />
 				<DataGridTextColumn Header="Local Port" Binding="{Binding LocalPorts[0]}" />
 				<DataGridTextColumn Header="Service" Binding="{Binding ServiceName}" />
 				<DataGridTextColumn Header="Application" Binding="{Binding ApplicationName}" FontSize="12" />
