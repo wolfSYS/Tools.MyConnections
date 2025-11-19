@@ -121,8 +121,10 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (info.RemoteAddress != null)
 				{
 					var na = info.RemoteAddress.GetHostName();
-					if (!string.IsNullOrEmpty(na) && na != "::1" && na != "127.0.0.1")
-						if (na != info.RemoteAddress.ToString())
+					if (!string.IsNullOrEmpty(na) &&
+						na != info.RemoteAddress.ToString() &&
+						na != "::1" && 
+						na != "127.0.0.1")
 							return true;
 				}
 			}
