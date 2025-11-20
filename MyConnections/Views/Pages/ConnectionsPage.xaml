@@ -140,7 +140,7 @@
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="3*" />
 							<ColumnDefinition Width="2*" />
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
@@ -167,7 +167,8 @@
 									   FontSize="11"
 									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
 									   Text="Remote Socket:" />
-							<TextBlock Margin="8,0,0,0"								   
+							<TextBlock Margin="8,0,0,0"
+									   FontSize="14"
 									   FontWeight="{Binding RemoteAddress, Converter={StaticResource PublicIpAdrToBold}}"
 									   HorizontalAlignment="Left"
 									   VerticalAlignment="Center"
@@ -178,12 +179,14 @@
 						<StackPanel Grid.Row="1"
 									Grid.Column="2"
 									Margin="0,6,0,0"
+									VerticalAlignment="Center"
 									Orientation="Horizontal">
 							<TextBlock VerticalAlignment="Center"
 									   FontSize="11"
 									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-									   Text="Local Socket:" />
-							<TextBlock Margin="8,0,0,0"								   
+									   Text="Local:" />
+							<TextBlock Margin="8,0,0,0"
+									   FontSize="14"
 									   HorizontalAlignment="Left"
 									   VerticalAlignment="Center"
 									   Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"

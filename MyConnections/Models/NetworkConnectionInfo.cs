@@ -64,7 +64,9 @@ namespace ConnectionMgr.Models
 		{
 			get
 			{
-				return RemoteAddress?.ToString() + " : " + RemotePort.ToString();
+				return RemoteHostName + " : " + RemotePort ?? 
+					RemoteAddress?.ToString() + RemotePort;
+				//return RemoteAddress?.ToString() + " : " + RemotePort.ToString();
 			}
 		}
 
