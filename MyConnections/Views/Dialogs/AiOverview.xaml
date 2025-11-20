@@ -14,8 +14,7 @@
 		WindowBackdropType="Mica"
 		WindowCornerPreference="Round"
 		WindowStartupLocation="CenterOwner"
-		MouseDown="OnWindowMouseDown"
-	>
+		MouseDown="OnWindowMouseDown">
 
 	<Grid>
 		<Grid.RowDefinitions>

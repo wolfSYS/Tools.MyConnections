@@ -21,10 +21,6 @@ namespace ConnectionMgr.Views.Dialogs
 	/// </summary>
 	public partial class AiOverview : FluentWindow
 	{
-		public string InputText { get; set; }
-		public string Message { get; set; }
-		public bool DialogResult {get; set; }
-
 		public AiOverview(string title, string message)
 		{
 			InitializeComponent();
@@ -33,6 +29,10 @@ namespace ConnectionMgr.Views.Dialogs
 			txtTitle.Text = title;
 			Message = message;
 		}
+
+		public bool DialogResult { get; set; }
+		public string InputText { get; set; }
+		public string Message { get; set; }
 
 		private void OnButtonCloseClick(object sender, RoutedEventArgs e)
 		{
@@ -49,11 +49,5 @@ namespace ConnectionMgr.Views.Dialogs
 			if (e.ChangedButton == MouseButton.Left)
 				this.DragMove();
 		}
-
-		private void TitleBarButton_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
 	}
 }
-
