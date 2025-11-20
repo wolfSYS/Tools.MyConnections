@@ -471,23 +471,24 @@ namespace ConnectionMgr.ViewModels.Pages
 		{
 			try
 			{
-				await SetProgressAsync(true);
-				var chat = new OpenAiChatService();
-				var prompt = @$"What is this Kind of Connection?
-What known Application is associated with the Prozess?
-What is this Prozess known for?
-Is it dangerous?
+				//				await SetProgressAsync(true);
+				//				var chat = new OpenAiChatService();
+				//				var prompt = @$"What is this Kind of Connection?
+				//What known Application is associated with the Prozess?
+				//What is this Prozess known for?
+				//Is it dangerous?
 
-'''info
-Prozess (full path or PID): {info.NormalizedProcessPath}
+				//'''info
+				//Prozess (full path or PID): {info.NormalizedProcessPath}
 
-Remote IP:     {info.RemoteAddress}
-Remote Port:   {info.RemotePort}
-Local IP:      {info.LocalAddress}
-Local Port:    {info.LocalPort}
-Network State: {info.State}
-'''";
-				var answer = await chat.GetChatResponseAsync(prompt);
+				//Remote IP:     {info.RemoteAddress}
+				//Remote Port:   {info.RemotePort}
+				//Local IP:      {info.LocalAddress}
+				//Local Port:    {info.LocalPort}
+				//Network State: {info.State}
+				//'''";
+				//				var answer = await chat.GetChatResponseAsync(prompt);
+				var answer = "bla bla blup";
 				await SetProgressAsync(false);
 
 				if (!string.IsNullOrEmpty(answer))

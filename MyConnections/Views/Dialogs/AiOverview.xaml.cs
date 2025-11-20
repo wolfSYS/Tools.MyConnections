@@ -43,6 +43,17 @@ namespace ConnectionMgr.Views.Dialogs
 		{
 			Clipboard.SetText(Message);
 		}
+
+		private void OnWindowMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == MouseButton.Left)
+				this.DragMove();
+		}
+
+		private void TitleBarButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
 

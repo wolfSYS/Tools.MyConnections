@@ -9,14 +9,13 @@
 		Width="1280"
         ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
         ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+		ResizeMode="CanResize"
 		ExtendsContentIntoTitleBar="True"
 		WindowBackdropType="Mica"
 		WindowCornerPreference="Round"
-		WindowStartupLocation="CenterOwner">
-
-	<ui:FluentWindow.Resources>
-		<Style BasedOn="{StaticResource {x:Type ui:ContentDialog}}" TargetType="{x:Type local:AiOverview}" />
-	</ui:FluentWindow.Resources>
+		WindowStartupLocation="CenterOwner"
+		MouseDown="OnWindowMouseDown"
+	>
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -26,11 +25,21 @@
 			<RowDefinition Height="16" />
 		</Grid.RowDefinitions>
 
-		<TextBlock Grid.Row="0"
-				   Margin="8,8,0,0"
-				   x:Name="txtTitle"
-				   Text="AI Overview" 
-				   FontSize="22" />
+		<Grid Grid.Row="0" Margin="8,8,0,8">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0"
+					   HorizontalAlignment="Left"
+					   x:Name="txtTitle"
+					   Text="AI Overview"
+					   FontSize="22" />
+			<ui:TitleBarButton Grid.Column="1" Margin="0,0,8,0"
+							   HorizontalAlignment="Right" 
+							   ButtonType="Close"
+							   Click="OnButtonCloseClick" />
+		</Grid>
 
 		<ScrollViewer Grid.Row="1">
 			<TextBox x:Name="txtEditor" 
