@@ -106,7 +106,8 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (await ShowDialogYesNo("Enable Rule",
 					$"Do you really want to enable the Firewall Rule '{displayRuleName}'?"))
 				{
-					rule.IsEnable = false;
+					rule.IsEnable = true;
+					FirewallManager.Instance.Reload();
 
 					_logger.Information($"Rule {displayRuleName}' has been enabled.");
 					await GetFirewallRules();
@@ -131,6 +132,7 @@ namespace ConnectionMgr.ViewModels.Pages
 					$"Do you really want to disable the Firewall Rule '{displayRuleName}'?"))
 				{
 					rule.IsEnable = false;
+					FirewallManager.Instance.Reload();
 
 					_logger.Information($"Rule {displayRuleName}' has been disabled.");
 					await GetFirewallRules();
