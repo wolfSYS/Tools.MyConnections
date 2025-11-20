@@ -68,10 +68,11 @@
 					 VerticalContentAlignment="Stretch"
 					 HorizontalContentAlignment="Stretch"
 					 AutoGenerateColumns="False"
+					 SelectionMode="Single"
 					 IsReadOnly="True"
 					 Visibility="{Binding ViewModel.Rules.Count, Converter={StaticResource EmptyCountToCollapsed}}"
-					 ItemsSource="{Binding ViewModel.Rules, Mode=OneWay}"
-					 SelectedItem="{Binding ViewModel.CurrentSelection}" >
+					 ItemsSource="{Binding ViewModel.Rules, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 SelectedItem="{Binding ViewModel.CurrentSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
 			<ui:DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Width="260">
 					<DataGridTextColumn.Binding>

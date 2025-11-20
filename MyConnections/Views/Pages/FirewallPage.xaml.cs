@@ -1,4 +1,5 @@
-﻿using ConnectionMgr.ViewModels.Pages;
+﻿using System.Windows.Controls;
+using ConnectionMgr.ViewModels.Pages;
 using Wpf.Ui.Abstractions.Controls;
 
 namespace ConnectionMgr.Views.Pages
@@ -14,5 +15,5 @@ namespace ConnectionMgr.Views.Pages
 
             InitializeComponent();
         }
-    }
+	}
 }

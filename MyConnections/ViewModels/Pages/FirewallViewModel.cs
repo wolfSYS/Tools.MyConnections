@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Controls;
+using System.Windows.Threading;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
@@ -20,6 +23,7 @@ namespace ConnectionMgr.ViewModels.Pages
 
 		[ObservableProperty]
 		private IFirewallRule _currentSelection;
+
 
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
@@ -56,12 +60,20 @@ namespace ConnectionMgr.ViewModels.Pages
 			try
 			{
 				await SetProgressAsync(true);
-				Rules.Clear();
+
+				// TODO: does NOT reset anything on the UI thread!
+				Rules = null;
+				CurrentSelection = null;
+				OnPropertyChanged(nameof(Rules));
+				OnPropertyChanged(nameof(CurrentSelection));
+
+				Rules = new ObservableCollection<IFirewallRule>();
 
 				var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
 				foreach (var rule in filteredRules)
 					Rules.Add(rule);
 
+				OnPropertyChanged(nameof(Rules));
 				await SetProgressAsync(false);
 			}
 			catch (Exception ex)
@@ -107,7 +119,6 @@ namespace ConnectionMgr.ViewModels.Pages
 					$"Do you really want to enable the Firewall Rule '{displayRuleName}'?"))
 				{
 					rule.IsEnable = true;
-					FirewallManager.Instance.Reload();
 
 					_logger.Information($"Rule {displayRuleName}' has been enabled.");
 					await GetFirewallRules();
@@ -190,5 +201,6 @@ namespace ConnectionMgr.ViewModels.Pages
 				ShowError(ex);
 			}
 		}
+
 	}
 }
