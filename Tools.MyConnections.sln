@@ -11,6 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutoUpdaterNET", "AutoUpdat
 		update.xml = update.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{72E8DFD1-4A5E-48BF-943B-237B94BBB330}"
+	ProjectSection(SolutionItems) = preProject
+		InnoSetup\SetupConnectionsMgr.iss = InnoSetup\SetupConnectionsMgr.iss
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
