@@ -495,7 +495,7 @@ Network State: {info.State}
 				else
 					prompt = prompt.Replace("$RHN$", string.Empty);
 
-					var answer = await chat.GetChatResponseAsync(prompt);
+				var answer = await chat.GetChatResponseAsync(prompt);
 				await SetProgressAsync(false);
 
 				if (!string.IsNullOrEmpty(answer))
