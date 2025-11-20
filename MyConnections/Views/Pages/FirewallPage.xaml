@@ -65,6 +65,7 @@
 
 		<!-- our own Firewall rules here -->
 		<ui:DataGrid Grid.Row="1"
+					 x:Name="FirewallGrid"
 					 VerticalContentAlignment="Stretch"
 					 HorizontalContentAlignment="Stretch"
 					 AutoGenerateColumns="False"

@@ -15,15 +15,14 @@ namespace ConnectionMgr.ViewModels.Pages
 {
 	public partial class FirewallViewModel : PagesBaseViewModel
 	{
+		[ObservableProperty]
+		private IFirewallRule _currentSelection;
+
 		private bool _isInitialized = false;
 
 		[ObservableProperty]
 		private ObservableCollection<IFirewallRule> _rules =
 			new ObservableCollection<IFirewallRule>();
-
-		[ObservableProperty]
-		private IFirewallRule _currentSelection;
-
 
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
@@ -33,6 +32,8 @@ namespace ConnectionMgr.ViewModels.Pages
 		{
 			// BaseVM will care about DY
 		}
+
+		public event Action? RulesRefreshed;
 
 		public override Task OnNavigatedFromAsync()
 		{
@@ -49,44 +50,9 @@ namespace ConnectionMgr.ViewModels.Pages
 			return Task.CompletedTask;
 		}
 
-		private void InitializeViewModel()
+		private bool CanDeleteRule(IFirewallRule rule)
 		{
-			GetFirewallRules();
-			_isInitialized = true;
-		}
-
-		private async Task GetFirewallRules()
-		{
-			try
-			{
-				await SetProgressAsync(true);
-
-				// TODO: does NOT reset anything on the UI thread!
-				Rules = null;
-				CurrentSelection = null;
-				OnPropertyChanged(nameof(Rules));
-				OnPropertyChanged(nameof(CurrentSelection));
-
-				Rules = new ObservableCollection<IFirewallRule>();
-
-				var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
-				foreach (var rule in filteredRules)
-					Rules.Add(rule);
-
-				OnPropertyChanged(nameof(Rules));
-				await SetProgressAsync(false);
-			}
-			catch (Exception ex)
-			{
-				await SetProgressAsync(false);
-				_logger.Error(ex, "FirewallVM::GetFirewallRules");
-				ShowError(ex);
-			}
-		}
-
-		private bool CanEnableRule(IFirewallRule rule)
-		{
-			if ((rule != null) && !rule.IsEnable)
+			if (rule != null)
 				return true;
 
 			return false;
@@ -100,61 +66,12 @@ namespace ConnectionMgr.ViewModels.Pages
 			return false;
 		}
 
-		private bool CanDeleteRule(IFirewallRule rule)
+		private bool CanEnableRule(IFirewallRule rule)
 		{
-			if (rule != null) 
+			if ((rule != null) && !rule.IsEnable)
 				return true;
 
 			return false;
-		}
-
-		[RelayCommand(CanExecute = nameof(CanEnableRule))]
-		private async Task EnableRule(IFirewallRule rule)
-		{
-			try
-			{
-				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
-
-				if (await ShowDialogYesNo("Enable Rule",
-					$"Do you really want to enable the Firewall Rule '{displayRuleName}'?"))
-				{
-					rule.IsEnable = true;
-
-					_logger.Information($"Rule {displayRuleName}' has been enabled.");
-					await GetFirewallRules();
-					ShowInfo("Success", $"The Firewall Rule '{displayRuleName}' has been enabled again.");
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.Error(ex, "FirewallVM::EnableRule");
-				ShowError(ex);
-			}
-		}
-
-		[RelayCommand(CanExecute = nameof(CanDisableRule))]
-		private async Task DisableRule(IFirewallRule rule)
-		{
-			try
-			{
-				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
-
-				if (await ShowDialogYesNo("Disable Rule",
-					$"Do you really want to disable the Firewall Rule '{displayRuleName}'?"))
-				{
-					rule.IsEnable = false;
-					FirewallManager.Instance.Reload();
-
-					_logger.Information($"Rule {displayRuleName}' has been disabled.");
-					await GetFirewallRules();
-					ShowInfo("Success", $"The Firewall Rule '{displayRuleName}' has been disabled.");
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.Error(ex, "FirewallVM::DisableRule");
-				ShowError(ex);
-			}
 		}
 
 		[RelayCommand(CanExecute = nameof(CanDeleteRule))]
@@ -180,6 +97,84 @@ namespace ConnectionMgr.ViewModels.Pages
 			}
 		}
 
+		[RelayCommand(CanExecute = nameof(CanDisableRule))]
+		private async Task DisableRule(IFirewallRule rule)
+		{
+			try
+			{
+				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
+
+				if (await ShowDialogYesNo("Disable Rule",
+					$"Do you really want to disable the Firewall Rule '{displayRuleName}'?"))
+				{
+					rule.IsEnable = false;
+					_logger.Information($"Rule {displayRuleName}' has been disabled.");
+
+					await GetFirewallRules();
+					ShowInfo("Success", $"The Firewall Rule '{displayRuleName}' has been disabled.");
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "FirewallVM::DisableRule");
+				ShowError(ex);
+			}
+		}
+
+		[RelayCommand(CanExecute = nameof(CanEnableRule))]
+		private async Task EnableRule(IFirewallRule rule)
+		{
+			try
+			{
+				string displayRuleName = rule.Name.Replace("#ConnectionMgr", "");
+
+				if (await ShowDialogYesNo("Enable Rule",
+					$"Do you really want to enable the Firewall Rule '{displayRuleName}'?"))
+				{
+					rule.IsEnable = true;
+					_logger.Information($"Rule {displayRuleName}' has been enabled.");
+
+					await GetFirewallRules();
+					ShowInfo("Success", $"The Firewall Rule '{displayRuleName}' has been enabled again.");
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "FirewallVM::EnableRule");
+				ShowError(ex);
+			}
+		}
+
+		private async Task GetFirewallRules()
+		{
+			try
+			{
+				await SetProgressAsync(true);
+				Rules = new ObservableCollection<IFirewallRule>();
+
+				var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
+				foreach (var rule in filteredRules)
+					Rules.Add(rule);
+
+				CurrentSelection = null;
+				RulesRefreshed?.Invoke();   // notify View in order to clear datagrid selections
+
+				await SetProgressAsync(false);
+			}
+			catch (Exception ex)
+			{
+				await SetProgressAsync(false);
+				_logger.Error(ex, "FirewallVM::GetFirewallRules");
+				ShowError(ex);
+			}
+		}
+
+		private void InitializeViewModel()
+		{
+			GetFirewallRules();
+			_isInitialized = true;
+		}
+
 		[RelayCommand]
 		private async Task OpenWindowsFirewall()
 		{
@@ -201,6 +196,5 @@ namespace ConnectionMgr.ViewModels.Pages
 				ShowError(ex);
 			}
 		}
-
 	}
 }
