@@ -476,18 +476,26 @@ namespace ConnectionMgr.ViewModels.Pages
 				var prompt = @$"What is this Kind of Connection?
 What known Application is associated with the Prozess?
 What is this Prozess known for?
+If a remote host name was provided, what is known about the host?
 Is it dangerous?
 
 '''info
 Prozess (full path or PID): {info.NormalizedProcessPath}
 
 Remote IP:     {info.RemoteAddress}
+$RHN$
 Remote Port:   {info.RemotePort}
 Local IP:      {info.LocalAddress}
 Local Port:    {info.LocalPort}
 Network State: {info.State}
 '''";
-				var answer = await chat.GetChatResponseAsync(prompt);
+
+				if (!string.IsNullOrEmpty(info.RemoteHostName))
+					prompt = prompt.Replace("$RHN$", $"Remote Host Name: {info.RemoteHostName}");
+				else
+					prompt = prompt.Replace("$RHN$", string.Empty);
+
+					var answer = await chat.GetChatResponseAsync(prompt);
 				await SetProgressAsync(false);
 
 				if (!string.IsNullOrEmpty(answer))
