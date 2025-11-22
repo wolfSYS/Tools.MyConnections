@@ -68,18 +68,36 @@ namespace ConnectionMgr
 			}).Build();
 
 		/// <summary>
-		/// On different environments AppContext.BaseDirectory sometimes ends with "\" and sometimes not, therefore we have to handle this
-		/// strange behaviour.
+		/// <para>
+		/// Returns the folder that the Common Language Runtime uses as the starting point for assembly
+		/// resolution.  On Windows, the exact string returned can by AppContext.BaseDirectory vary between
+		/// installations and deployment types: the value may or may not have a trailing backslash.
+		/// </para>
 		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// • **Framework‑dependent deployments** – The base directory is usually the folder that
+		///   contains the host executable (e.g. <c>&lt;install‑folder&gt;\app.exe</c>).  Some installations
+		///   record that path with a trailing backslash, while others do not.
+		/// </para>
+		/// <para>
+		/// • **Self‑contained or single‑file deployments** – When the app runs as a single file, the
+		///   runtime extracts the embedded assemblies into a temporary folder.  The path to that
+		///   folder is returned by <c>AppContext.BaseDirectory</c>, and that temporary path ends with a
+		///   trailing backslash.
+		/// </para>
+		/// <para>
+		/// Because the presence of the trailing slash is not guaranteed, the .NET runtime documentation
+		/// specifies that <c>AppContext.BaseDirectory</c> may or may not end with a backslash, and the
+		/// behaviour can differ between installations.  For consistent path handling, always combine
+		/// paths using <c>Path.Combine</c>, which takes care of any trailing slashes automatically.
+		/// </para>
+		/// </remarks>
 		public static string GetLogFilesPath
 		{
 			get
 			{
-				var ret = AppContext.BaseDirectory;
-				if (!ret.EndsWith(@"\"))
-					ret += @"\";
-
-				return ret + "logfiles\\log.txt";
+				return Path.Combine(AppContext.BaseDirectory, "logfiles", "log.txt");
 			}
 		}
 
