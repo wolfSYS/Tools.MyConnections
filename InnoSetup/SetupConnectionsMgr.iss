@@ -49,80 +49,14 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\InnoSetup\dotnet-runtime-9.0.11-win-x64.exe"; DestDir: "{tmp}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\AutoUpdater.NET.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\CommunityToolkit.Mvvm.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ConnectionMgr.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ConnectionMgr.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ConnectionMgr.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ConnectionMgr.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ConnectionMgr.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.Binder.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ar\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\cs\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\da\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\de\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\es\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\fr\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ja-JP\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ko\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\lv\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\nl\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\pl\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\pt\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\pt-BR\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\sk\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\sv\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\th\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\tr\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\zh\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\zh-TW\AutoUpdater.NET.resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.EnvironmentVariables.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.FileExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Configuration.UserSecrets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.DependencyInjection.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Diagnostics.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Diagnostics.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.FileProviders.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.FileProviders.Physical.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.FileSystemGlobbing.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Hosting.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Hosting.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.Configuration.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.Console.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.Debug.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.EventLog.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Logging.EventSource.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Options.ConfigurationExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Options.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Extensions.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Web.WebView2.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Web.WebView2.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Web.WebView2.Wpf.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Windows.SDK.NET.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Microsoft.Xaml.Behaviors.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\OpenAI.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Serilog.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Serilog.Sinks.Console.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Serilog.Sinks.File.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\System.ClientModel.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\System.Management.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\System.Memory.Data.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\System.Net.ServerSentEvents.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\System.ServiceProcess.ServiceController.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\D3DCompiler_47_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\PenImc_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\PresentationNative_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\vcruntime140_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\WebView2Loader.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\WindowsFirewallHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\WinRT.Runtime.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Wpf.Ui.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Wpf.Ui.DependencyInjection.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\Wpf.Ui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\wpfgfx_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -133,66 +67,15 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-const
-  RuntimeFileName = 'dotnet-runtime-9.0.11-win-x64.exe';
-
-function IsRuntimeInstalled(): Boolean;
-var
-  Version: string;
+// exit setup on 32bit machines
+function InitializeSetup(): Boolean;
 begin
-  Result := RegQueryStringValue(
-    HKLM,
-    'SOFTWARE\dotnet\Setup\InstalledVersions\win-x64\sharedhost',
-    'Version',
-    Version
-  );
-end;
+  Result := True;
 
-procedure InitializeWizard(); 
-var
-  NeedRuntime: Boolean;
-  ResultCode: Integer;
-  RuntimeFullPath: String;
-begin    
-  // Only run on 64 bit Windows
   if not IsWin64 then
-  begin
-    MsgBox('This installer requires a 64 bit Windows.', mbError, MB_OK);
-    Abort;
-  end;
-
-  RuntimeFullPath := ExpandConstant('{tmp}\' + RuntimeFileName);
-  NeedRuntime := not IsRuntimeInstalled();
-
-  if NeedRuntime then
-  begin
-    // The file was just downloaded into {tmp} by the [Files] section
-    if FileExists(RuntimeFullPath) then
-    begin
-      // Run the installer silently.  The .NET installer honours the –silent flag.
-      Exec(
-        RuntimeFullPath,
-        '-silent',
-        '',
-        SW_HIDE,
-        ewWaitUntilTerminated,
-        ResultCode
-      );
-
-      if ResultCode <> 0 then
-      begin
-        MsgBox(
-          Format('.NET 9 Runtime installation failed (error code %1).', [IntToStr(ResultCode)]),
-          mbError,
-          MB_OK
-        );
-        Abort;
-      end;
-    end
-    else
-    begin
-      MsgBox('The runtime download failed – file not found.', mbError, MB_OK);
-      Abort;
-    end;
+  begin                     
+    SuppressibleMsgBox(
+      'Error: This application requires a 64 bit Windows.', mbError, MB_OK, IDOK);
+    Result := False;
   end;
 end;

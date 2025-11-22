@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutoUpdaterNET", "AutoUpdat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{72E8DFD1-4A5E-48BF-943B-237B94BBB330}"
 	ProjectSection(SolutionItems) = preProject
-		InnoSetup\dotnet-runtime-9.0.11-win-x64.exe = InnoSetup\dotnet-runtime-9.0.11-win-x64.exe
 		InnoSetup\SetupConnectionsMgr.iss = InnoSetup\SetupConnectionsMgr.iss
 	EndProjectSection
 EndProject
