@@ -70,11 +70,9 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand]
 		public void OpenLogFile()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}logfiles\log.txt";
-
 			Process process = new Process();
 			process.StartInfo.FileName = "explorer.exe";
-			process.StartInfo.Arguments = Path.GetDirectoryName(logFilePath);
+			process.StartInfo.Arguments = Path.GetDirectoryName(App.GetLogFilesPath);
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
 			process.Start();
 		}

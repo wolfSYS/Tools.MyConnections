@@ -77,21 +77,19 @@ namespace ConnectionMgr.Services
 
 		public void InitLoggerDebug()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}logfiles\log.txt"; // winui3: ApplicationData.Current.LocalFolder.Path + @"\Log\log.txt";
 			log = new LoggerConfiguration()
 						.MinimumLevel.Debug()
 						.WriteTo.Console()
-						.WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
+						.WriteTo.File(App.GetLogFilesPath, rollingInterval: RollingInterval.Day)
 						.CreateLogger();
 		}
 
 		public void InitLoggerWarning()
 		{
-			var logFilePath = $@"{AppContext.BaseDirectory}logfiles\log.txt";  // winui3: ApplicationData.Current.LocalFolder.Path + @"\Log\log.txt";
 			log = new LoggerConfiguration()
 						.MinimumLevel.Warning()
 						.WriteTo.Console()
-						.WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
+						.WriteTo.File(App.GetLogFilesPath, rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
 						.CreateLogger();
 		}
 	}
