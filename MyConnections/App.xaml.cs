@@ -68,36 +68,23 @@ namespace ConnectionMgr
 			}).Build();
 
 		/// <summary>
-		/// <para>
-		/// Returns the folder that the Common Language Runtime uses as the starting point for assembly
-		/// resolution.  On Windows, the exact string returned can by AppContext.BaseDirectory vary between
-		/// installations and deployment types: the value may or may not have a trailing backslash.
-		/// </para>
+		/// Create logfiles in C:\Users\[UserName]\AppData\Local\wolfSYS\Tools\ConnectionMgr\logfiles
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// • **Framework‑dependent deployments** – The base directory is usually the folder that
-		///   contains the host executable (e.g. <c>&lt;install‑folder&gt;\app.exe</c>).  Some installations
-		///   record that path with a trailing backslash, while others do not.
-		/// </para>
-		/// <para>
-		/// • **Self‑contained or single‑file deployments** – When the app runs as a single file, the
-		///   runtime extracts the embedded assemblies into a temporary folder.  The path to that
-		///   folder is returned by <c>AppContext.BaseDirectory</c>, and that temporary path ends with a
-		///   trailing backslash.
-		/// </para>
-		/// <para>
-		/// Because the presence of the trailing slash is not guaranteed, the .NET runtime documentation
-		/// specifies that <c>AppContext.BaseDirectory</c> may or may not end with a backslash, and the
-		/// behaviour can differ between installations.  For consistent path handling, always combine
-		/// paths using <c>Path.Combine</c>, which takes care of any trailing slashes automatically.
-		/// </para>
-		/// </remarks>
 		public static string GetLogFilesPath
 		{
 			get
 			{
-				return Path.Combine(AppContext.BaseDirectory, "logfiles", "log.txt");
+				// Local user data folder (C:\Users\[UserName]\AppData\Local)
+				string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+				// Folder hierarchy
+				string logFolder = Path.Combine(appData, "wolfSYS", "Tools", "ConnectionMgr", "logfiles");
+
+				// Ensure the folder exists
+				Directory.CreateDirectory(logFolder);
+
+				// Full path to the log file
+				return Path.Combine(logFolder, "log.txt");
 			}
 		}
 
