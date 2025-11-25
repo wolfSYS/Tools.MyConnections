@@ -9,7 +9,7 @@ using WindowsFirewallHelper;
 namespace ConnectionMgr.Converters
 {
 	/// <summary>
-	/// Converter for hiding (Visibility.Collapsed) an empty DataGrid.
+	/// Converter displaying enabled/disabled state of a Firewall Rule on the DataGrid
 	/// </summary>
 	public class FirewallEnabledStateToImage : IValueConverter
 	{
