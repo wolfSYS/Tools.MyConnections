@@ -63,9 +63,6 @@ Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\wp
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
-[Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
 [Code]
 // exit setup on 32bit machines
 function InitializeSetup(): Boolean;
