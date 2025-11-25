@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <item>
-	<version>1.0.1.13</version>
+	<version>1.0.1.14</version>
 	<url>https://downloads.wolfsys.net/ConnectionMgr/SetupConnectionMgr.zip</url>
 	<changelog>https://downloads.wolfsys.net/ConnectionMgr/changelog.html</changelog>
 	<mandatory>false</mandatory>

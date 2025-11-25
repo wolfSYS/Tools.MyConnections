@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "Connection Manager"
-#define MyAppVersion "1.0.1.13"
+#define MyAppVersion "1.0.1.14"
 #define MyAppPublisher "wolfSYS.net"
 #define MyAppURL "https://wolfsys.net/"
 #define MyAppExeName "ConnectionMgr.exe"
