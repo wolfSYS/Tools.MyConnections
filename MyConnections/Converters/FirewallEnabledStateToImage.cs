@@ -9,7 +9,7 @@ using WindowsFirewallHelper;
 namespace ConnectionMgr.Converters
 {
 	/// <summary>
-	/// Converter displaying enabled/disabled state of a Firewall Rule on the DataGrid
+	/// Converter for displaying enabled/disabled state of a Firewall Rule on the DataGrid
 	/// </summary>
 	public class FirewallEnabledStateToImage : IValueConverter
 	{
