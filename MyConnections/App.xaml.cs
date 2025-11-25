@@ -81,7 +81,8 @@ namespace ConnectionMgr
 				string logFolder = Path.Combine(appData, "wolfSYS", "Tools", "ConnectionMgr", "logfiles");
 
 				// Ensure the folder exists
-				Directory.CreateDirectory(logFolder);
+				if (!Directory.Exists(logFolder))
+					Directory.CreateDirectory(logFolder);
 
 				// Full path to the log file
 				return Path.Combine(logFolder, "log.txt");
