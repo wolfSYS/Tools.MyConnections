@@ -39,10 +39,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\FwIsDisabled.png" />
+    <None Remove="Assets\FwIsEnable.png" />
     <None Remove="Assets\wpfui-icon-256.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\FwIsDisabled.png" />
+    <Resource Include="Assets\FwIsEnable.png" />
     <Resource Include="Assets\wpfui-icon-256.png" />
   </ItemGroup>
 

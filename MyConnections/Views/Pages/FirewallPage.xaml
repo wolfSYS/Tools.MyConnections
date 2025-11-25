@@ -22,6 +22,7 @@
 		<conv:EmptyCountToVisibilityConverter x:Key="EmptyCountToVisible" />
 		<conv:EmptyCountToCollapsedConverter x:Key="EmptyCountToCollapsed" />
 		<conv:StripAppTagFromFwRuleConverter x:Key="StripTagConverter" />
+		<conv:FirewallEnabledStateToImage x:Key="FwEnabledStateConverter" />
 		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
@@ -80,6 +81,13 @@
 						<Binding Path="Name" Converter="{StaticResource StripTagConverter}"/>
 					</DataGridTextColumn.Binding>
 				</DataGridTextColumn>
+				<DataGridTemplateColumn Width="80" Header="Enabled">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Image Source="{Binding IsEnable, Converter={StaticResource FwEnabledStateConverter}}" Width="14" Height="14" />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
 				<DataGridTextColumn Header="Local Port" Binding="{Binding LocalPorts[0]}" />
 				<DataGridTextColumn Header="Service" Binding="{Binding ServiceName}" />
 				<DataGridTextColumn Header="Application" Binding="{Binding ApplicationName}" FontSize="12" />
