@@ -25,7 +25,7 @@ namespace ConnectionMgr.Converters
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			// Defensive: treat null or non‑bool as “disabled”
+			// Defensive: treat null or non‑bool as disabled
 			bool isEnabled = value is bool b && b;
 
 			// Return the pre‑loaded image that matches the state
