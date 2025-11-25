@@ -10,7 +10,14 @@ using AutoUpdaterDotNET;
 
 namespace ConnectionMgr.Views.Windows
 {
-    public partial class MainWindow : INavigationWindow
+
+	/// <summary>
+	/// Provides the MainWindow of the application.
+	/// </summary>
+	/// <remarks>
+	/// In the <see cref="MainWindow_Loaded(object, RoutedEventArgs)"/> event we check for automatically updates via AutoUpdaterDotNET.
+	/// </remarks>
+	public partial class MainWindow : INavigationWindow
     {
         public MainWindowViewModel ViewModel { get; }
 
@@ -77,9 +84,9 @@ namespace ConnectionMgr.Views.Windows
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Check for updates via AutoUpdaterNET
-        /// </summary>
+		/// <summary>
+		/// Check for updates via AutoUpdaterNET
+		/// </summary>
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			AutoUpdater.Start("https://downloads.wolfsys.net/ConnectionMgr/update.xml");

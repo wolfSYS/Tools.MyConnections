@@ -13,6 +13,19 @@ using Wpf.Ui;
 
 namespace ConnectionMgr.ViewModels.Pages
 {
+	/// <summary>
+	/// Provides the ViewModel logic for the <see cref="ConnectionMgr.Views.Pages.FirewallPage"> view.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This ViewModel derives from <see cref="PagesBaseViewModel"/> and uses
+	/// <see cref="CommunityToolkit.Mvvm.ComponentModel.ObservableObject"/> to raise
+	/// <see cref="INotifyPropertyChanged.PropertyChanged"/> automatically.
+	/// </para><para>
+	/// The class is marked <c>partial</c> so that the CommunityToolkit.Mvvm
+	/// source generators can add the backing fields for <see cref="[ObservableProperty]"/> attributes.
+	/// </para>
+	/// </remarks>
 	public partial class FirewallViewModel : PagesBaseViewModel
 	{
 		[ObservableProperty]
