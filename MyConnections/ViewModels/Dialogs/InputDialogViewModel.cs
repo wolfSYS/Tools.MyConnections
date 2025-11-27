@@ -13,7 +13,7 @@ namespace ConnectionMgr.ViewModels.Dialogs
 
 		[ObservableProperty] private string _message = string.Empty;
 
-		[ObservableProperty] private string inputText = string.Empty;
+		[ObservableProperty] private string _inputText = string.Empty;
 
 		public event EventHandler? OkRequested;
 
