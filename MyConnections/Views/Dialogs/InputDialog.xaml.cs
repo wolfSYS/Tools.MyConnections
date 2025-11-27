@@ -19,9 +19,6 @@ namespace ConnectionMgr.Views.Dialogs
 				InputText = defaultText
 			};
 
-			// Hook up the OK request → close logic
-			vm.OkRequested += (_, _) => { DialogResult = true; };
-
 			DataContext = vm;
 			PrimaryButtonText = "OK";
 
@@ -29,14 +26,10 @@ namespace ConnectionMgr.Views.Dialogs
 			Loaded += (_, _) => InputBox?.Focus();
 		}
 
-		public bool DialogResult { get; set; }
-		public string InputText { get; set; }
-		public string Message { get; set; }
-
 		// We keep the default behaviour of WPF‑Ui’s ContentDialog
 		protected override void OnButtonClick(ContentDialogButton button)
 		{
-			// No custom behaviour – let the base implementation do its job.
+			// no custom behaviour – let the base implementation do its job.
 			base.OnButtonClick(button);
 		}
 	}
