@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace ConnectionMgr.ViewModels.Dialogs
 {
+	/// <summary>
+	/// ViewModel for an user input dialog.
+	/// </summary>
 	public partial class InputDialogViewModel : ObservableObject
 	{
 		[ObservableProperty] private string _dialogTitle = "Your input is required";
