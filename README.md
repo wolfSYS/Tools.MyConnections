@@ -31,6 +31,7 @@ _Since ConnectionMgr can kill running processes, manipulate the Windows Firewall
 
 _TechStack: .NET9 WPF x64_
 
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
 [screenshot-main]: Screenshots/ConnectionMgr-BlockTraffic.png
 [screenshot-ai]: Screenshots/AI-overview_01.png
