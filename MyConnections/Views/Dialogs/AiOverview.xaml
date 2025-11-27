@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 		xmlns:local="clr-namespace:ConnectionMgr.Views.Dialogs"
-        Title="AI Overview"
+        Title="{Binding DialogTitle}"
 		Height="680" 
 		Width="1280"
         ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -37,7 +37,7 @@
 			<ui:TitleBarButton Grid.Column="1" Margin="0,0,8,0"
 							   HorizontalAlignment="Right" 
 							   ButtonType="Close"
-							   Click="OnButtonCloseClick" />
+							   Command="{Binding CloseDialogCommand}" />
 		</Grid>
 
 		<ScrollViewer Grid.Row="1">
@@ -60,7 +60,7 @@
 				   Icon="{ui:SymbolIcon ClipboardTextLtr24}"
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center"				   
-				   Click="OnButtonCopyClick"
+				   Command="{Binding Copy2ClipboardCommand}"
 				   Width="140"
 				   Margin="0,8,0,0" />
 			<ui:Button Content="Close"
@@ -69,7 +69,7 @@
 				   Appearance="Primary"
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center"				   
-				   Click="OnButtonCloseClick"
+				   Command="{Binding CloseDialogCommand}"
 				   Width="140"
 				   Margin="0,8,0,0" />
 		</Grid>

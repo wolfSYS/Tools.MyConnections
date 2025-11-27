@@ -27,19 +27,39 @@ namespace ConnectionMgr.Views.Dialogs
 		public InputDialog(ContentPresenter? contentPresenter, string title, string message, string defaultText = "") : base(contentPresenter)
 		{
 			InitializeComponent();
-			DataContext = this;
-			Title = title;
-			Message = message;
-			InputText = defaultText;
-			InputBox.Text = defaultText;
-			InputBox.Focus();
+			//DataContext = this;
+			//Title = title;
+			//Message = message;
+			//InputText = defaultText;
+			//InputBox.Text = defaultText;
+			//InputBox.Focus();
+			//PrimaryButtonText = "OK";
+			var vm = new ViewModels.Dialogs.InputDialogViewModel
+			{
+				DialogTitle = title,
+				Message = message,
+				InputText = defaultText
+			};
+
+			// Hook up the OK request → close logic
+			vm.OkRequested += (_, _) =>
+			{
+				DialogResult = true;
+				//this.Close();
+			};
+
+			DataContext = vm;
 			PrimaryButtonText = "OK";
+
+			// Focus the textbox after the dialog is shown
+			Loaded += (_, _) => InputBox?.Focus();
 		}
 
+		// We keep the default behaviour of WPF‑Ui’s ContentDialog
 		protected override void OnButtonClick(ContentDialogButton button)
 		{
+			// No custom behaviour – let the base implementation do its job.
 			base.OnButtonClick(button);
-			return;
 		}
 	}
 }

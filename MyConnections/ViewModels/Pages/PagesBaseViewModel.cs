@@ -4,6 +4,7 @@ using ConnectionMgr.Views.Dialogs;
 using Wpf.Ui;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace ConnectionMgr.ViewModels
 {
@@ -133,25 +134,24 @@ namespace ConnectionMgr.ViewModels
 		/// </summary>
 		protected async Task<string> ShowInputDialog(string title, string message, string defaultValue = "")
 		{
-			var dlgHost = _dialogService.GetDialogHost();           // you return the host from the dialog‑service
+			var dlgHost = _dialogService.GetDialogHost();
 			var dlg = new InputDialog(dlgHost, title, message, defaultValue);
 			var result = await dlg.ShowAsync();
 
+			// grab the VM in order to read the input-text from it
+			var vm = dlg.DataContext as ViewModels.Dialogs.InputDialogViewModel;
+
 			return result == ContentDialogResult.Primary
-				   ? dlg.InputText
+				   ? vm.InputText
 				   : string.Empty;
 		}
 
-		//protected async Task<string> ShowAiOverview(string title, string message)
-		//{
-		//	var dlgHost = _dialogService.GetDialogHost();           // you return the host from the dialog‑service
-		//	var dlg = new AiOverview(dlgHost, title, message);
-		//	var result = await dlg.ShowAsync();
-
-		//	return result == ContentDialogResult.Primary
-		//		   ? dlg.InputText
-		//		   : string.Empty;
-		//}
+		protected void ShowAiOverview(string title, string message)
+		{
+			var dlgHost = _dialogService.GetDialogHost();
+			var dlg = new AiOverview(title, message);
+			dlg.ShowDialog();
+		}
 
 
 		#endregion Helper methods (protected – called from derived classes)

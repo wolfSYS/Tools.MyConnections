@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ConnectionMgr.ViewModels.Dialogs;
+using ConnectionMgr.ViewModels.Pages;
 using Microsoft.Win32;
 using Wpf.Ui.Controls;
 
@@ -24,24 +26,17 @@ namespace ConnectionMgr.Views.Dialogs
 		public AiOverview(string title, string message)
 		{
 			InitializeComponent();
-			DataContext = this;
-			Title = title;
-			txtTitle.Text = title;
-			Message = message;
-		}
 
-		public bool DialogResult { get; set; }
-		public string InputText { get; set; }
-		public string Message { get; set; }
+			var vm = new AiOverviewViewModel
+			{
+				DialogTitle = title,
+				Message = message
+			};
 
-		private void OnButtonCloseClick(object sender, RoutedEventArgs e)
-		{
-			this.Close();
-		}
+			// 2️ Wire the CloseRequested event to actually close the window
+			vm.CloseRequested += (_, __) => this.Close();
 
-		private void OnButtonCopyClick(object sender, RoutedEventArgs e)
-		{
-			Clipboard.SetText(Message);
+			DataContext = vm;
 		}
 
 		private void OnWindowMouseDown(object sender, MouseButtonEventArgs e)

@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 		xmlns:local="clr-namespace:ConnectionMgr.Views.Dialogs"
-        Title="User Input required"
+        Title="{Binding DialogTitle}"
 		CloseButtonText="Cancel"
 	    DialogMaxWidth="750"
 		DialogMaxHeight="680"
@@ -20,7 +20,7 @@
 	<StackPanel>
 		<TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
 		<ui:TextBox x:Name="InputBox"
-                           Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="0,24,0,10"/>
+					Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					Margin="0,24,0,10"/>
 	</StackPanel>
 </ui:ContentDialog>

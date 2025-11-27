@@ -512,14 +512,9 @@ Network State: {info.State}
 				await SetProgressAsync(false);
 
 				if (!string.IsNullOrEmpty(answer))
-				{
-					var dlgSummary = new AiOverview("AI Overview", answer);
-					dlgSummary.ShowDialog();
-				}
+					ShowAiOverview("AI Overview", answer);
 				else
-				{
 					ShowError(new Exception("Unable to invoke OpenAI API, please check your settings."));
-				}
 			}
 			catch (Exception ex)
 			{
