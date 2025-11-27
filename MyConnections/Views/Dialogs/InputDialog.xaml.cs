@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 using Wpf.Ui.Controls;
 
 namespace ConnectionMgr.Views.Dialogs
@@ -20,20 +8,10 @@ namespace ConnectionMgr.Views.Dialogs
 	/// </summary>
 	public partial class InputDialog : ContentDialog
 	{
-		public string InputText { get; set; }
-		public string Message { get; set; }
-		public bool DialogResult {get; set; }
-
 		public InputDialog(ContentPresenter? contentPresenter, string title, string message, string defaultText = "") : base(contentPresenter)
 		{
 			InitializeComponent();
-			//DataContext = this;
-			//Title = title;
-			//Message = message;
-			//InputText = defaultText;
-			//InputBox.Text = defaultText;
-			//InputBox.Focus();
-			//PrimaryButtonText = "OK";
+
 			var vm = new ViewModels.Dialogs.InputDialogViewModel
 			{
 				DialogTitle = title,
@@ -42,11 +20,7 @@ namespace ConnectionMgr.Views.Dialogs
 			};
 
 			// Hook up the OK request → close logic
-			vm.OkRequested += (_, _) =>
-			{
-				DialogResult = true;
-				//this.Close();
-			};
+			vm.OkRequested += (_, _) => { DialogResult = true; };
 
 			DataContext = vm;
 			PrimaryButtonText = "OK";
@@ -54,6 +28,10 @@ namespace ConnectionMgr.Views.Dialogs
 			// Focus the textbox after the dialog is shown
 			Loaded += (_, _) => InputBox?.Focus();
 		}
+
+		public bool DialogResult { get; set; }
+		public string InputText { get; set; }
+		public string Message { get; set; }
 
 		// We keep the default behaviour of WPF‑Ui’s ContentDialog
 		protected override void OnButtonClick(ContentDialogButton button)
@@ -63,4 +41,3 @@ namespace ConnectionMgr.Views.Dialogs
 		}
 	}
 }
-
