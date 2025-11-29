@@ -16,11 +16,11 @@ namespace ConnectionMgr.ViewModels.Pages
 		[ObservableProperty]
 		private IFirewallRule? _currentSelection;
 
-		private bool _isInitialized = false;
-
 		[ObservableProperty]
 		private ObservableCollection<IFirewallRule> _rules =
 			new ObservableCollection<IFirewallRule>();
+
+		private bool _isInitialized = false;
 
 		public FirewallViewModel(
 					Interfaces.ILoggerService logger,
