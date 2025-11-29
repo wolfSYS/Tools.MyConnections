@@ -1,35 +1,20 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using ConnectionMgr.Helpers;
-using ConnectionMgr.Models;
-using ConnectionMgr.Properties;
 using WindowsFirewallHelper;
 using Wpf.Ui;
 
 namespace ConnectionMgr.ViewModels.Pages
 {
-	/// <summary>
-	/// Provides the ViewModel logic for the <see cref="ConnectionMgr.Views.Pages.FirewallPage"> view.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// This ViewModel derives from <see cref="PagesBaseViewModel"/> and uses
-	/// <see cref="CommunityToolkit.Mvvm.ComponentModel.ObservableObject"/> to raise
-	/// <see cref="INotifyPropertyChanged.PropertyChanged"/> automatically.
-	/// </para><para>
-	/// The class is marked <c>partial</c> so that the CommunityToolkit.Mvvm
-	/// source generators can add the backing fields for <see cref="[ObservableProperty]"/> attributes.
-	/// </para>
-	/// </remarks>
+	/// <summary> Provides the ViewModel logic for the <see cref="ConnectionMgr.Views.Pages.FirewallPage"> view. </summary> <remarks> <para>
+	/// This ViewModel derives from <see cref="PagesBaseViewModel"/> and uses <see
+	/// cref="CommunityToolkit.Mvvm.ComponentModel.ObservableObject"/> to raise <see cref="INotifyPropertyChanged.PropertyChanged"/>
+	/// automatically. </para><para> The class is marked <c>partial</c> so that the CommunityToolkit.Mvvm source generators can add the
+	/// backing fields for <see cref="[ObservableProperty]"/> attributes. </para> </remarks>
 	public partial class FirewallViewModel : PagesBaseViewModel
 	{
 		[ObservableProperty]
-		private IFirewallRule _currentSelection;
+		private IFirewallRule? _currentSelection;
 
 		private bool _isInitialized = false;
 
@@ -97,9 +82,15 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (await ShowDialogYesNo("Delete Rule",
 					$"Do you really want to remove the Firewall Rule '{displayRuleName}'?\nThis action can not be undone."))
 				{
-					FirewallManager.Instance.Rules.Remove(rule);
-					_logger.Information($"Rule '{displayRuleName}' removed from MS Windows Firewall.");
+					var nameToRemove = rule.Name;
+					var match = FirewallManager.Instance.Rules.FirstOrDefault(r => r.Name == nameToRemove);
+					if (match != null)
+						FirewallManager.Instance.Rules.Remove(match);
+
 					await GetFirewallRules();
+					App.Current.Dispatcher.Invoke(() => CurrentSelection = null);
+
+					_logger.Information($"Rule '{displayRuleName}' removed from MS Windows Firewall.");
 					ShowInfo("Removed successfully", $"The Rule '{displayRuleName}' has been removed successfully from the Windows Firewall.");
 				}
 			}
@@ -120,10 +111,15 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (await ShowDialogYesNo("Disable Rule",
 					$"Do you really want to disable the Firewall Rule '{displayRuleName}'?"))
 				{
-					rule.IsEnable = false;
-					_logger.Information($"Rule {displayRuleName}' has been disabled.");
+					var ruleToDisable = rule.Name;
+					var match = FirewallManager.Instance.Rules.FirstOrDefault(r => r.Name == ruleToDisable);
+					if (match != null)
+						match.IsEnable = false;
 
 					await GetFirewallRules();
+					App.Current.Dispatcher.Invoke(() => CurrentSelection = null);
+
+					_logger.Information($"Rule {displayRuleName}' has been disabled.");
 					ShowInfo("Success", $"The Firewall Rule '{displayRuleName}' has been disabled.");
 				}
 			}
@@ -144,10 +140,15 @@ namespace ConnectionMgr.ViewModels.Pages
 				if (await ShowDialogYesNo("Enable Rule",
 					$"Do you really want to enable the Firewall Rule '{displayRuleName}'?"))
 				{
-					rule.IsEnable = true;
-					_logger.Information($"Rule {displayRuleName}' has been enabled.");
+					var ruleToEnable = rule.Name;
+					var match = FirewallManager.Instance.Rules.FirstOrDefault(r => r.Name == ruleToEnable);
+					if (match != null)
+						match.IsEnable = true;
 
 					await GetFirewallRules();
+					App.Current.Dispatcher.Invoke(() => CurrentSelection = null);
+
+					_logger.Information($"Rule {displayRuleName}' has been enabled.");
 					ShowInfo("Success", $"The Firewall Rule '{displayRuleName}' has been enabled again.");
 				}
 			}
@@ -163,14 +164,22 @@ namespace ConnectionMgr.ViewModels.Pages
 			try
 			{
 				await SetProgressAsync(true);
-				Rules = new ObservableCollection<IFirewallRule>();
+				Rules.Clear();
 
-				var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name);
-				foreach (var rule in filteredRules)
-					Rules.Add(rule);
+				var filteredRules = FirewallManager.Instance.Rules.Where(x => x.Name.Contains("#ConnectionMgr")).OrderBy(x => x.Name).ToList();
+				App.Current.Dispatcher.Invoke(() =>
+				{
+					Rules.Clear();
+					foreach (var rule in filteredRules)
+						Rules.Add(rule);
 
-				CurrentSelection = null;
-				RulesRefreshed?.Invoke();   // notify View in order to clear datagrid selections
+					CurrentSelection = null;
+				});
+
+				// Rules collection changed => tell commands to re-evaluate their CanExecute
+				EnableRuleCommand.NotifyCanExecuteChanged();
+				DisableRuleCommand.NotifyCanExecuteChanged();
+				DeleteRuleCommand.NotifyCanExecuteChanged();
 
 				await SetProgressAsync(false);
 			}
@@ -189,7 +198,7 @@ namespace ConnectionMgr.ViewModels.Pages
 		}
 
 		[RelayCommand]
-		private async Task OpenWindowsFirewall()
+		private Task OpenWindowsFirewall()
 		{
 			try
 			{
@@ -208,6 +217,15 @@ namespace ConnectionMgr.ViewModels.Pages
 				_logger.Error(ex, "FirewallVM::OpenWindowsFirewall");
 				ShowError(ex);
 			}
+
+			return Task.CompletedTask;
+		}
+
+		partial void OnCurrentSelectionChanged(IFirewallRule? value)
+		{
+			EnableRuleCommand.NotifyCanExecuteChanged();
+			DisableRuleCommand.NotifyCanExecuteChanged();
+			DeleteRuleCommand.NotifyCanExecuteChanged();
 		}
 	}
 }

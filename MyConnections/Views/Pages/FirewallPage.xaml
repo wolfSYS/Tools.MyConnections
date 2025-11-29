@@ -38,18 +38,18 @@
 			<ui:Button Content="Enable"
 					   ToolTip="Enables the deactivated Rule"
 					   Command="{Binding ViewModel.EnableRuleCommand}"
-					   CommandParameter="{Binding ViewModel.CurrentSelection}"
+					   CommandParameter="{Binding SelectedItem, ElementName=FirewallGrid}"
 					   Icon="{ui:SymbolIcon FlashCheckmark24}" />
 			<ui:Button Content="Disable"
 					   ToolTip="Disables the active Rule"
 					   Command="{Binding ViewModel.DisableRuleCommand}"
-					   CommandParameter="{Binding ViewModel.CurrentSelection}"
+					   CommandParameter="{Binding SelectedItem, ElementName=FirewallGrid}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon SquareDismiss16}" />
 			<ui:Button Content="Delete"
 					   ToolTip="Removes the Rule from the Firewall"
 					   Command="{Binding ViewModel.DeleteRuleCommand}"
-					   CommandParameter="{Binding ViewModel.CurrentSelection}"
+					   CommandParameter="{Binding SelectedItem, ElementName=FirewallGrid}"
 					   Margin="4,0,0,0"
 					   Icon="{ui:SymbolIcon Delete24}" />
 			<ui:Button Content="Open Firewall"
@@ -73,7 +73,7 @@
 					 SelectionMode="Single"
 					 IsReadOnly="True"
 					 Visibility="{Binding ViewModel.Rules.Count, Converter={StaticResource EmptyCountToCollapsed}}"
-					 ItemsSource="{Binding ViewModel.Rules, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 ItemsSource="{Binding ViewModel.Rules, Mode=OneWay}"
 					 SelectedItem="{Binding ViewModel.CurrentSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
 			<ui:DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Width="260">
