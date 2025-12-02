@@ -3,9 +3,9 @@
 ; Non-commercial use only
 
 #define MyAppName "Connection Manager"
-#define MyAppVersion "1.0.1.15"
+#define MyAppVersion "1.0.1.17"
 #define MyAppPublisher "wolfSYS.net"
-#define MyAppURL "https://wolfsys.net/"
+#define MyAppURL "https://www.wolfsys.net/"
 #define MyAppExeName "ConnectionMgr.exe"
 
 [Setup]
@@ -34,7 +34,7 @@ DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=SetupConnectionMgr
-SetupIconFile=W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\wpfui-icon.ico
+SetupIconFile=W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\wpfui-icon.ico
 SolidCompression=yes
 WizardStyle=modern dark polar
 
@@ -49,14 +49,14 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\ConnectionMgr.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\D3DCompiler_47_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\PenImc_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\PresentationNative_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\vcruntime140_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\WebView2Loader.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "W:\WOLFSYS\SRC\Tools.MyConnections\MyConnections\bin\Release\publish\wpfgfx_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\ConnectionMgr.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\D3DCompiler_47_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\PenImc_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\PresentationNative_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\vcruntime140_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\WebView2Loader.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "W:\WOLFSYS\SRC\Tools.ConnectionMgr\ConnectionMgr\bin\Release\publish\wpfgfx_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

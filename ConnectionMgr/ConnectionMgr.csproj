@@ -14,8 +14,8 @@
     <Title>ConnectionMgr</Title>
     <PackageId>wolfSYS.Tools.ConnectionMgr</PackageId>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <FileVersion>1.0.1.15</FileVersion>
-    <AssemblyVersion>1.0.1.15</AssemblyVersion>
+    <FileVersion>1.0.1.17</FileVersion>
+    <AssemblyVersion>1.0.1.17</AssemblyVersion>
     <Copyright>Copyright 2025 by wolfSYS.net</Copyright>
   </PropertyGroup>
 

@@ -32,5 +32,20 @@
     <Setting Name="OpenAiApiKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">NOT-NEEDED-FOR-OLLAMA</Value>
     </Setting>
+    <Setting Name="LastKnownAppVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0.1.17</Value>
+    </Setting>
+    <Setting Name="MainWindowX" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="MainWindowY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="MainWindowW" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="MainWindowH" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
