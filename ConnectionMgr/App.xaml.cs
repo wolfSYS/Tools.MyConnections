@@ -53,6 +53,10 @@ namespace ConnectionMgr
 				// Service containing navigation, same as INavigationWindow... but without window
 				services.AddSingleton<INavigationService, NavigationService>();
 
+				// add ConnectionCollector as a hosted service to run in the background
+				services.AddHostedService<BackgroundConnectionService>();
+				services.AddSingleton<BackgroundConnectionService>();
+
 				// Main window with navigation
 				services.AddSingleton<INavigationWindow, MainWindow>();
 				services.AddSingleton<MainWindowViewModel>();

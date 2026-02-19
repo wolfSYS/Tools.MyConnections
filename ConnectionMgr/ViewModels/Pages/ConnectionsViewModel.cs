@@ -9,7 +9,9 @@ using ConnectionMgr.ExtensionMethods;
 using ConnectionMgr.Helpers;
 using ConnectionMgr.Models;
 using ConnectionMgr.Properties;
+using ConnectionMgr.Services;
 using ConnectionMgr.Views.Dialogs;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Serilog.Core;
@@ -33,9 +35,15 @@ namespace ConnectionMgr.ViewModels.Pages
 	/// </remarks>
 	public partial class ConnectionsViewModel : PagesBaseViewModel
 	{
-		[ObservableProperty]
-		private ObservableCollection<NetworkConnectionInfo> _connections =
-			new ObservableCollection<NetworkConnectionInfo>();
+		private readonly BackgroundConnectionService _backgroundService;
+
+
+		//[ObservableProperty]
+		//public ObservableCollection<NetworkConnectionInfo> _connections = new();
+
+		private ObservableCollection<NetworkConnectionInfo> _connections = new ObservableCollection<NetworkConnectionInfo>();
+		public ObservableCollection<NetworkConnectionInfo> Connections => _connections;
+
 
 		[ObservableProperty]
 		private NetworkConnectionInfo _currentSelection;
@@ -45,16 +53,29 @@ namespace ConnectionMgr.ViewModels.Pages
 		public ConnectionsViewModel(
 					Interfaces.ILoggerService logger,
 					IContentDialogService dialogService,
-					ISnackbarService snackbarService)
+					ISnackbarService snackbarService,
+					BackgroundConnectionService backgroundService)
 					: base(logger, dialogService, snackbarService)
 		{
-			// BaseVM will care about DY
+			// BaseVM will care about most DY except background connections collector service
+			_backgroundService = backgroundService;
+		}
+
+		private async void LoadInitialData()
+		{
+			// Get initial data from service
+			var initialData = _backgroundService.GetCurrentConnections();
+			UpdateConnections(initialData);
 		}
 
 		public override Task OnNavigatedFromAsync()
 		{
 			CurrentSelection = null;
 			Connections.Clear();
+
+			// Unsubscribe & cancel background collector to prevent memory leaks
+			_backgroundService.OnConnectionsUpdated -= BackgroundService_OnConnectionsUpdated;
+			_backgroundService.StopAsync(CancellationToken.None);
 			_isInitialized = false;
 
 			return Task.CompletedTask;
@@ -63,9 +84,49 @@ namespace ConnectionMgr.ViewModels.Pages
 		public override Task OnNavigatedToAsync()
 		{
 			if (!_isInitialized)
-				InitializeViewModel();
+			{
+				LoadInitialData();
 
+				if (_backgroundService is IHostedService hostedService)
+				{
+					// manually start the hosted service if it hasn't been started yet
+					hostedService.StartAsync(CancellationToken.None);
+				}
+
+				// Subscribe to event of background service
+				_backgroundService.OnConnectionsUpdated += BackgroundService_OnConnectionsUpdated;
+			}
 			return Task.CompletedTask;
+		}
+
+		private void BackgroundService_OnConnectionsUpdated(object sender, List<NetworkConnectionInfo> newConnections)
+		{
+			// run it on the UI thread
+			try
+			{
+				Application.Current.Dispatcher.BeginInvoke(() =>
+				{
+					UpdateConnections(newConnections);
+				});
+			}
+			catch (Exception ex) 
+			{
+				_logger.Error(ex, "ConnectionsVM::BackgroundService_OnConnectionsUpdated");
+				ShowError(ex);
+			}
+		}
+
+		private void UpdateConnections(List<NetworkConnectionInfo> newConnections)
+		{
+			// Use Dispatcher to update UI on the correct thread
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				_connections.Clear();
+				foreach (var conn in newConnections)
+				{
+					_connections.Add(conn);
+				}
+			});
 		}
 
 		[RelayCommand(CanExecute = nameof(CanBlockViaHostFile))]
@@ -446,7 +507,23 @@ namespace ConnectionMgr.ViewModels.Pages
 		[RelayCommand]
 		private async Task RefreshConnection()
 		{
-			await RefreshConnectionsAsync();
+			try
+			{
+				await SetProgressAsync(true); // Show progress indicator
+
+				// Force an immediate refresh of connections
+				await RefreshConnectionsAsync();
+
+				_logger.Information("Connections refreshed successfully");
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "Error refreshing connection!");
+			}
+			finally
+			{
+				await SetProgressAsync(false); // Hide progress indicator
+			}
 		}
 
 		private async Task RefreshConnectionsAsync()
@@ -463,10 +540,24 @@ namespace ConnectionMgr.ViewModels.Pages
 
 				var conns = ConnectionCollector.GetAllOutgoingConnections();
 
-				await SetProgressAsync(true);
+				//await SetProgressAsync(true);
+				//foreach (var c in conns)
+				//	Connections.Add(c);
 
-				foreach (var c in conns)
-					Connections.Add(c);
+				// Get fresh connection data
+				var newConnections = ConnectionCollector.GetAllOutgoingConnections();
+
+				// Update the collection (this should trigger UI updates if bound)
+				foreach (var conn in newConnections)
+				{
+					_connections.Add(conn);
+				}
+
+				// Sort connections for better display
+				//Connections = new ObservableCollection<NetworkConnectionInfo>(
+				//	_connections.OrderBy(c => c.Protocol)
+				//			   .ThenBy(c => c.RemoteAddress?.ToString() ?? "")
+				//			   .ThenBy(c => c.RemotePort));
 			}
 			catch (Exception ex)
 			{
